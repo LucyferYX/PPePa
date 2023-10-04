@@ -1,5 +1,7 @@
 # PPePa - Planet Pet Pals
 
+<img alt="LogoBig" width="50%" src="LogoBig.png" />
+
 ## Description
 
 Created for LU Qualification work. <br />
