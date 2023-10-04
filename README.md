@@ -11,4 +11,5 @@ The Map view will be implementede using [Google Maps API](https://developers.goo
 
 ## Prototype Image:
 
+The following image was created by Bing Image Creator.
 <img alt="Idea" width="50%" src="Idea.png" />
