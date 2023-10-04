@@ -2,7 +2,7 @@
 
 ## Description
 
-Created for LU Qualification work.
+Created for LU Qualification work. <br />
 iOS SwiftUI application simulating a social media for pets.
 
 ## The API
@@ -11,5 +11,5 @@ The Map view will be implementede using [Google Maps API](https://developers.goo
 
 ## Prototype Image:
 
-The following image was created by Bing Image Creator.
+The following image was created by Bing Image Creator. <br />
 <img alt="Idea" width="50%" src="Idea.png" />
