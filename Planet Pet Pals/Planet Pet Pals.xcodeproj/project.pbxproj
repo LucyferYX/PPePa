@@ -12,7 +12,6 @@
 		7E59232E2ACE0019000B96F5 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 7E59232D2ACE0019000B96F5 /* Assets.xcassets */; };
 		7E5923312ACE0019000B96F5 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 7E5923302ACE0019000B96F5 /* Preview Assets.xcassets */; };
 		7E5923382ACE155B000B96F5 /* ColorExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E5923372ACE155B000B96F5 /* ColorExtension.swift */; };
-		7EC721622ACF5A62002D43FF /* LoadingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EC721612ACF5A62002D43FF /* LoadingView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -22,7 +21,7 @@
 		7E59232D2ACE0019000B96F5 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		7E5923302ACE0019000B96F5 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		7E5923372ACE155B000B96F5 /* ColorExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorExtension.swift; sourceTree = "<group>"; };
-		7EC721612ACF5A62002D43FF /* LoadingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingView.swift; sourceTree = "<group>"; };
+		7EE375752AD04FD500C9D0DA /* Planet-Pet-Pals-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "Planet-Pet-Pals-Info.plist"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -39,6 +38,7 @@
 		7E59231D2ACE0014000B96F5 = {
 			isa = PBXGroup;
 			children = (
+				7EE375752AD04FD500C9D0DA /* Planet-Pet-Pals-Info.plist */,
 				7E5923282ACE0014000B96F5 /* Planet Pet Pals */,
 				7E5923272ACE0014000B96F5 /* Products */,
 			);
@@ -57,10 +57,9 @@
 			children = (
 				7E5923292ACE0014000B96F5 /* Planet_Pet_PalsApp.swift */,
 				7E59232B2ACE0014000B96F5 /* ContentView.swift */,
-				7EC721612ACF5A62002D43FF /* LoadingView.swift */,
 				7E59232D2ACE0019000B96F5 /* Assets.xcassets */,
-				7E59232F2ACE0019000B96F5 /* Preview Content */,
 				7E5923372ACE155B000B96F5 /* ColorExtension.swift */,
+				7E59232F2ACE0019000B96F5 /* Preview Content */,
 			);
 			path = "Planet Pet Pals";
 			sourceTree = "<group>";
@@ -144,7 +143,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				7E59232C2ACE0014000B96F5 /* ContentView.swift in Sources */,
-				7EC721622ACF5A62002D43FF /* LoadingView.swift in Sources */,
 				7E5923382ACE155B000B96F5 /* ColorExtension.swift in Sources */,
 				7E59232A2ACE0014000B96F5 /* Planet_Pet_PalsApp.swift in Sources */,
 			);
@@ -277,15 +275,16 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = NO;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"Planet Pet Pals/Preview Content\"";
 				DEVELOPMENT_TEAM = RW4PA4UCU3;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "Planet-Pet-Pals-Info.plist";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
-				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -306,15 +305,16 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = NO;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"Planet Pet Pals/Preview Content\"";
 				DEVELOPMENT_TEAM = RW4PA4UCU3;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "Planet-Pet-Pals-Info.plist";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
-				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				LD_RUNPATH_SEARCH_PATHS = (
