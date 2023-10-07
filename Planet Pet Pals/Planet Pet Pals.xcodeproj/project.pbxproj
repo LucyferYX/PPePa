@@ -12,6 +12,8 @@
 		7E59232E2ACE0019000B96F5 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 7E59232D2ACE0019000B96F5 /* Assets.xcassets */; };
 		7E5923312ACE0019000B96F5 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 7E5923302ACE0019000B96F5 /* Preview Assets.xcassets */; };
 		7E5923382ACE155B000B96F5 /* ColorExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E5923372ACE155B000B96F5 /* ColorExtension.swift */; };
+		7E7B49422AD1F94D006AA8B6 /* SearchBarDesign.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E7B49412AD1F94D006AA8B6 /* SearchBarDesign.swift */; };
+		7EC810DC2AD1881B00A5DDD0 /* ButtonDesign.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EC810DB2AD1881B00A5DDD0 /* ButtonDesign.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -21,6 +23,8 @@
 		7E59232D2ACE0019000B96F5 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		7E5923302ACE0019000B96F5 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		7E5923372ACE155B000B96F5 /* ColorExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorExtension.swift; sourceTree = "<group>"; };
+		7E7B49412AD1F94D006AA8B6 /* SearchBarDesign.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchBarDesign.swift; sourceTree = "<group>"; };
+		7EC810DB2AD1881B00A5DDD0 /* ButtonDesign.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ButtonDesign.swift; sourceTree = "<group>"; };
 		7EE375752AD04FD500C9D0DA /* Planet-Pet-Pals-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "Planet-Pet-Pals-Info.plist"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -57,8 +61,8 @@
 			children = (
 				7E5923292ACE0014000B96F5 /* Planet_Pet_PalsApp.swift */,
 				7E59232B2ACE0014000B96F5 /* ContentView.swift */,
+				7EC810DA2AD187E100A5DDD0 /* Design */,
 				7E59232D2ACE0019000B96F5 /* Assets.xcassets */,
-				7E5923372ACE155B000B96F5 /* ColorExtension.swift */,
 				7E59232F2ACE0019000B96F5 /* Preview Content */,
 			);
 			path = "Planet Pet Pals";
@@ -70,6 +74,16 @@
 				7E5923302ACE0019000B96F5 /* Preview Assets.xcassets */,
 			);
 			path = "Preview Content";
+			sourceTree = "<group>";
+		};
+		7EC810DA2AD187E100A5DDD0 /* Design */ = {
+			isa = PBXGroup;
+			children = (
+				7E5923372ACE155B000B96F5 /* ColorExtension.swift */,
+				7EC810DB2AD1881B00A5DDD0 /* ButtonDesign.swift */,
+				7E7B49412AD1F94D006AA8B6 /* SearchBarDesign.swift */,
+			);
+			path = Design;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -145,6 +159,8 @@
 				7E59232C2ACE0014000B96F5 /* ContentView.swift in Sources */,
 				7E5923382ACE155B000B96F5 /* ColorExtension.swift in Sources */,
 				7E59232A2ACE0014000B96F5 /* Planet_Pet_PalsApp.swift in Sources */,
+				7EC810DC2AD1881B00A5DDD0 /* ButtonDesign.swift in Sources */,
+				7E7B49422AD1F94D006AA8B6 /* SearchBarDesign.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

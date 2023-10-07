@@ -8,6 +8,8 @@
 import SwiftUI
 
 struct ContentView: View {
+    @State private var searchText = ""
+    
     var body: some View {
         ZStack {
             
@@ -16,14 +18,11 @@ struct ContentView: View {
                 .edgesIgnoringSafeArea(.all)
             
             VStack {
-                HStack {
-                    Image("LogoBig")
-                        .resizable()
-                        .scaledToFit()
-                        .frame(width: 200, height: 100)
-                        .padding(.all, 20)
-                    Spacer()
-                }
+                Image("LogoBig")
+                    .resizable()
+                    .scaledToFit()
+                    .frame(width: 200, height: 100)
+                    .padding(.top, 20)
                 
                 //Spacer()
                 
@@ -31,10 +30,22 @@ struct ContentView: View {
                     .resizable()
                     .scaledToFit()
                     .frame(width: 300, height: 300)
+                    
                 
-                Spacer()
+                //Spacer()
+                
+                MainSearchBar(text: $searchText)
+                
+                HStack {
+                    MainButton(imageName: "ImageA", buttonText: "A")
+                        .padding()
+                    MainButton(imageName: "ImageB", buttonText: "B")
+                        .padding()
+                    MainButton(imageName: "ImageC", buttonText: "C")
+                        .padding()
+                }
             }
-            
+            .padding()
         }
     }
 }
