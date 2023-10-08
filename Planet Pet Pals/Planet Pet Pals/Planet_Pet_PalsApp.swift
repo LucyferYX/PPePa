@@ -21,7 +21,7 @@ import SwiftUI
 struct Planet_Pet_PalsApp: App {
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            MainMenuView()
         }
     }
 }
