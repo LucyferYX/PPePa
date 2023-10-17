@@ -13,7 +13,7 @@ struct MainSearchBar: View {
         TextField("Search", text: $text)
             // Height
             .padding(12)
-            //.font(Font.custom("YourFontName", size: 18))
+            .font(.custom("Baloo2-Regular", size: 18))
             .background(Color(.systemGray6))
             .cornerRadius(20)
             .overlay(
@@ -25,6 +25,7 @@ struct MainSearchBar: View {
                 }
             )
             .padding(.horizontal, 20)
+            .autocapitalization(.none)
     }
 }
 
