@@ -9,10 +9,10 @@ iOS SwiftUI application simulating a social media for pets.
 
 ## The API
 
-The Map view will be implementede using [Google Maps API](https://developers.google.com/maps/documentation/).
+The Map view will be implemented using [Google Maps API](https://developers.google.com/maps/documentation/).
 
-## Prototype Image:
+## Mockup Image:
 
-The following image was created by Bing Image Creator. <br />
+The following image was created by Canva, the full mockup can be seen [here] (https://www.canva.com/design/DAFxVDoFqGA/EaO7uHrzAGs0BvK-xeTeEg/edit?utm_content=DAFxVDoFqGA&utm_campaign=designshare&utm_medium=link2&utm_source=sharebutton). <br />
 
-<img alt="Idea" width="50%" src="Idea.png" />
+<img alt="MainMenu" width="50%" src="MainMenu.png" />
