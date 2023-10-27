@@ -15,4 +15,4 @@ The Map view will be implemented using [Google Maps API](https://developers.goog
 
 The following image was created by Canva, the full mockup can be seen [here](https://www.canva.com/design/DAFxVDoFqGA/EaO7uHrzAGs0BvK-xeTeEg/edit?utm_content=DAFxVDoFqGA&utm_campaign=designshare&utm_medium=link2&utm_source=sharebutton). <br />
 
-<img alt="MainMenu" width="50%" src="MainMenu.png" />
+<img alt="MainMenu" width="30%" src="MainMenu.png" />
