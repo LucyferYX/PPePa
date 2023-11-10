@@ -53,6 +53,7 @@ struct MainMenuView: View {
                     //Spacer()
                     
                     MainSearchBar(text: $searchText)
+                    // 3 buttons
                     HStack {
                         Button(action: {
                             withAnimation {
@@ -71,18 +72,18 @@ struct MainMenuView: View {
                     }
                 }
                 
-                // Closing etc
-                if showMeView {
-                    MeView(showMeView: $showMeView)
-                        .transition(.asymmetric(insertion: .move(edge: .leading), removal: .move(edge: .trailing)))
-                        .gesture(DragGesture().onEnded { value in
-                            if value.translation.width < -100 {
-                                withAnimation {
-                                    self.showMeView = false
-                                }
-                            }
-                        })
-                }
+//                // Closing etc
+//                if showMeView {
+//                    MeView(showMeView: $showMeView)
+//                        .transition(.asymmetric(insertion: .move(edge: .leading), removal: .move(edge: .trailing)))
+//                        .gesture(DragGesture().onEnded { value in
+//                            if value.translation.width < -100 {
+//                                withAnimation {
+//                                    self.showMeView = false
+//                                }
+//                            }
+//                        })
+//                }
             }
         }
     }
