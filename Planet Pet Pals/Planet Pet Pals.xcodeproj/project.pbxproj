@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		7E59232A2ACE0014000B96F5 /* Planet_Pet_PalsApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E5923292ACE0014000B96F5 /* Planet_Pet_PalsApp.swift */; };
+		7E59232A2ACE0014000B96F5 /* PPePa.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E5923292ACE0014000B96F5 /* PPePa.swift */; };
 		7E59232C2ACE0014000B96F5 /* MainMenuView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E59232B2ACE0014000B96F5 /* MainMenuView.swift */; };
 		7E59232E2ACE0019000B96F5 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 7E59232D2ACE0019000B96F5 /* Assets.xcassets */; };
 		7E5923312ACE0019000B96F5 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 7E5923302ACE0019000B96F5 /* Preview Assets.xcassets */; };
@@ -20,7 +20,7 @@
 
 /* Begin PBXFileReference section */
 		7E5923262ACE0014000B96F5 /* Planet Pet Pals.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Planet Pet Pals.app"; sourceTree = BUILT_PRODUCTS_DIR; };
-		7E5923292ACE0014000B96F5 /* Planet_Pet_PalsApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Planet_Pet_PalsApp.swift; sourceTree = "<group>"; };
+		7E5923292ACE0014000B96F5 /* PPePa.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PPePa.swift; sourceTree = "<group>"; };
 		7E59232B2ACE0014000B96F5 /* MainMenuView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainMenuView.swift; sourceTree = "<group>"; };
 		7E59232D2ACE0019000B96F5 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		7E5923302ACE0019000B96F5 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
@@ -91,7 +91,7 @@
 		7EC3725D2ADDF24E001876AD /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				7E5923292ACE0014000B96F5 /* Planet_Pet_PalsApp.swift */,
+				7E5923292ACE0014000B96F5 /* PPePa.swift */,
 				7E59232B2ACE0014000B96F5 /* MainMenuView.swift */,
 				7E9C2F992AD34B860042F562 /* MeView.swift */,
 			);
@@ -182,7 +182,7 @@
 				7E9C2F9A2AD34B860042F562 /* MeView.swift in Sources */,
 				7E59232C2ACE0014000B96F5 /* MainMenuView.swift in Sources */,
 				7E5923382ACE155B000B96F5 /* ColorExtension.swift in Sources */,
-				7E59232A2ACE0014000B96F5 /* Planet_Pet_PalsApp.swift in Sources */,
+				7E59232A2ACE0014000B96F5 /* PPePa.swift in Sources */,
 				7EC810DC2AD1881B00A5DDD0 /* ButtonDesign.swift in Sources */,
 				7E7B49422AD1F94D006AA8B6 /* SearchBarDesign.swift in Sources */,
 			);
@@ -327,6 +327,7 @@
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -357,6 +358,7 @@
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",

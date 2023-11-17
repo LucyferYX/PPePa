@@ -7,43 +7,47 @@
 
 import SwiftUI
 
-//struct MeView: View {
-//    @Binding var showMeView: Bool
-//
-//    var body: some View {
-//        ZStack {
-//            Color(hex: "FFAF97").edgesIgnoringSafeArea(.all)
-//        }
-//        .frame(maxWidth: UIScreen.main.bounds.width * 0.8, maxHeight: .infinity, alignment: .leading)
-//        .navigationBarBackButtonHidden(true)
-//        .navigationBarItems(leading:
-//            Button(action: { withAnimation { self.showMeView = false } }) {
-//                HStack {
-//                    Image(systemName: "arrow.backward")
-//                    Text("Back")
-//                }
-//            }
-//        )
-//    }
-//}
+struct MeView: View {
+    @Binding var show: Bool
 
-//struct MeView: View {
-//    @Environment(\.presentationMode) var presentationMode
-//
-//    var body: some View {
-//        ZStack {
-//            Color(hex: "FFAF97").edgesIgnoringSafeArea(.all)
-//        }
-//        .navigationBarBackButtonHidden(true)
-//        .navigationBarItems(leading: Button(action: { self.presentationMode.wrappedValue.dismiss() }) {
-//            HStack {
-//                Image(systemName: "arrow.backward")
-//                Text("Back")
-//            }
-//        })
-//    }
-//}
-
-//#Preview {
-//    MeView()
-//}
+    var body: some View {
+        VStack (alignment: .leading) {
+            Button (action: {
+                withAnimation {
+                    self.show = false
+                }
+            }) {
+                HStack {
+                    Image(systemName: "xmark")
+                        .foregroundColor(.white)
+                    Text("close menu")
+                        .foregroundColor(.white)
+                        .font(.system(size: 14))
+                        .padding(.leading, 15.0)
+                }
+            }.padding(.top, 20)
+            Divider().foregroundColor(.white)
+            Button(action: {
+                // TODO: Add action for Button 1
+            }) {
+                Text("Button 1")
+                    .foregroundColor(.white)
+                    .font(.system(size: 14))
+                    .fontWeight(.semibold)
+            }.padding(.top, 30)
+            Button(action: {
+                // TODO: Add action for Button 2
+            }) {
+                Text("Button 2")
+                    .foregroundColor(.white)
+                    .font(.system(size: 14))
+                    .fontWeight(.semibold)
+            }.padding(.top, 30)
+            // Add more buttons, labels, lists, etc. here
+            Spacer()
+        }.padding()
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .background(Color.black)
+        .edgesIgnoringSafeArea(.all)
+    }
+}

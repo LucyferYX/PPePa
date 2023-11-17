@@ -18,7 +18,7 @@ import SwiftUI
 //}
 
 @main
-struct Planet_Pet_PalsApp: App {
+struct PPePa: App {
     var body: some Scene {
         WindowGroup {
             MainMenuView()
