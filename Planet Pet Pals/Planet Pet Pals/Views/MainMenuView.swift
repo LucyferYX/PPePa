@@ -14,43 +14,44 @@ struct MainMenuView: View {
     var body: some View {
         return GeometryReader { geometry in
             NavigationView {
+                
                 ZStack(alignment: .leading) {
-                    
-                    // Background
-                    LinearGradient(gradient: Gradient(colors: [Color(hex: "F9EEE8"), Color(hex: "FFAF97")]), startPoint: .topLeading, endPoint: .bottomTrailing)
-                        .edgesIgnoringSafeArea(.all)
+                    MainBackground()
                     
                     VStack {
-                        Image("LogoBig")
-                            .resizable()
-                            .scaledToFit()
-                            .frame(width: 200, height: 100)
+                        Spacer()
+                        
+                        // Logo
+                        ImageView(imageName: "LogoBig", width: 200, height: 100)
                             .padding(.top, 20)
+                        // Pet Image
+                        ImageView(imageName: "MainDog", width: 300, height: 300)
                         
-                        //Spacer()
-                        
-                        Image("MainDog")
-                            .resizable()
-                            .scaledToFit()
-                            .frame(width: 300, height: 300)
-                        
-                        
-                        //Spacer()
+                        Spacer()
                         
                         MainSearchBar(text: $searchText)
-                        // 3 buttons
-                        HStack {
+                        
+                        Spacer()
+                        
+                        // Main buttons
+                        HStack(spacing: -3) {
                             Button(action: {
                                 withAnimation {
                                     self.showMeView.toggle()
                                 }
                             }) {
-                                MainButton(imageName: "ImageA", buttonText: "A")
+                                MainButton(imageName: "person.fill", buttonText: "Post",
+                                           imageColor: Color(hex: "FFAF97"),
+                                           buttonColor: Color(hex: "FFFAF7"))
                                     .padding()
                             }
-                            MainButton(imageName: "ImageB", buttonText: "B")
+                            MainButton(imageName: "map.fill", buttonText: "Map",
+                                       imageColor: Color(hex: "763626"),
+                                       buttonColor: Color(hex: "FFFAF7"))
                                 .padding()
-                            MainButton(imageName: "ImageC", buttonText: "C")
+                            MainButton(imageName: "chart.bar.fill", buttonText: "Stats",
+                                       imageColor: Color(hex: "FFAF97"),
+                                       buttonColor: Color(hex: "FFFAF7"))
                                 .padding()
                         }
                     }

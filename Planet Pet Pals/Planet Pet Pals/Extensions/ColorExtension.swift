@@ -5,6 +5,7 @@
 //  Created by liene.krista.neimane on 05/10/2023.
 //
 
+// Extension allows to use hex color codes: Color(hex: "ffffff")
 import SwiftUI
 
 extension Color {

@@ -10,16 +10,24 @@ import SwiftUI
 struct MainButton: View {
     let imageName: String
     let buttonText: String
+    let imageColor: Color
+    let buttonColor: Color
     
     var body: some View {
         VStack {
-            Image(imageName)
+            Image(systemName: imageName)
                 .resizable()
-                .frame(width: 50, height: 50)
+                .aspectRatio(contentMode: .fit)
+                .padding(20)
+                .foregroundColor(imageColor)
                 .background(Color.white)
                 .clipShape(Circle())
+                .frame(width: 85, height: 85)
             
             Text(buttonText)
+                .padding(-5)
+                .font(.custom("Baloo2-SemiBold", size: 25))
+                .foregroundColor(buttonColor)
         }
     }
 }
