@@ -16,8 +16,10 @@
 		7E9C2F9A2AD34B860042F562 /* MeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E9C2F992AD34B860042F562 /* MeView.swift */; };
 		7EC372632ADDFEBF001876AD /* Baloo2.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 7EC372622ADDFEBF001876AD /* Baloo2.ttf */; };
 		7EC810DC2AD1881B00A5DDD0 /* ButtonDesign.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EC810DB2AD1881B00A5DDD0 /* ButtonDesign.swift */; };
+		DC14520A2B0D44F30059FE96 /* MapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC1452092B0D44F30059FE96 /* MapView.swift */; };
 		DC418C462B08F2570070D226 /* BackgroundDesign.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC418C452B08F2570070D226 /* BackgroundDesign.swift */; };
 		DC418C482B08F2D40070D226 /* ImageDesign.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC418C472B08F2D40070D226 /* ImageDesign.swift */; };
+		DCE5CB2C2B0E4078005E5760 /* NavigationBarDesign.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCE5CB2B2B0E4078005E5760 /* NavigationBarDesign.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -32,8 +34,10 @@
 		7EC372622ADDFEBF001876AD /* Baloo2.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Baloo2.ttf; sourceTree = "<group>"; };
 		7EC810DB2AD1881B00A5DDD0 /* ButtonDesign.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ButtonDesign.swift; sourceTree = "<group>"; };
 		7EE375752AD04FD500C9D0DA /* Planet-Pet-Pals-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "Planet-Pet-Pals-Info.plist"; sourceTree = "<group>"; };
+		DC1452092B0D44F30059FE96 /* MapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapView.swift; sourceTree = "<group>"; };
 		DC418C452B08F2570070D226 /* BackgroundDesign.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackgroundDesign.swift; sourceTree = "<group>"; };
 		DC418C472B08F2D40070D226 /* ImageDesign.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageDesign.swift; sourceTree = "<group>"; };
+		DCE5CB2B2B0E4078005E5760 /* NavigationBarDesign.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationBarDesign.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -99,6 +103,7 @@
 				7E5923292ACE0014000B96F5 /* PPePa.swift */,
 				7E59232B2ACE0014000B96F5 /* MainMenuView.swift */,
 				7E9C2F992AD34B860042F562 /* MeView.swift */,
+				DC1452092B0D44F30059FE96 /* MapView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -110,6 +115,7 @@
 				DC418C472B08F2D40070D226 /* ImageDesign.swift */,
 				7EC810DB2AD1881B00A5DDD0 /* ButtonDesign.swift */,
 				7E7B49412AD1F94D006AA8B6 /* SearchBarDesign.swift */,
+				DCE5CB2B2B0E4078005E5760 /* NavigationBarDesign.swift */,
 			);
 			path = Design;
 			sourceTree = "<group>";
@@ -200,7 +206,9 @@
 				7E5923382ACE155B000B96F5 /* ColorExtension.swift in Sources */,
 				7E59232A2ACE0014000B96F5 /* PPePa.swift in Sources */,
 				7EC810DC2AD1881B00A5DDD0 /* ButtonDesign.swift in Sources */,
+				DC14520A2B0D44F30059FE96 /* MapView.swift in Sources */,
 				7E7B49422AD1F94D006AA8B6 /* SearchBarDesign.swift in Sources */,
+				DCE5CB2C2B0E4078005E5760 /* NavigationBarDesign.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

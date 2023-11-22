@@ -10,6 +10,7 @@ import SwiftUI
 struct MainMenuView: View {
     @State private var searchText = ""
     @State private var showMeView = false
+    @State private var showMapView = false
     
     var body: some View {
         return GeometryReader { geometry in
@@ -45,14 +46,24 @@ struct MainMenuView: View {
                                            buttonColor: Color(hex: "FFFAF7"))
                                     .padding()
                             }
-                            MainButton(imageName: "map.fill", buttonText: "Map",
-                                       imageColor: Color(hex: "763626"),
-                                       buttonColor: Color(hex: "FFFAF7"))
-                                .padding()
+                            Button(action: {
+                                withAnimation {
+                                    self.showMapView = true
+                                }
+                            }) {
+                                MainButton(imageName: "map.fill", buttonText: "Map",
+                                           imageColor: Color(hex: "763626"),
+                                           buttonColor: Color(hex: "FFFAF7"))
+                                    .padding()
+                            }
                             MainButton(imageName: "chart.bar.fill", buttonText: "Stats",
                                        imageColor: Color(hex: "FFAF97"),
                                        buttonColor: Color(hex: "FFFAF7"))
                                 .padding()
+                        }
+                        // Opens the view from bottom
+                        .fullScreenCover(isPresented: $showMapView) {
+                            MapView(showMapView: $showMapView)
                         }
                     }
                 // Creates illusion with view sliding to right
@@ -79,8 +90,8 @@ struct MainMenuView: View {
 }
 
 
-struct Previews: PreviewProvider {
-    static var previews: some View {
-        MainMenuView()
-    }
-}
+//struct Previews: PreviewProvider {
+//    static var previews: some View {
+//        MainMenuView()
+//    }
+//}

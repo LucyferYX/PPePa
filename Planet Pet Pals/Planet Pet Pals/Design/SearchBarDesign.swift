@@ -28,17 +28,3 @@ struct MainSearchBar: View {
             .autocapitalization(.none)
     }
 }
-
-
-//var body: some View {
-//    HStack {
-//        TextField("Search", text: $text)
-//            .padding(10)
-//            .background(Color(.systemGray6))
-//            .cornerRadius(10)
-//            .padding(.horizontal, 10)
-//        Image(systemName: "magnifyingglass")
-//            .foregroundColor(.brown)
-//    }
-//    .frame(height: 50)
-//}
