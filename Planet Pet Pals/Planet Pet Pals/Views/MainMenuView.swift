@@ -11,6 +11,7 @@ struct MainMenuView: View {
     @State private var searchText = ""
     @State private var showMeView = false
     @State private var showMapView = false
+    @State private var showStatsView = false
     
     var body: some View {
         return GeometryReader { geometry in
@@ -23,10 +24,35 @@ struct MainMenuView: View {
                         Spacer()
                         
                         // Logo
-                        ImageView(imageName: "LogoBig", width: 200, height: 100)
+                        MainImageView(imageName: "LogoBig", width: 200, height: 100)
                             .padding(.top, 20)
-                        // Pet Image
-                        ImageView(imageName: "MainDog", width: 300, height: 300)
+                        
+                        HStack {
+                            Button(action: {
+                                // Image to left
+                            }) {
+                                Image(systemName: "chevron.left")
+                                    .resizable()
+                                    .aspectRatio(contentMode: .fit)
+                                    .frame(width: 30, height: 30)
+                                    .foregroundColor(Color(hex: "FFFAF7"))
+                            }
+                            .padding(.trailing, 20)
+                            
+                            // Pet Image
+                            FadeOutImageView(imageName: "MainDog", width: 200, height: 300)
+                            
+                            Button(action: {
+                                // Image to right
+                            }) {
+                                Image(systemName: "chevron.right")
+                                    .resizable()
+                                    .aspectRatio(contentMode: .fit)
+                                    .frame(width: 30, height: 30)
+                                    .foregroundColor(Color(hex: "FFFAF7"))
+                            }
+                            .padding(.leading, 20)
+                        }
                         
                         Spacer()
                         
@@ -56,16 +82,23 @@ struct MainMenuView: View {
                                            buttonColor: Color(hex: "FFFAF7"))
                                     .padding()
                             }
-                            MainButton(imageName: "chart.bar.fill", buttonText: "Stats",
-                                       imageColor: Color(hex: "FFAF97"),
-                                       buttonColor: Color(hex: "FFFAF7"))
-                                .padding()
+                            Button(action: {
+                                withAnimation {
+                                    self.showStatsView = true
+                                }
+                            }) {
+                                MainButton(imageName: "chart.bar.fill", buttonText: "Stats",
+                                           imageColor: Color(hex: "FFAF97"),
+                                           buttonColor: Color(hex: "FFFAF7"))
+                                    .padding()
+                            }
                         }
                         // Opens the view from bottom
                         .fullScreenCover(isPresented: $showMapView) {
                             MapView(showMapView: $showMapView)
                         }
                     }
+
                 // Creates illusion with view sliding to right
                 }.frame(width: geometry.size.width, height: geometry.size.height)
                     .offset(x: self.showMeView ? geometry.size.width / 2 : 0)
@@ -88,6 +121,13 @@ struct MainMenuView: View {
         }
     }
 }
+
+//NavigationLink(destination: StatsView(showStatsView: $showStatsView), isActive: $showStatsView) {
+//    MainButton(imageName: "chart.bar.fill", buttonText: "Stats",
+//               imageColor: Color(hex: "FFAF97"),
+//               buttonColor: Color(hex: "FFFAF7"))
+//        .padding()
+//}
 
 
 struct Previews: PreviewProvider {

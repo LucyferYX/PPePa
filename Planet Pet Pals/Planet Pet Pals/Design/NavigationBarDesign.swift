@@ -15,7 +15,7 @@ struct CustomNavigationBar: View {
     let rightButtonSystemImage: String
     let rightButtonInvisible: Bool
     
-    let buttonSize: CGFloat = 15
+    let buttonSize: CGFloat = 20
 
     var body: some View {
         HStack {
@@ -23,7 +23,7 @@ struct CustomNavigationBar: View {
                 Image(systemName: leftButtonSystemImage)
                     .resizable()
                     .aspectRatio(contentMode: .fit)
-                    .frame(width: buttonSize)
+                    .frame(width: buttonSize, height: buttonSize)
                     .foregroundColor(Color(hex: "F9EEE8"))
             }
             .padding(.leading)
@@ -36,7 +36,7 @@ struct CustomNavigationBar: View {
                 Image(systemName: rightButtonSystemImage)
                     .resizable()
                     .aspectRatio(contentMode: .fit)
-                    .frame(width: buttonSize)
+                    .frame(width: buttonSize, height: buttonSize)
                     .foregroundColor(rightButtonInvisible ? Color.clear : Color(hex: "F9EEE8"))
             }
             .padding(.trailing)
