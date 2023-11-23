@@ -90,8 +90,8 @@ struct MainMenuView: View {
 }
 
 
-//struct Previews: PreviewProvider {
-//    static var previews: some View {
-//        MainMenuView()
-//    }
-//}
+struct Previews: PreviewProvider {
+    static var previews: some View {
+        MainMenuView()
+    }
+}

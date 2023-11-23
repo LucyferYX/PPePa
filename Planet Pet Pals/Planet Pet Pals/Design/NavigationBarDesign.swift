@@ -15,7 +15,7 @@ struct CustomNavigationBar: View {
     let rightButtonSystemImage: String
     let rightButtonInvisible: Bool
     
-    let buttonSize: CGFloat = 12
+    let buttonSize: CGFloat = 15
 
     var body: some View {
         HStack {

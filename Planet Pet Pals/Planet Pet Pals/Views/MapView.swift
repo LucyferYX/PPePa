@@ -15,10 +15,10 @@ struct MapView: View {
             VStack {
                 CustomNavigationBar(
                     title: "Map",
-                    leftButtonAction: { /* code to navigate to MainMenuView */ },
+                    leftButtonAction: { self.showMapView = false },
                     rightButtonAction: {},
-                    leftButtonSystemImage: "chevron.left",
-                    rightButtonSystemImage: "chevron.left",
+                    leftButtonSystemImage: "chevron.up",
+                    rightButtonSystemImage: "chevron.up",
                     rightButtonInvisible: false
                 )
                 ZStack {
@@ -27,13 +27,15 @@ struct MapView: View {
                 }
             }
         }
+        .transition(.move(edge: .bottom))
     }
 }
 
 
 
-struct Previews: PreviewProvider {
-    static var previews: some View {
-        MapView(showMapView: .constant(false))
-    }
-}
+
+//struct Previews: PreviewProvider {
+//    static var previews: some View {
+//        MapView(showMapView: .constant(true))
+//    }
+//}
