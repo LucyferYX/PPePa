@@ -62,36 +62,27 @@ struct MainMenuView: View {
                         
                         // Main buttons
                         HStack(spacing: -3) {
-                            Button(action: {
-                                withAnimation {
-                                    self.showMeView.toggle()
-                                }
-                            }) {
-                                MainButton(imageName: "person.fill", buttonText: "Post",
-                                           imageColor: Color(hex: "FFAF97"),
-                                           buttonColor: Color(hex: "FFFAF7"))
-                                    .padding()
-                            }
-                            Button(action: {
-                                withAnimation {
-                                    self.showMapView = true
-                                }
-                            }) {
-                                MainButton(imageName: "map.fill", buttonText: "Map",
-                                           imageColor: Color(hex: "763626"),
-                                           buttonColor: Color(hex: "FFFAF7"))
-                                    .padding()
-                            }
-                            Button(action: {
-                                withAnimation {
-                                    self.showStatsView = true
-                                }
-                            }) {
-                                MainButton(imageName: "chart.bar.fill", buttonText: "Stats",
-                                           imageColor: Color(hex: "FFAF97"),
-                                           buttonColor: Color(hex: "FFFAF7"))
-                                    .padding()
-                            }
+                            MainButton(action: { self.showMeView.toggle() },
+                                       imageName: "person.fill",
+                                       buttonText: "Post",
+                                       imageColor: Color(hex: "FFAF97"),
+                                       buttonColor: Color(hex: "FFFAF7"))
+                                .padding()
+
+                            MainButton(action: { self.showMapView = true },
+                                       imageName: "map.fill",
+                                       buttonText: "Map",
+                                       imageColor: Color(hex: "763626"),
+                                       buttonColor: Color(hex: "FFFAF7"))
+                                .padding()
+
+                            MainButton(action: { self.showStatsView = true },
+                                       imageName: "chart.bar.fill",
+                                       buttonText: "Stats",
+                                       imageColor: Color(hex: "FFAF97"),
+                                       buttonColor: Color(hex: "FFFAF7"))
+                                .padding()
+
                         }
                         // Opens the view from bottom
                         .fullScreenCover(isPresented: $showMapView) {
@@ -122,16 +113,9 @@ struct MainMenuView: View {
     }
 }
 
-//NavigationLink(destination: StatsView(showStatsView: $showStatsView), isActive: $showStatsView) {
-//    MainButton(imageName: "chart.bar.fill", buttonText: "Stats",
-//               imageColor: Color(hex: "FFAF97"),
-//               buttonColor: Color(hex: "FFFAF7"))
-//        .padding()
+
+//struct MainPreviews: PreviewProvider {
+//    static var previews: some View {
+//        MainMenuView()
+//    }
 //}
-
-
-struct Previews: PreviewProvider {
-    static var previews: some View {
-        MainMenuView()
-    }
-}

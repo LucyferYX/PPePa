@@ -15,12 +15,24 @@ struct StatsView: View {
             VStack {
                 CustomNavigationBar(
                     title: "Stats",
-                    leftButtonAction: { self.showStatsView = false },
-                    rightButtonAction: {},
-                    leftButtonSystemImage: "chevron.left",
-                    rightButtonSystemImage: "chevron.left",
-                    rightButtonInvisible: false
+                    leftButton: NavigationButton(
+                        action: { self.showStatsView = false },
+                        imageName: "chevron.left",
+                        buttonText: "",
+                        imageColor: Color(hex: "F9EEE8"),
+                        buttonColor: Color(hex: "FFFAF7"),
+                        buttonInvisible: false
+                    ),
+                    rightButton: NavigationButton(
+                        action: {},
+                        imageName: "chevron.left",
+                        buttonText: "",
+                        imageColor: Color(hex: "F9EEE8"),
+                        buttonColor: Color(hex: "FFFAF7"),
+                        buttonInvisible: false
+                    )
                 )
+
                 ZStack {
                     MainBackground()
                     Text("Stats View test")

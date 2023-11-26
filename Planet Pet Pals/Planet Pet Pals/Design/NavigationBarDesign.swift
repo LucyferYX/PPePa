@@ -7,42 +7,63 @@
 
 import SwiftUI
 
+//struct CustomNavigationBar: View {
+//    let title: String
+//    let leftButtonAction: () -> Void
+//    let rightButtonAction: () -> Void
+//    let leftButtonSystemImage: String
+//    let rightButtonSystemImage: String
+//    let rightButtonInvisible: Bool
+//
+//    let buttonSize: CGFloat = 20
+//
+//    var body: some View {
+//        HStack {
+//            Button(action: leftButtonAction) {
+//                Image(systemName: leftButtonSystemImage)
+//                    .resizable()
+//                    .aspectRatio(contentMode: .fit)
+//                    .frame(width: buttonSize, height: buttonSize)
+//                    .foregroundColor(Color(hex: "F9EEE8"))
+//            }
+//            .padding(.leading)
+//            Spacer()
+//            Text(title)
+//                .font(.custom("Baloo2-SemiBold", size: 25))
+//                .foregroundColor(Color(hex: "F9EEE8"))
+//            Spacer()
+//            Button(action: rightButtonAction) {
+//                Image(systemName: rightButtonSystemImage)
+//                    .resizable()
+//                    .aspectRatio(contentMode: .fit)
+//                    .frame(width: buttonSize, height: buttonSize)
+//                    .foregroundColor(rightButtonInvisible ? Color.clear : Color(hex: "F9EEE8"))
+//            }
+//            .padding(.trailing)
+//        }
+//        .padding()
+//        .background(Color(hex:"763626"))
+//    }
+//}
+
 struct CustomNavigationBar: View {
     let title: String
-    let leftButtonAction: () -> Void
-    let rightButtonAction: () -> Void
-    let leftButtonSystemImage: String
-    let rightButtonSystemImage: String
-    let rightButtonInvisible: Bool
-    
-    let buttonSize: CGFloat = 20
+    let leftButton: NavigationButton
+    let rightButton: NavigationButton
 
     var body: some View {
         HStack {
-            Button(action: leftButtonAction) {
-                Image(systemName: leftButtonSystemImage)
-                    .resizable()
-                    .aspectRatio(contentMode: .fit)
-                    .frame(width: buttonSize, height: buttonSize)
-                    .foregroundColor(Color(hex: "F9EEE8"))
-            }
-            .padding(.leading)
+            leftButton
+                .padding(.leading)
             Spacer()
             Text(title)
                 .font(.custom("Baloo2-SemiBold", size: 25))
                 .foregroundColor(Color(hex: "F9EEE8"))
             Spacer()
-            Button(action: rightButtonAction) {
-                Image(systemName: rightButtonSystemImage)
-                    .resizable()
-                    .aspectRatio(contentMode: .fit)
-                    .frame(width: buttonSize, height: buttonSize)
-                    .foregroundColor(rightButtonInvisible ? Color.clear : Color(hex: "F9EEE8"))
-            }
-            .padding(.trailing)
+            rightButton
+                .padding(.trailing)
         }
         .padding()
         .background(Color(hex:"763626"))
     }
 }
-
