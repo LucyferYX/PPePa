@@ -21,37 +21,22 @@ struct MainMenuView: View {
                     MainBackground()
                     
                     VStack {
-                        Spacer()
-                        
-                        // Logo
-                        MainImageView(imageName: "LogoBig", width: 200, height: 100)
+                        MainImageView(imageName: "LogoBig", width: 250, height: 120)
                             .padding(.top, 20)
                         
+                        Spacer()
+                        
                         HStack {
-                            Button(action: {
-                                // Image to left
-                            }) {
-                                Image(systemName: "chevron.left")
-                                    .resizable()
-                                    .aspectRatio(contentMode: .fit)
-                                    .frame(width: 30, height: 30)
-                                    .foregroundColor(Color(hex: "FFFAF7"))
-                            }
-                            .padding(.trailing, 20)
+                            SimpleButton(action: {
+                                print("Button pressed")
+                            }, systemImage: "chevron.left", size: 30, color: Color(hex: "FFFAF7"))
                             
                             // Pet Image
-                            FadeOutImageView(imageName: "MainDog", width: 200, height: 300)
+                            FadeOutImageView(imageName: "MainDog", width: 250, height: 250)
                             
-                            Button(action: {
-                                // Image to right
-                            }) {
-                                Image(systemName: "chevron.right")
-                                    .resizable()
-                                    .aspectRatio(contentMode: .fit)
-                                    .frame(width: 30, height: 30)
-                                    .foregroundColor(Color(hex: "FFFAF7"))
-                            }
-                            .padding(.leading, 20)
+                            SimpleButton(action: {
+                                print("Button pressed")
+                            }, systemImage: "chevron.right", size: 30, color: Color(hex: "FFFAF7"))
                         }
                         
                         Spacer()
@@ -86,7 +71,7 @@ struct MainMenuView: View {
                         }
                         // Opens the view from bottom
                         .fullScreenCover(isPresented: $showMapView) {
-                            MapView(showMapView: $showMapView)
+                            MapView(showMapView: $showMapView, region: "Europe")
                         }
                     }
 
@@ -114,8 +99,8 @@ struct MainMenuView: View {
 }
 
 
-//struct MainPreviews: PreviewProvider {
-//    static var previews: some View {
-//        MainMenuView()
-//    }
-//}
+struct MainPreviews: PreviewProvider {
+    static var previews: some View {
+        MainMenuView()
+    }
+}

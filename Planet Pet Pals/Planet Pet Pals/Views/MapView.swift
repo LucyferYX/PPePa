@@ -10,31 +10,39 @@ import MapKit
 
 struct MapView: View {
     @Binding var showMapView: Bool
-    @State private var region = MKCoordinateRegion(
-        center: CLLocationCoordinate2D(latitude: 34.011_286, longitude: -116.166_868),
-        span: MKCoordinateSpan(latitudeDelta: 0.2, longitudeDelta: 0.2)
-    )
+    @State private var region: MKCoordinateRegion
+
+    init(showMapView: Binding<Bool>, region: String) {
+        _showMapView = showMapView
+        let ((latitude, longitude), (latitudeDelta, longitudeDelta)) = regions[region]!
+        _region = State(initialValue: MKCoordinateRegion(
+            center: CLLocationCoordinate2D(latitude: latitude, longitude: longitude),
+            span: MKCoordinateSpan(latitudeDelta: latitudeDelta, longitudeDelta: longitudeDelta)
+        ))
+    }
 
     var body: some View {
         NavigationView {
             VStack {
-                CustomNavigationBar(
+                MainNavigationBar(
                     title: "Map",
-                    leftButton: NavigationButton(
+                    leftButton: LeftNavigationButton(
                         action: { self.showMapView = false },
                         imageName: "chevron.up",
-                        buttonText: "",
+                        buttonText: "Back",
                         imageColor: Color(hex: "F9EEE8"),
                         buttonColor: Color(hex: "FFFAF7"),
-                        buttonInvisible: false
+                        imageInvisible: false,
+                        textInvisible: false
                     ),
-                    rightButton: NavigationButton(
+                    rightButton: RightNavigationButton(
                         action: {},
-                        imageName: "chevron.up",
-                        buttonText: "",
+                        imageName: "slider.horizontal.3",
+                        buttonText: "Back",
                         imageColor: Color(hex: "F9EEE8"),
                         buttonColor: Color(hex: "FFFAF7"),
-                        buttonInvisible: false
+                        imageInvisible: false,
+                        textInvisible: true
                     )
                 )
 
