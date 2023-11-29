@@ -19,12 +19,12 @@ struct MainNavigationBar: View {
             Spacer()
             Text(title)
                 .font(.custom("Baloo2-SemiBold", size: 25))
-                .foregroundColor(Color(hex: "F9EEE8"))
+                .foregroundColor(Colors.linen)
             Spacer()
             rightButton
                 .padding(.trailing)
         }
         .padding()
-        .background(Color(hex:"763626"))
+        .background(Colors.walnut)
     }
 }

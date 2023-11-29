@@ -30,8 +30,6 @@ struct MapView: View {
                         action: { self.showMapView = false },
                         imageName: "chevron.up",
                         buttonText: "Back",
-                        imageColor: Color(hex: "F9EEE8"),
-                        buttonColor: Color(hex: "FFFAF7"),
                         imageInvisible: false,
                         textInvisible: false
                     ),
@@ -39,8 +37,6 @@ struct MapView: View {
                         action: {},
                         imageName: "slider.horizontal.3",
                         buttonText: "Back",
-                        imageColor: Color(hex: "F9EEE8"),
-                        buttonColor: Color(hex: "FFFAF7"),
                         imageInvisible: false,
                         textInvisible: true
                     )
@@ -56,10 +52,3 @@ struct MapView: View {
         .transition(.move(edge: .bottom))
     }
 }
-
-
-//struct MapPreviews: PreviewProvider {
-//    static var previews: some View {
-//        MapView(showMapView: .constant(true))
-//    }
-//}

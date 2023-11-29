@@ -19,8 +19,6 @@ struct StatsView: View {
                         action: { self.showStatsView = false },
                         imageName: "chevron.left",
                         buttonText: "Back",
-                        imageColor: Color(hex: "F9EEE8"),
-                        buttonColor: Color(hex: "FFFAF7"),
                         imageInvisible: false,
                         textInvisible: false
                     ),
@@ -28,8 +26,6 @@ struct StatsView: View {
                         action: {},
                         imageName: "chevron.left",
                         buttonText: "Back",
-                        imageColor: Color(hex: "F9EEE8"),
-                        buttonColor: Color(hex: "FFFAF7"),
                         imageInvisible: false,
                         textInvisible: true
                     )

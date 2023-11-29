@@ -13,7 +13,7 @@
 		7E5923312ACE0019000B96F5 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 7E5923302ACE0019000B96F5 /* Preview Assets.xcassets */; };
 		7E5923382ACE155B000B96F5 /* ColorExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E5923372ACE155B000B96F5 /* ColorExtension.swift */; };
 		7E7B49422AD1F94D006AA8B6 /* SearchBarDesign.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E7B49412AD1F94D006AA8B6 /* SearchBarDesign.swift */; };
-		7E9C2F9A2AD34B860042F562 /* MeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E9C2F992AD34B860042F562 /* MeView.swift */; };
+		7E9C2F9A2AD34B860042F562 /* PanelView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E9C2F992AD34B860042F562 /* PanelView.swift */; };
 		7EC372632ADDFEBF001876AD /* Baloo2.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 7EC372622ADDFEBF001876AD /* Baloo2.ttf */; };
 		7EC810DC2AD1881B00A5DDD0 /* ButtonDesign.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EC810DB2AD1881B00A5DDD0 /* ButtonDesign.swift */; };
 		DC14520A2B0D44F30059FE96 /* MapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC1452092B0D44F30059FE96 /* MapView.swift */; };
@@ -33,7 +33,7 @@
 		7E5923302ACE0019000B96F5 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		7E5923372ACE155B000B96F5 /* ColorExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorExtension.swift; sourceTree = "<group>"; };
 		7E7B49412AD1F94D006AA8B6 /* SearchBarDesign.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchBarDesign.swift; sourceTree = "<group>"; };
-		7E9C2F992AD34B860042F562 /* MeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MeView.swift; sourceTree = "<group>"; };
+		7E9C2F992AD34B860042F562 /* PanelView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PanelView.swift; sourceTree = "<group>"; };
 		7EC372622ADDFEBF001876AD /* Baloo2.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Baloo2.ttf; sourceTree = "<group>"; };
 		7EC810DB2AD1881B00A5DDD0 /* ButtonDesign.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ButtonDesign.swift; sourceTree = "<group>"; };
 		7EE375752AD04FD500C9D0DA /* Planet-Pet-Pals-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "Planet-Pet-Pals-Info.plist"; sourceTree = "<group>"; };
@@ -109,7 +109,7 @@
 			children = (
 				7E5923292ACE0014000B96F5 /* PPePa.swift */,
 				7E59232B2ACE0014000B96F5 /* MainMenuView.swift */,
-				7E9C2F992AD34B860042F562 /* MeView.swift */,
+				7E9C2F992AD34B860042F562 /* PanelView.swift */,
 				DC1452092B0D44F30059FE96 /* MapView.swift */,
 				DC9FF34B2B0FD49200DFCBD7 /* StatsView.swift */,
 			);
@@ -220,7 +220,7 @@
 				DC9FB3D92B153A330035C0A7 /* ColorData.swift in Sources */,
 				DC418C462B08F2570070D226 /* BackgroundDesign.swift in Sources */,
 				DC418C482B08F2D40070D226 /* ImageDesign.swift in Sources */,
-				7E9C2F9A2AD34B860042F562 /* MeView.swift in Sources */,
+				7E9C2F9A2AD34B860042F562 /* PanelView.swift in Sources */,
 				7E59232C2ACE0014000B96F5 /* MainMenuView.swift in Sources */,
 				7E5923382ACE155B000B96F5 /* ColorExtension.swift in Sources */,
 				7E59232A2ACE0014000B96F5 /* PPePa.swift in Sources */,

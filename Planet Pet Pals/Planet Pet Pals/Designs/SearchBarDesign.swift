@@ -23,7 +23,7 @@ struct MainSearchBar: View {
                     Image(systemName: "pawprint.fill")
                         .resizable()
                         .frame(width: 25, height: 25)
-                        .foregroundColor(Color(hex: "FFAF97"))
+                        .foregroundColor(Colors.salmon)
                         .rotationEffect(.degrees(45))
                         .padding(.horizontal, 20)
                 }

@@ -7,16 +7,6 @@
 
 import SwiftUI
 
-//@main
-//struct Planet_Pet_PalsApp: App {
-//    @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
-//    var body: some Scene {
-//        WindowGroup {
-//            ContentView()
-//        }
-//    }
-//}
-
 @main
 struct PPePa: App {
     var body: some Scene {

@@ -9,8 +9,14 @@ import SwiftUI
 
 struct MainBackground: View {
     var body: some View {
-        LinearGradient(gradient: Gradient(colors: [Color(hex: "F9EEE8"), Color(hex: "FFAF97")]), startPoint: .topLeading, endPoint: .bottomTrailing)
+        LinearGradient(gradient: Gradient(colors: [Colors.linen, Colors.salmon]), startPoint: .topLeading, endPoint: .bottomTrailing)
             .edgesIgnoringSafeArea(.all)
     }
 }
 
+//struct SimpleBackground: View {
+//    var body: some View {
+//        .background(Colors.walnut)
+//        .edgesIgnoringSafeArea(.all)
+//    }
+//}

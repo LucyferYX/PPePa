@@ -42,6 +42,7 @@ struct MainButton: View {
 struct SimpleButton: View {
     let action: () -> Void
     let systemImage: String
+    let buttonText: String
     let size: CGFloat
     let color: Color
 
@@ -52,6 +53,10 @@ struct SimpleButton: View {
                 .aspectRatio(contentMode: .fit)
                 .frame(width: size, height: size)
                 .foregroundColor(color)
+            Text(buttonText)
+                .padding(-5)
+                .font(.custom("Baloo2-SemiBold", size: 25))
+                .foregroundColor(color)
         }
     }
 }
@@ -60,8 +65,6 @@ struct LeftNavigationButton: View {
     let action: () -> Void
     let imageName: String
     let buttonText: String
-    let imageColor: Color
-    let buttonColor: Color
     let imageInvisible: Bool
     let textInvisible: Bool
     
@@ -74,11 +77,11 @@ struct LeftNavigationButton: View {
                     .resizable()
                     .aspectRatio(contentMode: .fit)
                     .frame(width: buttonSize, height: buttonSize)
-                    .foregroundColor(imageInvisible ? Color.clear : imageColor)
+                    .foregroundColor(imageInvisible ? Color.clear : Colors.snow)
                 if !buttonText.isEmpty {
                     Text(buttonText)
                         .font(.custom("Baloo2-SemiBold", size: 20))
-                        .foregroundColor(textInvisible ? Color.clear : buttonColor)
+                        .foregroundColor(textInvisible ? Color.clear : Colors.snow)
                 }
             }
         }
@@ -89,8 +92,6 @@ struct RightNavigationButton: View {
     let action: () -> Void
     let imageName: String
     let buttonText: String
-    let imageColor: Color
-    let buttonColor: Color
     let imageInvisible: Bool
     let textInvisible: Bool
     
@@ -102,13 +103,13 @@ struct RightNavigationButton: View {
                 if !buttonText.isEmpty {
                     Text(buttonText)
                         .font(.custom("Baloo2-SemiBold", size: 20))
-                        .foregroundColor(textInvisible ? Color.clear : buttonColor)
+                        .foregroundColor(textInvisible ? Color.clear : Colors.snow)
                 }
                 Image(systemName: imageName)
                     .resizable()
                     .aspectRatio(contentMode: .fit)
                     .frame(width: buttonSize, height: buttonSize)
-                    .foregroundColor(imageInvisible ? Color.clear : imageColor)
+                    .foregroundColor(imageInvisible ? Color.clear : Colors.snow)
             }
         }
     }

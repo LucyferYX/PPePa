@@ -9,7 +9,7 @@ import SwiftUI
 
 struct MainMenuView: View {
     @State private var searchText = ""
-    @State private var showMeView = false
+    @State private var showPanelView = false
     @State private var showMapView = false
     @State private var showStatsView = false
     
@@ -28,15 +28,15 @@ struct MainMenuView: View {
                         
                         HStack {
                             SimpleButton(action: {
-                                print("Button pressed")
-                            }, systemImage: "chevron.left", size: 30, color: Color(hex: "FFFAF7"))
+                                print("Left button pressed")
+                            }, systemImage: "chevron.left", buttonText: "", size: 30, color: Colors.snow)
                             
                             // Pet Image
                             FadeOutImageView(imageName: "MainDog", width: 250, height: 250)
                             
                             SimpleButton(action: {
-                                print("Button pressed")
-                            }, systemImage: "chevron.right", size: 30, color: Color(hex: "FFFAF7"))
+                                print("Right button pressed")
+                            }, systemImage: "chevron.right", buttonText: "", size: 30, color: Colors.snow)
                         }
                         
                         Spacer()
@@ -47,25 +47,25 @@ struct MainMenuView: View {
                         
                         // Main buttons
                         HStack(spacing: -3) {
-                            MainButton(action: { showMeView.toggle() },
+                            MainButton(action: { showPanelView.toggle() },
                                        imageName: "person.fill",
-                                       buttonText: "Post",
-                                       imageColor: Color(hex: "FFAF97"),
-                                       buttonColor: Color(hex: "FFFAF7"))
+                                       buttonText: "Panel",
+                                       imageColor: Colors.salmon,
+                                       buttonColor: Colors.snow)
                             .padding()
                             
                             MainButton(action: { self.showMapView = true },
                                        imageName: "map.fill",
                                        buttonText: "Map",
-                                       imageColor: Color(hex: "763626"),
-                                       buttonColor: Color(hex: "FFFAF7"))
+                                       imageColor: Colors.walnut,
+                                       buttonColor: Colors.snow)
                             .padding()
                             
                             MainButton(action: { self.showStatsView = true },
                                        imageName: "chart.bar.fill",
                                        buttonText: "Stats",
-                                       imageColor: Color(hex: "FFAF97"),
-                                       buttonColor: Color(hex: "FFFAF7"))
+                                       imageColor: Colors.salmon,
+                                       buttonColor: Colors.snow)
                             .padding()
                             
                         }
@@ -74,8 +74,8 @@ struct MainMenuView: View {
                             MapView(showMapView: $showMapView, region: "Europe")
                         }
                     }
-                    MeView(width: geometry.size.width*0.7, showMeView: self.showMeView, closeMeView: { self.showMeView = false })
-                        .offset(x: self.showMeView ? 0 : -geometry.size.width)
+                    PanelView(width: geometry.size.width*0.7, showPanelView: self.showPanelView, closePanelView: { self.showPanelView = false })
+                        .offset(x: self.showPanelView ? 0 : -geometry.size.width)
                         .transition(.move(edge: .leading))
                 }
             }
