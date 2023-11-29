@@ -7,47 +7,47 @@
 
 import SwiftUI
 
-struct MeView: View {
-    @Binding var show: Bool
-
+struct SideBarStack<SidebarContent: View, Content: View>: View {
+    
+    let sidebarContent: SidebarContent
+    let mainContent: Content
+    let sidebarWidth: CGFloat
+    @Binding var showSidebar: Bool
+    
+    init(sidebarWidth: CGFloat, showSidebar: Binding<Bool>, @ViewBuilder sidebar: ()->SidebarContent, @ViewBuilder content: ()->Content) {
+        self.sidebarWidth = sidebarWidth
+        self._showSidebar = showSidebar
+        sidebarContent = sidebar()
+        mainContent = content()
+    }
+    
     var body: some View {
-        VStack (alignment: .leading) {
-            Button (action: {
-                withAnimation {
-                    self.show = false
-                }
-            }) {
-                HStack {
-                    Image(systemName: "xmark")
-                        .foregroundColor(.white)
-                    Text("close menu")
-                        .foregroundColor(.white)
-                        .font(.system(size: 14))
-                        .padding(.leading, 15.0)
-                }
-            }.padding(.top, 20)
-            Divider().foregroundColor(.white)
-            Button(action: {
-                // TODO: Add action for Button 1
-            }) {
-                Text("Button 1")
-                    .foregroundColor(.white)
-                    .font(.system(size: 14))
-                    .fontWeight(.semibold)
-            }.padding(.top, 30)
-            Button(action: {
-                // TODO: Add action for Button 2
-            }) {
-                Text("Button 2")
-                    .foregroundColor(.white)
-                    .font(.system(size: 14))
-                    .fontWeight(.semibold)
-            }.padding(.top, 30)
-            // Add more buttons, labels, lists, etc. here
-            Spacer()
-        }.padding()
-        .frame(maxWidth: .infinity, alignment: .leading)
-        .background(Color.black)
-        .edgesIgnoringSafeArea(.all)
+        ZStack(alignment: .leading) {
+            sidebarContent
+                .frame(width: sidebarWidth, alignment: .center)
+                .offset(x: showSidebar ? 0 : -1 * sidebarWidth, y: 0)
+                .animation(Animation.easeInOut.speed(2))
+            mainContent
+                .overlay(
+                    Group {
+                        if showSidebar {
+                            Color.white
+                                .opacity(showSidebar ? 0.01 : 0)
+                                .onTapGesture {
+                                    self.showSidebar = false
+                                }
+                        } else {
+                            Color.clear
+                            .opacity(showSidebar ? 0 : 0)
+                            .onTapGesture {
+                                self.showSidebar = false
+                            }
+                        }
+                    }
+                )
+                .offset(x: showSidebar ? sidebarWidth : 0, y: 0)
+                .animation(Animation.easeInOut.speed(2))
+                
+        }
     }
 }

@@ -47,51 +47,52 @@ struct MainMenuView: View {
                         
                         // Main buttons
                         HStack(spacing: -3) {
-                            MainButton(action: { self.showMeView.toggle() },
+                            MainButton(action: { showMeView.toggle() },
                                        imageName: "person.fill",
                                        buttonText: "Post",
                                        imageColor: Color(hex: "FFAF97"),
                                        buttonColor: Color(hex: "FFFAF7"))
-                                .padding()
-
+                            .padding()
+                            
                             MainButton(action: { self.showMapView = true },
                                        imageName: "map.fill",
                                        buttonText: "Map",
                                        imageColor: Color(hex: "763626"),
                                        buttonColor: Color(hex: "FFFAF7"))
-                                .padding()
-
+                            .padding()
+                            
                             MainButton(action: { self.showStatsView = true },
                                        imageName: "chart.bar.fill",
                                        buttonText: "Stats",
                                        imageColor: Color(hex: "FFAF97"),
                                        buttonColor: Color(hex: "FFFAF7"))
-                                .padding()
-
+                            .padding()
+                            
                         }
                         // Opens the view from bottom
                         .fullScreenCover(isPresented: $showMapView) {
                             MapView(showMapView: $showMapView, region: "Europe")
                         }
                     }
+//                    // Creates illusion with view sliding to right
+//                    .frame(width: geometry.size.width, height: geometry.size.height)
+//                    .offset(x: self.showMeView ? geometry.size.width / 2 : 0)
+//                    // Allows to close it by sliding from right to left
+//                    .gesture(DragGesture().onEnded { value in
+//                        if value.translation.width < -100 {
+//                            withAnimation {
+//                                self.showMeView = false
+//                            }
+//                        }
+//                    })
 
-                // Creates illusion with view sliding to right
-                }.frame(width: geometry.size.width, height: geometry.size.height)
-                    .offset(x: self.showMeView ? geometry.size.width / 2 : 0)
-                    // Allows to close it by sliding from right to left
-                    .gesture(DragGesture().onEnded { value in
-                        if value.translation.width < -100 {
-                            withAnimation {
-                                self.showMeView = false
-                            }
-                        }
-                    })
-                
-                // Checks whether showMeView is true, then displays MeView
-                if self.showMeView {
-                    MeView(show: self.$showMeView)
-                        .frame(width: geometry.size.width / 2)
-                        .transition(.move(edge: .leading))
+                    // Checks whether showMeView is true, then displays MeView
+//                    if self.showMeView {
+//                        MeView(show: self.$showMeView)
+//                            .transition(.move(edge: .leading))
+//                            .frame(width: geometry.size.width / 2)
+//                            .background(Color(hex: "763626"))
+//                    }
                 }
             }
         }
