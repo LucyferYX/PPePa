@@ -17,7 +17,7 @@ struct MainMenuView: View {
         return GeometryReader { geometry in
             NavigationView {
                 
-                ZStack(alignment: .leading) {
+                ZStack(alignment: .topLeading) {
                     MainBackground()
                     
                     VStack {
@@ -74,34 +74,11 @@ struct MainMenuView: View {
                             MapView(showMapView: $showMapView, region: "Europe")
                         }
                     }
-//                    // Creates illusion with view sliding to right
-//                    .frame(width: geometry.size.width, height: geometry.size.height)
-//                    .offset(x: self.showMeView ? geometry.size.width / 2 : 0)
-//                    // Allows to close it by sliding from right to left
-//                    .gesture(DragGesture().onEnded { value in
-//                        if value.translation.width < -100 {
-//                            withAnimation {
-//                                self.showMeView = false
-//                            }
-//                        }
-//                    })
-
-                    // Checks whether showMeView is true, then displays MeView
-//                    if self.showMeView {
-//                        MeView(show: self.$showMeView)
-//                            .transition(.move(edge: .leading))
-//                            .frame(width: geometry.size.width / 2)
-//                            .background(Color(hex: "763626"))
-//                    }
+                    MeView(width: geometry.size.width*0.7, showMeView: self.showMeView, closeMeView: { self.showMeView = false })
+                        .offset(x: self.showMeView ? 0 : -geometry.size.width)
+                        .transition(.move(edge: .leading))
                 }
             }
         }
-    }
-}
-
-
-struct MainPreviews: PreviewProvider {
-    static var previews: some View {
-        MainMenuView()
     }
 }

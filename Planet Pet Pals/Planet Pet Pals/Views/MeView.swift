@@ -7,47 +7,47 @@
 
 import SwiftUI
 
-struct SideBarStack<SidebarContent: View, Content: View>: View {
-    
-    let sidebarContent: SidebarContent
-    let mainContent: Content
-    let sidebarWidth: CGFloat
-    @Binding var showSidebar: Bool
-    
-    init(sidebarWidth: CGFloat, showSidebar: Binding<Bool>, @ViewBuilder sidebar: ()->SidebarContent, @ViewBuilder content: ()->Content) {
-        self.sidebarWidth = sidebarWidth
-        self._showSidebar = showSidebar
-        sidebarContent = sidebar()
-        mainContent = content()
+struct MenuContent: View {
+    var body: some View {
+        List {
+            Text("My Profile").onTapGesture {
+                print("My Profile")
+            }
+            Text("Posts").onTapGesture {
+                print("Posts")
+            }
+            Text("Logout").onTapGesture {
+                print("Logout")
+            }
+        }
     }
+}
+
+struct MeView: View {
+    let width: CGFloat
+    let showMeView: Bool
+    let closeMeView: () -> Void
     
     var body: some View {
-        ZStack(alignment: .leading) {
-            sidebarContent
-                .frame(width: sidebarWidth, alignment: .center)
-                .offset(x: showSidebar ? 0 : -1 * sidebarWidth, y: 0)
-                .animation(Animation.easeInOut.speed(2))
-            mainContent
-                .overlay(
-                    Group {
-                        if showSidebar {
-                            Color.white
-                                .opacity(showSidebar ? 0.01 : 0)
-                                .onTapGesture {
-                                    self.showSidebar = false
-                                }
-                        } else {
-                            Color.clear
-                            .opacity(showSidebar ? 0 : 0)
-                            .onTapGesture {
-                                self.showSidebar = false
-                            }
-                        }
-                    }
-                )
-                .offset(x: showSidebar ? sidebarWidth : 0, y: 0)
-                .animation(Animation.easeInOut.speed(2))
+        ZStack {
+            GeometryReader { _ in
+                EmptyView()
+            }
+            .background(Color.gray.opacity(showMeView ? 0.3 : 0.0))
+            .onTapGesture {
+                withAnimation(.easeIn.delay(0.25)) {
+                    self.closeMeView()
+                }
+            }
+            
+            HStack {
+                MenuContent()
+                    .frame(width: self.width)
+                    .background(Color.white)
+                    .offset(x: showMeView ? 0 : -self.width)
                 
+                Spacer()
+            }
         }
     }
 }

@@ -25,3 +25,9 @@ struct PPePa: App {
         }
     }
 }
+
+struct Preview: PreviewProvider {
+    static var previews: some View {
+        MainMenuView()
+    }
+}
