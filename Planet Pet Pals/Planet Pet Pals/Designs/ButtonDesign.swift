@@ -26,7 +26,7 @@ struct MainButton: View {
                     .aspectRatio(contentMode: .fit)
                     .padding(20)
                     .foregroundColor(imageColor)
-                    .background(Color.white)
+                    .background(Colors.snow)
                     .clipShape(Circle())
                     .frame(width: 85, height: 85)
                 
@@ -55,8 +55,9 @@ struct SimpleButton: View {
                 .foregroundColor(color)
             Text(buttonText)
                 .padding(-5)
-                .font(.custom("Baloo2-SemiBold", size: 25))
+                .font(.custom("Baloo2-SemiBold", size: size))
                 .foregroundColor(color)
+                
         }
     }
 }

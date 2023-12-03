@@ -16,6 +16,7 @@ struct PPePa: App {
     }
 }
 
+// Viewing the project without launching simulator
 struct Preview: PreviewProvider {
     static var previews: some View {
         MainMenuView()

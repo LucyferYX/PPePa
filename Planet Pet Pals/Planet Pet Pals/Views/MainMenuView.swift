@@ -77,6 +77,9 @@ struct MainMenuView: View {
                     PanelView(width: geometry.size.width*0.7, showPanelView: self.showPanelView, closePanelView: { self.showPanelView = false })
                         .offset(x: self.showPanelView ? 0 : -geometry.size.width)
                         .transition(.move(edge: .leading))
+                    StatsView(showStatsView: self.$showStatsView)
+                        .offset(x: self.showStatsView ? 0 : geometry.size.width)
+                        .transition(.move(edge: .trailing))
                 }
             }
         }

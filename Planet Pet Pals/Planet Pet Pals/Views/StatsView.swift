@@ -24,7 +24,7 @@ struct StatsView: View {
                     ),
                     rightButton: RightNavigationButton(
                         action: {},
-                        imageName: "chevron.left",
+                        imageName: "slider.horizontal.3",
                         buttonText: "Back",
                         imageInvisible: false,
                         textInvisible: true
