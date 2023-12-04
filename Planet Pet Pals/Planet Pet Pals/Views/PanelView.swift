@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct PanelContent: View {
+    @State private var showAboutView = false
     var body: some View {
         GeometryReader { geometry in
             VStack(alignment: .leading) {
@@ -76,7 +77,11 @@ struct PanelContent: View {
                 }, systemImage: "", buttonText: "Settings", size: 30, color: Colors.linen)
                 SimpleButton(action: {
                     print("About pressed")
+                    showAboutView = true
                 }, systemImage: "", buttonText: "About", size: 30, color: Colors.linen)
+                .sheet(isPresented: $showAboutView) {
+                    AboutView()
+                }
                 
             }
             .frame(height: geometry.size.height)
