@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct MainImageView: View {
+struct SimpleImageView: View {
     let imageName: String
     let width: CGFloat
     let height: CGFloat
@@ -17,6 +17,21 @@ struct MainImageView: View {
             .resizable()
             .scaledToFit()
             .frame(width: width, height: height)
+    }
+}
+
+struct RoundImage: View {
+    var systemName: String
+    var size: CGFloat
+    var color: Color
+
+    var body: some View {
+        Image(systemName: systemName)
+            .resizable()
+            .aspectRatio(contentMode: .fit)
+            .frame(width: size, height: size)
+            .clipShape(Circle())
+            .foregroundColor(color)
     }
 }
 

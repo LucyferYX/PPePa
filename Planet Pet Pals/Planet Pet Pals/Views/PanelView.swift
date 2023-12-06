@@ -9,6 +9,7 @@ import SwiftUI
 
 struct PanelContent: View {
     @State private var showAboutView = false
+    
     var body: some View {
         GeometryReader { geometry in
             VStack(alignment: .leading) {
@@ -18,12 +19,7 @@ struct PanelContent: View {
                 }, systemImage: "", buttonText: "Username", size: 30, color: Colors.linen)
                 
                 HStack {
-                    Image(systemName: "person.circle")
-                        .resizable()
-                        .aspectRatio(contentMode: .fit)
-                        .frame(width: 80, height: 80)
-                        .clipShape(Circle())
-                        .foregroundColor(Colors.linen)
+                    RoundImage(systemName: "person.circle", size: 80, color: Colors.linen)
                     VStack(alignment: .leading) {
                         Text("LN3569")
                             .font(.custom("Baloo2-SemiBold", size: 20))
@@ -32,9 +28,9 @@ struct PanelContent: View {
                             .font(.custom("Baloo2-SemiBold", size: 20))
                             .foregroundColor(Colors.linen)
                     }
-                    .padding(.leading, 20) // Add space between the image and the labels
+                    .padding(.leading, 20)
                 }
-                .padding(.leading, 35) // Add space to the left of the HStack
+                .padding(.leading, 35)
                 
                 Line()
                 
@@ -42,22 +38,7 @@ struct PanelContent: View {
                     VStack {
                         ForEach(0..<10) { _ in
                             NavigationLink(destination: Text("Detail View")) {
-                                HStack {
-                                    Image(systemName: "person.circle")
-                                        .resizable()
-                                        .aspectRatio(contentMode: .fit)
-                                        .frame(width: 40, height: 40)
-                                        .foregroundColor(Colors.walnut)
-                                    Text("Placeholder")
-                                        .font(.custom("Baloo2-SemiBold", size: 20))
-                                        .foregroundColor(Colors.walnut)
-                                    Spacer()
-                                    Image(systemName: "chevron.right")
-                                        .foregroundColor(Colors.walnut)
-                                }
-                                .padding()
-                                .background(Colors.linen)
-                                .cornerRadius(40)
+                                CellView()
                             }
                             .buttonStyle(PlainButtonStyle())
                         }

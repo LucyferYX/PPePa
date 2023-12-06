@@ -8,6 +8,8 @@
 import SwiftUI
 
 struct MainMenuView: View {
+    @EnvironmentObject var userAuth: UserAuth
+    
     @State private var searchText = ""
     @State private var showPanelView = false
     @State private var showMapView = false
@@ -21,7 +23,7 @@ struct MainMenuView: View {
                     MainBackground()
                     
                     VStack {
-                        MainImageView(imageName: "LogoBig", width: 250, height: 120)
+                        SimpleImageView(imageName: "LogoBig", width: 250, height: 120)
                             .padding(.top, 20)
                         
                         Spacer()
