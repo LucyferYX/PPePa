@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct MainMenuView: View {
-    @EnvironmentObject var userAuth: UserAuth
+    //@EnvironmentObject var userAuth: UserAuth
     
     @State private var searchText = ""
     @State private var showPanelView = false

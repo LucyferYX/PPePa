@@ -62,6 +62,24 @@ struct SimpleButton: View {
     }
 }
 
+struct ColorButton: View {
+    let action: () -> Void
+    let buttonText: String
+    let size: CGFloat
+    let color: Color
+    
+    var body: some View {
+        Text("Log In")
+            .font(.headline)
+            .foregroundColor(.white)
+            .padding()
+            .frame(width: size, height: size)
+            .background(color)
+            .cornerRadius(15.0)
+        .padding(.bottom, 20)
+    }
+}
+
 struct LeftNavigationButton: View {
     let action: () -> Void
     let imageName: String
