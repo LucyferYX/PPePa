@@ -12,21 +12,28 @@ struct MainMenuView: View {
     
     @State private var searchText = ""
     @State private var showPanelView = false
+    @State private var showAddView = false
     @State private var showMapView = false
     @State private var showStatsView = false
     
     var body: some View {
         return GeometryReader { geometry in
             NavigationView {
-                
                 ZStack(alignment: .topLeading) {
                     MainBackground()
                     
                     VStack {
-                        SimpleImageView(imageName: "LogoBig", width: 250, height: 120)
-                            .padding(.top, 20)
+                        HStack {
+                            PanelButton(action: { showPanelView.toggle() },
+                                        systemImage: "line.3.horizontal",
+                                        color: Colors.walnut)
+                            Spacer()
+                        }
                         
-                        Spacer()
+                        HStack {
+                            SimpleImageView(imageName: "LogoBig", width: 250, height: 120)
+                                .padding(.top, -10)
+                        }
                         
                         HStack {
                             SimpleButton(action: {
@@ -43,14 +50,17 @@ struct MainMenuView: View {
                         
                         Spacer()
                         
-                        MainSearchBar(text: $searchText)
+                        MainSearchBar(text: $searchText) {
+                            print("Searching for \(searchText)")
+                        }
+
                         
                         Spacer()
                         
                         // Main buttons
                         HStack(spacing: -3) {
-                            MainButton(action: { showPanelView.toggle() },
-                                       imageName: "person.fill",
+                            MainButton(action: { showAddView.toggle() },
+                                       imageName: "camera.fill",
                                        buttonText: "Panel",
                                        imageColor: Colors.salmon,
                                        buttonColor: Colors.snow)
@@ -71,9 +81,12 @@ struct MainMenuView: View {
                             .padding()
                             
                         }
-                        // Opens the view from bottom
+                        // Opens the view modally
                         .fullScreenCover(isPresented: $showMapView) {
                             MapView(showMapView: $showMapView, region: "Europe")
+                        }
+                        .fullScreenCover(isPresented: $showAddView) {
+                            AddView(showAddView: $showAddView)
                         }
                     }
                     PanelView(width: geometry.size.width*0.7, showPanelView: self.showPanelView, closePanelView: { self.showPanelView = false })

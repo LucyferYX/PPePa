@@ -137,3 +137,25 @@ struct RightNavigationButton: View {
         }
     }
 }
+
+struct PanelButton: View {
+    let action: () -> Void
+    let systemImage: String
+    let color: Color
+
+    var body: some View {
+        Button(action: {
+            withAnimation {
+                action()
+            }
+        }) {
+            Image(systemName: systemImage)
+                .resizable()
+                .aspectRatio(contentMode: .fit)
+                .frame(width: 30, height: 30)
+                .foregroundColor(color)
+        }
+        .padding(.top, 10)
+        .padding(.leading, 30)
+    }
+}
