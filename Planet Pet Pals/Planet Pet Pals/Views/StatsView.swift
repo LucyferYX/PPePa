@@ -6,9 +6,11 @@
 //
 
 import SwiftUI
+import Firebase
 
 struct StatsView: View {
     @Binding var showStatsView: Bool
+    @EnvironmentObject var dataManager: DataManager
     
     var body: some View {
         NavigationView {
@@ -33,10 +35,26 @@ struct StatsView: View {
 
                 ZStack {
                     MainBackground()
-                    Text("Stats View test")
+                    VStack {
+                        Text("Stats View test")
+                        List(dataManager.posts, id: \.id) { post in
+                            Text(post.type)
+                        }
+                        Text("Names displayed above")
+                    }
+                    .onAppear {
+                        print("StatsView appeared with post count: \(dataManager.posts.count)")
+                    }
                 }
             }
         }
-        //.transition(.move(edge: .left))
+        .transition(.move(edge: .trailing))
+    }
+}
+
+struct StatsPreview: PreviewProvider {
+    static var previews: some View {
+        let dataManager = DataManager()
+        StatsView(showStatsView: .constant(true)).environmentObject(dataManager)
     }
 }

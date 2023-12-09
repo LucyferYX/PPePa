@@ -65,17 +65,21 @@ struct SimpleButton: View {
 struct ColorButton: View {
     let action: () -> Void
     let buttonText: String
-    let size: CGFloat
     let color: Color
-    
+
+    let width: CGFloat = 150
+    let height: CGFloat = 75
+
     var body: some View {
-        Text("Log In")
-            .font(.headline)
-            .foregroundColor(.white)
-            .padding()
-            .frame(width: size, height: size)
-            .background(color)
-            .cornerRadius(15.0)
+        Button(action: action) {
+            Text(buttonText)
+                .font(.headline)
+                .foregroundColor(.white)
+                .padding()
+                .frame(width: width, height: height)
+                .background(color)
+                .cornerRadius(height / 2)
+        }
         .padding(.bottom, 20)
     }
 }
