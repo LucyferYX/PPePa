@@ -61,7 +61,7 @@ struct MainMenuView: View {
                         HStack(spacing: -3) {
                             MainButton(action: { showAddView.toggle() },
                                        imageName: "camera.fill",
-                                       buttonText: "Panel",
+                                       buttonText: "Create",
                                        imageColor: Colors.salmon,
                                        buttonColor: Colors.snow)
                             .padding()
@@ -86,7 +86,7 @@ struct MainMenuView: View {
                             MapView(showMapView: $showMapView, region: "Europe")
                         }
                         .fullScreenCover(isPresented: $showAddView) {
-                            AddView(showAddView: $showAddView)
+                            CreateView(showAddView: $showAddView)
                         }
                     }
                     PanelView(width: geometry.size.width*0.7, showPanelView: self.showPanelView, closePanelView: { self.showPanelView = false })

@@ -52,3 +52,41 @@ struct MapView: View {
         .transition(.move(edge: .bottom))
     }
 }
+
+
+struct SelectLocationView: UIViewRepresentable {
+    @Binding var selectedLocation: CLLocationCoordinate2D
+
+    func makeUIView(context: Context) -> MKMapView {
+        let mapView = MKMapView()
+        let gestureRecognizer = UITapGestureRecognizer(target: context.coordinator, action: #selector(Coordinator.mapTapped(_:)))
+        mapView.addGestureRecognizer(gestureRecognizer)
+        return mapView
+    }
+
+    func updateUIView(_ uiView: MKMapView, context: Context) {
+        let annotation = MKPointAnnotation()
+        annotation.coordinate = selectedLocation
+        uiView.removeAnnotations(uiView.annotations)
+        uiView.addAnnotation(annotation)
+    }
+
+    func makeCoordinator() -> Coordinator {
+        Coordinator(self)
+    }
+
+    class Coordinator: NSObject, MKMapViewDelegate {
+        var parent: SelectLocationView
+
+        init(_ parent: SelectLocationView) {
+            self.parent = parent
+        }
+
+        @objc func mapTapped(_ recognizer: UITapGestureRecognizer) {
+            let mapView = recognizer.view as! MKMapView
+            let point = recognizer.location(in: mapView)
+            let coordinate = mapView.convert(point, toCoordinateFrom: mapView)
+            parent.selectedLocation = coordinate
+        }
+    }
+}

@@ -53,5 +53,40 @@ class DataManager: ObservableObject {
         }
         print("fetchPosts function completed")
     }
+    
+    
+    func newPost(title: String, description: String, type: String, image: String, location: CLLocationCoordinate2D, views: Int, likes: Int) {
+        let db = Firestore.firestore()
+        let ref = db.collection("Post")
+        let id = UUID().uuidString
+        let geoPoint = GeoPoint(latitude: location.latitude, longitude: location.longitude)
+        
+        ref.document(id).setData([
+            "id": id,
+            "title": title,
+            "description": description,
+            "type": type,
+            "image": image,
+            "location": geoPoint,
+            "views": views,
+            "likes": likes
+        ]) { error in
+            if let error = error {
+                print(error.localizedDescription)
+            } else {
+                print("New post added with ID: \(id)")
+            }
+        }
+    }
+
+//    func newPost() {
+//        let db = Firestore.firestore()
+//        let ref = db.collection("Post")
+//        ref.setData(<#T##Data#>) { error in
+//            if let error = error {
+//                print(error.localizedDescription)
+//            }
+//        }
+//    }
 
 }
