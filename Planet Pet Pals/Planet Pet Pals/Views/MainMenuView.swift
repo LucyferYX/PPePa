@@ -8,7 +8,13 @@
 import SwiftUI
 
 struct MainMenuView: View {
-    //@EnvironmentObject var userAuth: UserAuth
+    @ObservedObject var dataManager = DataManager()
+    @State private var currentImage: String = ""
+    @State private var currentIndex: Int = 0 {
+        didSet {
+            updateCurrentImage()
+        }
+    }
     
     @State private var searchText = ""
     @State private var showPanelView = false
@@ -35,18 +41,29 @@ struct MainMenuView: View {
                                 .padding(.top, -10)
                         }
                         
+                        //
                         HStack {
                             SimpleButton(action: {
-                                print("Left button pressed")
+                                if self.currentIndex > 0 {
+                                    self.currentIndex -= 1
+                                }
                             }, systemImage: "chevron.left", buttonText: "", size: 30, color: Colors.snow)
                             
-                            // Pet Image
-                            FadeOutImageView(imageName: "MainDog", width: 250, height: 250)
+                            if dataManager.posts.isEmpty || currentImage.isEmpty {
+                                // Display a placeholder or a loading sign
+                                Text("Loading...")
+                            } else {
+                                FadeOutImageView(content: URLImage(placeholder: Image("MainDog"), url: self.currentImage), width: 250, height: 250)
+                            }
+
                             
                             SimpleButton(action: {
-                                print("Right button pressed")
+                                if self.currentIndex < self.dataManager.posts.count - 1 {
+                                    self.currentIndex += 1
+                                }
                             }, systemImage: "chevron.right", buttonText: "", size: 30, color: Colors.snow)
                         }
+                        //
                         
                         Spacer()
                         
@@ -97,6 +114,40 @@ struct MainMenuView: View {
                         .transition(.move(edge: .trailing))
                 }
             }
+        }
+        .onAppear(perform: updateCurrentImage)
+    }
+    
+    private func updateCurrentImage() {
+        if !dataManager.posts.isEmpty {
+            DispatchQueue.main.async {
+                self.currentImage = self.dataManager.posts[self.currentIndex].image
+            }
+        }
+    }
+}
+
+struct URLImage: View {
+    @State private var uiImage: UIImage? = nil
+    let placeholder: Image
+    let url: String
+
+    var body: some View {
+        if let uiImage = uiImage {
+            Image(uiImage: uiImage)
+                .resizable()
+                .scaledToFit()
+        } else {
+            placeholder
+                .onAppear(perform: fetch)
+        }
+    }
+
+    private func fetch() {
+        if let imageData = Data(base64Encoded: url) {
+            self.uiImage = UIImage(data: imageData)
+        } else {
+            print("Failed to decode Base64 image")
         }
     }
 }

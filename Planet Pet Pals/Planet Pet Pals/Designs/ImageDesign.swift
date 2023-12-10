@@ -35,15 +35,13 @@ struct RoundImage: View {
     }
 }
 
-struct FadeOutImageView: View {
-    let imageName: String
+struct FadeOutImageView<Content: View>: View {
+    let content: Content
     let width: CGFloat
     let height: CGFloat
 
     var body: some View {
-        Image(imageName)
-            .resizable()
-            .aspectRatio(contentMode: .fill)
+        content
             .frame(width: width, height: height)
             .mask(
                 VStack {

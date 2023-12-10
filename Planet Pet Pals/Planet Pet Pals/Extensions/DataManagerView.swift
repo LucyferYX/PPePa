@@ -18,19 +18,19 @@ class DataManager: ObservableObject {
     }
     
     func fetchPosts() {
-        print("fetchPosts called")
+        //print("fetchPosts called")
         posts.removeAll()
         let db = Firestore.firestore()
         let ref = db.collection("Post")
         ref.getDocuments { snapshot, error in
-            print("Firestore query completed")
+            //print("Firestore query completed")
             guard error == nil else {
                 print("Error fetching documents: \(error!.localizedDescription)")
                 return
             }
             
             if let snapshot = snapshot {
-                print("Number of documents fetched: \(snapshot.documents.count)")
+                //print("Number of documents fetched: \(snapshot.documents.count)")
                 for document in snapshot.documents {
                     let data = document.data()
                     
@@ -46,12 +46,11 @@ class DataManager: ObservableObject {
                     
                     let post = Post(id: id, title: title, description: description, type: type, image: image, location: location, views: views, likes: likes)
                     self.posts.append(post)
-                    print("Fetched post: \(post)")
-                    print("Current post count: \(self.posts.count)")
+                    //print("Fetched post: id = \(post.id), type = \(post.type)")
+                    print("Current post count from fetchPosts(): \(self.posts.count)")
                 }
             }
         }
-        print("fetchPosts function completed")
     }
     
     
