@@ -9,8 +9,27 @@ import SwiftUI
 
 @MainActor
 class PanelViewModel: ObservableObject {
+    
     func logOut() throws {
         try AuthManager.shared.signOut()
+    }
+    
+    func resetPassword() async throws {
+        let authUser = try AuthManager.shared.getAuthenticatedUser()
+        guard let email = authUser.email else {
+            throw URLError(.fileDoesNotExist)
+        }
+        try await AuthManager.shared.resetPassword(email: email)
+    }
+    
+    func updateEmail() async throws {
+        let email = "hi@gmail.com"
+        try await AuthManager.shared.updateEmail(email: email)
+    }
+    
+    func updatePassword() async throws {
+        let password = "hihello"
+        try await AuthManager.shared.updatePassword(password: password)
     }
 }
 
@@ -33,6 +52,7 @@ struct PanelContent: View {
                         Text("LN3569")
                             .font(.custom("Baloo2-SemiBold", size: 20))
                             .foregroundColor(Colors.linen)
+                        
                         Button("Log out") {
                             Task {
                                 do {
@@ -43,6 +63,43 @@ struct PanelContent: View {
                                 }
                             }
                         }
+                        
+                        Section {
+                            Button("Reset password") {
+                                Task {
+                                    do {
+                                        try await viewModel.resetPassword()
+                                        print("Password reset")
+                                    } catch {
+                                        print("Error: \(error)")
+                                    }
+                                }
+                            }
+                            
+                            Button("Update email") {
+                                Task {
+                                    do {
+                                        try await viewModel.updateEmail()
+                                        print("Email updated")
+                                    } catch {
+                                        print("Error: \(error)")
+                                    }
+                                }
+                            }
+                            
+                            Button("Update password") {
+                                Task {
+                                    do {
+                                        try await viewModel.updatePassword()
+                                        print("Password updated")
+                                    } catch {
+                                        print("Error: \(error)")
+                                    }
+                                }
+                            }
+                        }
+                        
+                        
                     }
                     .padding(.leading, 20)
                 }
@@ -117,6 +174,14 @@ struct PanelView: View {
                     }
                 }
             })
+        }
+    }
+}
+
+extension PanelView {
+    private var updateSection: some View {
+        Section {
+            
         }
     }
 }

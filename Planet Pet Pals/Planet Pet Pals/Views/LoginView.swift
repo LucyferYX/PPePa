@@ -13,25 +13,27 @@ class SignInEmailModel: ObservableObject {
     @Published var email: String = ""
     @Published var password: String = ""
     
-    func signIn() {
+    func signUp() async throws {
         guard !email.isEmpty, !password.isEmpty else {
             print("Email or password not found.")
             return
         }
         
-        Task {
-            do {
-                let returnedUserData = try await AuthManager.shared.createUser(email: email, password: password)
-                print("Success")
-                print(returnedUserData)
-            } catch {
-                print("Error: \(error)")
-            }
+        try await AuthManager.shared.createUser(email: email, password: password)
+    }
+    
+    func signIn() async throws {
+        guard !email.isEmpty, !password.isEmpty else {
+            print("Email or password not found.")
+            return
         }
+        
+        try await AuthManager.shared.signInUser(email: email, password: password)
     }
 }
 
 struct LoginView: View {
+    @Binding var showSignInView: Bool
     //@ObservedObject var authManager = AuthManager()
     @StateObject private var viewModel = SignInEmailModel()
     
@@ -72,10 +74,36 @@ struct LoginView: View {
 //                        login()
                     }, buttonText: "Login", color: Color.blue)
                     
-                    ColorButton(action: {
-                        print("Sign in pressed")
-                        viewModel.signIn()
-                    }, buttonText: "Sign in", color: Color.green)
+//                    ColorButton(action: {
+//                        print("Sign in pressed")
+//                        try await viewModel.signIn()
+//                    }, buttonText: "Sign in", color: Color.green)
+                    Button {
+                        Task {
+                            do {
+                                try await viewModel.signUp()
+                                showSignInView = false
+                                return
+                            } catch {
+                                print(error)
+                            }
+                            
+                            do {
+                                try await viewModel.signIn()
+                                showSignInView = false
+                                return
+                            } catch {
+                                print(error)
+                            }
+                        }
+                    } label: {
+                        Text("Sign in")
+                            .font(.headline)
+                            .frame(height: 55)
+                            .background(Color.blue)
+                            .padding()
+                            .foregroundColor(.white)
+                    }
                 }
                 .padding()
             }
