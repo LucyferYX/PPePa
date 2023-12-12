@@ -20,7 +20,8 @@ struct PPePa: App {
 
     var body: some Scene {
         WindowGroup {
-            MainMenuView().environmentObject(dataManager)
+//            MainMenuView().environmentObject(dataManager)
+            RootView().environmentObject(dataManager)
         }
     }
 }
@@ -35,8 +36,8 @@ class AppDelegate: NSObject, UIApplicationDelegate {
 
 
 // Viewing the project without launching simulator
-struct Preview: PreviewProvider {
-    static var previews: some View {
-        MainMenuView()
-    }
-}
+//struct Preview: PreviewProvider {
+//    static var previews: some View {
+//        MainMenuView()
+//    }
+//}

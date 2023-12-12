@@ -9,6 +9,9 @@ import SwiftUI
 
 struct MainMenuView: View {
     @ObservedObject var dataManager = DataManager()
+    
+    @Binding var showSignInView: Bool
+    
     @State private var currentImage: String = ""
     @State private var currentIndex: Int = 0 {
         didSet {
@@ -106,7 +109,7 @@ struct MainMenuView: View {
                             CreateView(showAddView: $showAddView)
                         }
                     }
-                    PanelView(width: geometry.size.width*0.7, showPanelView: self.showPanelView, closePanelView: { self.showPanelView = false })
+                    PanelView(showSignInView: $showSignInView , width: geometry.size.width*0.7, showPanelView: self.showPanelView, closePanelView: { self.showPanelView = false })
                         .offset(x: self.showPanelView ? 0 : -geometry.size.width)
                         .transition(.move(edge: .leading))
                     StatsView(showStatsView: self.$showStatsView)

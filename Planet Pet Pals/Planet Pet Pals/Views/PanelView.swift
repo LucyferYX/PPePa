@@ -7,7 +7,16 @@
 
 import SwiftUI
 
+@MainActor
+class PanelViewModel: ObservableObject {
+    func logOut() throws {
+        try AuthManager.shared.signOut()
+    }
+}
+
 struct PanelContent: View {
+    @StateObject private var viewModel = PanelViewModel()
+    @Binding var showSignInView: Bool
     @State private var showAboutView = false
     
     var body: some View {
@@ -24,9 +33,16 @@ struct PanelContent: View {
                         Text("LN3569")
                             .font(.custom("Baloo2-SemiBold", size: 20))
                             .foregroundColor(Colors.linen)
-                        Text("Logout")
-                            .font(.custom("Baloo2-SemiBold", size: 20))
-                            .foregroundColor(Colors.linen)
+                        Button("Log out") {
+                            Task {
+                                do {
+                                    try viewModel.logOut()
+                                    showSignInView = true
+                                } catch {
+                                    print("Error: \(error)")
+                                }
+                            }
+                        }
                     }
                     .padding(.leading, 20)
                 }
@@ -72,6 +88,8 @@ struct PanelContent: View {
 
 
 struct PanelView: View {
+    @Binding var showSignInView: Bool
+    
     let width: CGFloat
     let showPanelView: Bool
     let closePanelView: () -> Void
@@ -79,7 +97,7 @@ struct PanelView: View {
     var body: some View {
         ZStack {
             HStack {
-                PanelContent()
+                PanelContent(showSignInView: $showSignInView)
                     .frame(width: self.width)
                     .background(Colors.walnut)
                     .offset(x: showPanelView ? 0 : -self.width)

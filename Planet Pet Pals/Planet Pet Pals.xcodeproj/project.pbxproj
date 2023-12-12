@@ -38,6 +38,8 @@
 		DCE5CB2C2B0E4078005E5760 /* NavigationBarDesign.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCE5CB2B2B0E4078005E5760 /* NavigationBarDesign.swift */; };
 		DCE6084A2B1E6143007C926A /* ExtraPanelView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCE608492B1E6143007C926A /* ExtraPanelView.swift */; };
 		DCF671D82B24EDE00012D505 /* CreateView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCF671D72B24EDE00012D505 /* CreateView.swift */; };
+		DCFC5DA92B28EBF100AA9EB3 /* AuthManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCFC5DA82B28EBF100AA9EB3 /* AuthManager.swift */; };
+		DCFC5DAB2B28FD9B00AA9EB3 /* RootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCFC5DAA2B28FD9B00AA9EB3 /* RootView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -67,6 +69,8 @@
 		DCE5CB2B2B0E4078005E5760 /* NavigationBarDesign.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationBarDesign.swift; sourceTree = "<group>"; };
 		DCE608492B1E6143007C926A /* ExtraPanelView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExtraPanelView.swift; sourceTree = "<group>"; };
 		DCF671D72B24EDE00012D505 /* CreateView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateView.swift; sourceTree = "<group>"; };
+		DCFC5DA82B28EBF100AA9EB3 /* AuthManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthManager.swift; sourceTree = "<group>"; };
+		DCFC5DAA2B28FD9B00AA9EB3 /* RootView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -139,6 +143,7 @@
 			isa = PBXGroup;
 			children = (
 				7E5923292ACE0014000B96F5 /* PPePa.swift */,
+				DCFC5DAA2B28FD9B00AA9EB3 /* RootView.swift */,
 				DCB4889C2B20FFBB0092201A /* LoginView.swift */,
 				7E59232B2ACE0014000B96F5 /* MainMenuView.swift */,
 				7E9C2F992AD34B860042F562 /* PanelView.swift */,
@@ -168,6 +173,7 @@
 			isa = PBXGroup;
 			children = (
 				DCA12F2B2B23B438001B08C2 /* DataManagerView.swift */,
+				DCFC5DA82B28EBF100AA9EB3 /* AuthManager.swift */,
 				7E5923372ACE155B000B96F5 /* ColorExtension.swift */,
 			);
 			path = Extensions;
@@ -268,6 +274,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				DC9FF34C2B0FD49200DFCBD7 /* StatsView.swift in Sources */,
+				DCFC5DA92B28EBF100AA9EB3 /* AuthManager.swift in Sources */,
 				DCA12F2A2B23B157001B08C2 /* PostData.swift in Sources */,
 				DCB4889B2B20EFD10092201A /* ListDesign.swift in Sources */,
 				DC9FB3D92B153A330035C0A7 /* ColorData.swift in Sources */,
@@ -276,6 +283,7 @@
 				7E9C2F9A2AD34B860042F562 /* PanelView.swift in Sources */,
 				7E59232C2ACE0014000B96F5 /* MainMenuView.swift in Sources */,
 				7E5923382ACE155B000B96F5 /* ColorExtension.swift in Sources */,
+				DCFC5DAB2B28FD9B00AA9EB3 /* RootView.swift in Sources */,
 				7E59232A2ACE0014000B96F5 /* PPePa.swift in Sources */,
 				7EC810DC2AD1881B00A5DDD0 /* ButtonDesign.swift in Sources */,
 				DCA12F2C2B23B438001B08C2 /* DataManagerView.swift in Sources */,
