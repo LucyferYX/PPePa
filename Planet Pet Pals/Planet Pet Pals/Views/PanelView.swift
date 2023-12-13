@@ -9,6 +9,13 @@ import SwiftUI
 
 @MainActor
 class PanelViewModel: ObservableObject {
+    @Published var authProviders: [AuthProviderOption] = []
+    
+    func loadAuthProviders() {
+        if let providers = try? AuthManager.shared.getProviders() {
+            authProviders = providers
+        }
+    }
     
     func logOut() throws {
         try AuthManager.shared.signOut()
@@ -64,46 +71,52 @@ struct PanelContent: View {
                             }
                         }
                         
-                        Section {
-                            Button("Reset password") {
-                                Task {
-                                    do {
-                                        try await viewModel.resetPassword()
-                                        print("Password reset")
-                                    } catch {
-                                        print("Error: \(error)")
+                        if viewModel.authProviders.contains(.email) {
+                            
+                            Section {
+                                Button("Reset password") {
+                                    Task {
+                                        do {
+                                            try await viewModel.resetPassword()
+                                            print("Password reset")
+                                        } catch {
+                                            print("Error: \(error)")
+                                        }
+                                    }
+                                }
+                                
+                                Button("Update email") {
+                                    Task {
+                                        do {
+                                            try await viewModel.updateEmail()
+                                            print("Email updated")
+                                        } catch {
+                                            print("Error: \(error)")
+                                        }
+                                    }
+                                }
+                                
+                                Button("Update password") {
+                                    Task {
+                                        do {
+                                            try await viewModel.updatePassword()
+                                            print("Password updated")
+                                        } catch {
+                                            print("Error: \(error)")
+                                        }
                                     }
                                 }
                             }
                             
-                            Button("Update email") {
-                                Task {
-                                    do {
-                                        try await viewModel.updateEmail()
-                                        print("Email updated")
-                                    } catch {
-                                        print("Error: \(error)")
-                                    }
-                                }
-                            }
-                            
-                            Button("Update password") {
-                                Task {
-                                    do {
-                                        try await viewModel.updatePassword()
-                                        print("Password updated")
-                                    } catch {
-                                        print("Error: \(error)")
-                                    }
-                                }
-                            }
                         }
-                        
                         
                     }
                     .padding(.leading, 20)
                 }
                 .padding(.leading, 35)
+                .onAppear {
+                    viewModel.loadAuthProviders()
+                }
                 
                 Line()
                 
