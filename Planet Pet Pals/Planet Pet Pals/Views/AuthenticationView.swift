@@ -17,6 +17,10 @@ class AuthenticationViewModel: ObservableObject {
         let tokens = try await helper.signIn()
         try await AuthManager.shared.signInWithGoogle(tokens: tokens)
     }
+    
+    func signInAnonymous() async throws {
+        try await AuthManager.shared.signInAnonymous()
+    }
 }
 
 struct AuthenticationView: View {
@@ -24,6 +28,25 @@ struct AuthenticationView: View {
     @Binding var showSignInView: Bool
     var body: some View {
         VStack {
+            
+            Button(action: {
+                Task {
+                    do {
+                        try await viewModel.signInAnonymous()
+                        showSignInView = false
+                    } catch {
+                        print(error)
+                    }
+                }
+            }, label: {
+                Text("Sign in anonymously")
+                    .padding()
+                    .frame(height: 55)
+                    .font(.headline)
+                    .background(Color.orange)
+                    .foregroundColor(.white)
+                    .cornerRadius(10)
+            })
             
             NavigationLink {
                 LoginView(showSignInView: $showSignInView)

@@ -10,11 +10,16 @@ import SwiftUI
 @MainActor
 class PanelViewModel: ObservableObject {
     @Published var authProviders: [AuthProviderOption] = []
+    @Published var authUser: AuthDataResultModel? = nil
     
     func loadAuthProviders() {
         if let providers = try? AuthManager.shared.getProviders() {
             authProviders = providers
         }
+    }
+    
+    func loadAuthUser() {
+        self.authUser = try? AuthManager.shared.getAuthenticatedUser()
     }
     
     func logOut() throws {
@@ -37,6 +42,19 @@ class PanelViewModel: ObservableObject {
     func updatePassword() async throws {
         let password = "hihello"
         try await AuthManager.shared.updatePassword(password: password)
+    }
+    
+    func linkGoogleAccount() async throws {
+        let helper = SignInGoogleHelper()
+        let tokens = try await helper.signIn()
+        self.authUser = try await AuthManager.shared.linkGoogle(tokens: tokens)
+    }
+    
+    // needs separate screen
+    func linkEmailAccount() async throws {
+        let email = "hello123@gmail.com"
+        let password = "hello123"
+        self.authUser = try await AuthManager.shared.linkEmail(email: email, password: password)
     }
 }
 
@@ -72,42 +90,66 @@ struct PanelContent: View {
                         }
                         
                         if viewModel.authProviders.contains(.email) {
+                            // create section, name it emailsection
                             
-                            Section {
-                                Button("Reset password") {
-                                    Task {
-                                        do {
-                                            try await viewModel.resetPassword()
-                                            print("Password reset")
-                                        } catch {
-                                            print("Error: \(error)")
-                                        }
-                                    }
-                                }
-                                
-                                Button("Update email") {
-                                    Task {
-                                        do {
-                                            try await viewModel.updateEmail()
-                                            print("Email updated")
-                                        } catch {
-                                            print("Error: \(error)")
-                                        }
-                                    }
-                                }
-                                
-                                Button("Update password") {
-                                    Task {
-                                        do {
-                                            try await viewModel.updatePassword()
-                                            print("Password updated")
-                                        } catch {
-                                            print("Error: \(error)")
-                                        }
+                            Button("Reset password") {
+                                Task {
+                                    do {
+                                        try await viewModel.resetPassword()
+                                        print("Password reset")
+                                    } catch {
+                                        print("Error: \(error)")
                                     }
                                 }
                             }
                             
+                            Button("Update email") {
+                                Task {
+                                    do {
+                                        try await viewModel.updateEmail()
+                                        print("Email updated")
+                                    } catch {
+                                        print("Error: \(error)")
+                                    }
+                                }
+                            }
+                            
+                            Button("Update password") {
+                                Task {
+                                    do {
+                                        try await viewModel.updatePassword()
+                                        print("Password updated")
+                                    } catch {
+                                        print("Error: \(error)")
+                                    }
+                                }
+                            }
+                        }
+                        
+                        // MARK: Create account
+                        // perhaps dont have the if, just output errors if user tries to link account to google if account already exists
+                        if viewModel.authUser?.isAnonymous == true {
+                            Button("Create Google account") {
+                                Task {
+                                    do {
+                                        try await viewModel.linkGoogleAccount()
+                                        print("Google account linked")
+                                    } catch {
+                                        print("Error: \(error)")
+                                    }
+                                }
+                            }
+                            
+                            Button("Create e-mail account") {
+                                Task {
+                                    do {
+                                        try await viewModel.linkEmailAccount()
+                                        print("E-mail linked")
+                                    } catch {
+                                        print("Error: \(error)")
+                                    }
+                                }
+                            }
                         }
                         
                     }
@@ -116,6 +158,7 @@ struct PanelContent: View {
                 .padding(.leading, 35)
                 .onAppear {
                     viewModel.loadAuthProviders()
+                    viewModel.loadAuthUser()
                 }
                 
                 Line()
@@ -194,7 +237,7 @@ struct PanelView: View {
 extension PanelView {
     private var updateSection: some View {
         Section {
-            
+            //button etc
         }
     }
 }
