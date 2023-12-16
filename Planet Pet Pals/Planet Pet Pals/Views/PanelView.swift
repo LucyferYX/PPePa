@@ -7,61 +7,11 @@
 
 import SwiftUI
 
-@MainActor
-class PanelViewModel: ObservableObject {
-    @Published var authProviders: [AuthProviderOption] = []
-    @Published var authUser: AuthDataResultModel? = nil
-    
-    func loadAuthProviders() {
-        if let providers = try? AuthManager.shared.getProviders() {
-            authProviders = providers
-        }
-    }
-    
-    func loadAuthUser() {
-        self.authUser = try? AuthManager.shared.getAuthenticatedUser()
-    }
-    
-    func logOut() throws {
-        try AuthManager.shared.signOut()
-    }
-    
-    func resetPassword() async throws {
-        let authUser = try AuthManager.shared.getAuthenticatedUser()
-        guard let email = authUser.email else {
-            throw URLError(.fileDoesNotExist)
-        }
-        try await AuthManager.shared.resetPassword(email: email)
-    }
-    
-    func updateEmail() async throws {
-        let email = "hi@gmail.com"
-        try await AuthManager.shared.updateEmail(email: email)
-    }
-    
-    func updatePassword() async throws {
-        let password = "hihello"
-        try await AuthManager.shared.updatePassword(password: password)
-    }
-    
-    func linkGoogleAccount() async throws {
-        let helper = SignInGoogleHelper()
-        let tokens = try await helper.signIn()
-        self.authUser = try await AuthManager.shared.linkGoogle(tokens: tokens)
-    }
-    
-    // needs separate screen
-    func linkEmailAccount() async throws {
-        let email = "hello123@gmail.com"
-        let password = "hello123"
-        self.authUser = try await AuthManager.shared.linkEmail(email: email, password: password)
-    }
-}
-
 struct PanelContent: View {
     @StateObject private var viewModel = PanelViewModel()
     @Binding var showSignInView: Bool
     @State private var showAboutView = false
+    @State private var showingDeleteAlert = false
     
     var body: some View {
         GeometryReader { geometry in
@@ -78,17 +28,7 @@ struct PanelContent: View {
                             .font(.custom("Baloo2-SemiBold", size: 20))
                             .foregroundColor(Colors.linen)
                         
-                        Button("Log out") {
-                            Task {
-                                do {
-                                    try viewModel.logOut()
-                                    showSignInView = true
-                                } catch {
-                                    print("Error: \(error)")
-                                }
-                            }
-                        }
-                        
+                        // MARK: Registered accounts
                         if viewModel.authProviders.contains(.email) {
                             // create section, name it emailsection
                             
@@ -150,6 +90,37 @@ struct PanelContent: View {
                                     }
                                 }
                             }
+                        }
+                        
+                        // MARK: All accounts
+                        Button("Sign out") {
+                            Task {
+                                do {
+                                    try viewModel.signOut()
+                                    showSignInView = true
+                                } catch {
+                                    print("Error: \(error)")
+                                }
+                            }
+                        }
+                        
+                        Button("Delete Account") {
+                            showingDeleteAlert = true
+                        }
+                        .alert(isPresented: $showingDeleteAlert) {
+                            Alert(title: Text("Delete Account"),
+                                  message: Text("Are you sure you want to delete your account? This action cannot be undone."),
+                                  primaryButton: .destructive(Text("Delete").foregroundColor(.red)) {
+                                Task {
+                                    do {
+                                        try await viewModel.deleteAccount()
+                                        showSignInView = true
+                                    } catch {
+                                        print("Error: \(error)")
+                                    }
+                                }
+                            },
+                            secondaryButton: .cancel())
                         }
                         
                     }

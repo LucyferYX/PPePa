@@ -10,8 +10,7 @@ import SwiftUI
 struct MainMenuView: View {
     @ObservedObject var dataManager = DataManager()
     
-    @Binding var showSignInView: Bool
-    
+    @State private var searchText = ""
     @State private var currentImage: String = ""
     @State private var currentIndex: Int = 0 {
         didSet {
@@ -19,8 +18,11 @@ struct MainMenuView: View {
         }
     }
     
-    @State private var searchText = ""
+    @Binding var showSignInView: Bool
+    
     @State private var showPanelView = false
+    @State private var showProfileView = false
+
     @State private var showAddView = false
     @State private var showMapView = false
     @State private var showStatsView = false
@@ -37,6 +39,12 @@ struct MainMenuView: View {
                                         systemImage: "line.3.horizontal",
                                         color: Colors.walnut)
                             Spacer()
+                            PanelButton(action: { showProfileView.toggle() },
+                                        systemImage: "person.crop.circle",
+                                        color: Colors.walnut)
+                        }
+                        .fullScreenCover(isPresented: $showProfileView) {
+                            ProfileView(showSignInView: $showProfileView)
                         }
                         
                         HStack {

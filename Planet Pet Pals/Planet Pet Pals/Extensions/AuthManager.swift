@@ -57,6 +57,11 @@ class AuthManager: ObservableObject {
     func signOut() throws {
         try Auth.auth().signOut()
     }
+    
+    func delete() async throws {
+        guard let user = Auth.auth().currentUser else { return }
+        try await user.delete()
+    }
 }
 
 // MARK: Sign in email
