@@ -59,7 +59,9 @@ class AuthManager: ObservableObject {
     }
     
     func delete() async throws {
-        guard let user = Auth.auth().currentUser else { return }
+        guard let user = Auth.auth().currentUser else {
+            throw URLError(.badURL)
+        }
         try await user.delete()
     }
 }
@@ -112,7 +114,6 @@ extension AuthManager {
 }
 
 // MARK: Sign in anonymously
-
 extension AuthManager {
     @discardableResult
     func signInAnonymous() async throws -> AuthDataResultModel {

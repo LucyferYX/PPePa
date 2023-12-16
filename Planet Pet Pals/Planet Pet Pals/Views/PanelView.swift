@@ -104,8 +104,18 @@ struct PanelContent: View {
                             }
                         }
                         
-                        Button("Delete Account") {
-                            showingDeleteAlert = true
+                        Button(role: .destructive) {
+                            Task {
+                                do {
+                                    try viewModel.signOut()
+                                    showingDeleteAlert = true
+                                    showSignInView = true
+                                } catch {
+                                    print("Error: \(error)")
+                                }
+                            }
+                        } label: {
+                            Text("Delete Account")
                         }
                         .alert(isPresented: $showingDeleteAlert) {
                             Alert(title: Text("Delete Account"),

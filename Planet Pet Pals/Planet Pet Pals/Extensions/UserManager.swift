@@ -41,21 +41,6 @@ struct DatabaseUser: Codable {
         self.dateCreated = dateCreated
         self.isPremium = isPremium
     }
-    
-//    func togglePremiumStatus() -> DatabaseUser {
-//        let currentValue = isPremium ?? false
-//        return DatabaseUser(userId: userId,
-//                            isAnonymous: isAnonymous,
-//                            email: email,
-//                            photoUrl: photoUrl,
-//                            dateCreated: dateCreated,
-//                            isPremium: !currentValue)
-//    }
-    
-    mutating func togglePremiumStatus() {
-        let currentValue = isPremium ?? false
-        isPremium = !currentValue
-    }
 }
 
 class UserManager {
@@ -85,42 +70,18 @@ class UserManager {
         try usersDocument(userId: user.userId).setData(from: user, merge: false, encoder: encoder)
     }
     
-//    func createNewUser(auth: AuthDataResultModel) async throws {
-//        var userData: [String: Any] = [
-//            "user_id" : auth.uid,
-//            "is_anonymous" : auth.isAnonymous,
-//            "date_created" : Timestamp(),
-//
-//        ]
-//        if let email = auth.email {
-//            userData["email"] = email
-//        }
-//        if let photoUrl = auth.photoUrl {
-//            userData["photo_url"] = photoUrl
-//        }
-//
-//        try await usersDocument(userId: auth.uid).setData(userData, merge: false)
-//    }
-    
     func getUser(userId: String) async throws -> DatabaseUser {
         try await usersDocument(userId: userId).getDocument(as: DatabaseUser.self, decoder: decoder)
     }
     
-//    func getUser(userId: String) async throws -> DatabaseUser {
-//        let snapshot = try await usersDocument(userId: userId).getDocument()
-//        guard let data = snapshot.data(), let userId = data["user_id"] as? String else {
-//            throw URLError(.badServerResponse)
-//        }
-//
-//        let isAnonymous = data["is_anonymous"] as? Bool
-//        let email = data["email"] as? String
-//        let photoUrl = data["photo_url"] as? String
-//        let dateCreated = data["date_created"] as? Date
-//        
-//        return DatabaseUser(userId: userId, isAnonymous: isAnonymous, email: email, photoUrl: photoUrl, dateCreated: dateCreated)
-//    }
-    
     func updateUserPremiumStatus(user: DatabaseUser) async throws {
         try usersDocument(userId: user.userId).setData(from: user, merge: false, encoder: encoder)
+    }
+    
+    func updateUserPremiumStatus(userId: String, isPremium: Bool) async throws {
+        let data: [String: Any] = [
+            "is_premium" : isPremium
+        ]
+        try await usersDocument(userId: userId).updateData(data)
     }
 }

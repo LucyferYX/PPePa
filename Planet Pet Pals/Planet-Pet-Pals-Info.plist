@@ -21,10 +21,5 @@
 	<array>
 		<string>Baloo2.ttf</string>
 	</array>
-	<key>UILaunchScreen</key>
-	<dict>
-		<key>UIColorName</key>
-		<string>LaunchColor</string>
-	</dict>
 </dict>
 </plist>
