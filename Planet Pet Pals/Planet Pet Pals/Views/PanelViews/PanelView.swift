@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import FirebaseAuth
 
 struct PanelContent: View {
     @StateObject private var viewModel = PanelViewModel()
@@ -105,32 +106,26 @@ struct PanelContent: View {
                         }
                         
                         Button(role: .destructive) {
-                            Task {
-                                do {
-                                    try viewModel.signOut()
-                                    showingDeleteAlert = true
-                                    showSignInView = true
-                                } catch {
-                                    print("Error: \(error)")
-                                }
-                            }
+                            showingDeleteAlert = true
                         } label: {
                             Text("Delete Account")
                         }
                         .alert(isPresented: $showingDeleteAlert) {
                             Alert(title: Text("Delete Account"),
-                                  message: Text("Are you sure you want to delete your account? This action cannot be undone."),
+                                  message: Text("Would you like to delete account? This action cannot be undone."),
                                   primaryButton: .destructive(Text("Delete").foregroundColor(.red)) {
-                                Task {
-                                    do {
-                                        try await viewModel.deleteAccount()
-                                        showSignInView = true
-                                    } catch {
-                                        print("Error: \(error)")
+                                    Task {
+                                        do {
+                                            let userId = Auth.auth().currentUser?.uid
+                                            try await UserManager.shared.deleteUser(userId: userId!)
+                                            try await viewModel.deleteAccount()
+                                            showSignInView = true
+                                        } catch {
+                                            print("Error: \(error)")
+                                        }
                                     }
-                                }
-                            },
-                            secondaryButton: .cancel())
+                                },
+                                secondaryButton: .cancel())
                         }
                         
                     }

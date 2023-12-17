@@ -19,13 +19,16 @@ struct MainMenuView: View {
     }
     
     @Binding var showSignInView: Bool
+    @FocusState private var isTextFieldFocused: Bool
     
     @State private var showPanelView = false
     @State private var showProfileView = false
-
     @State private var showAddView = false
     @State private var showMapView = false
     @State private var showStatsView = false
+    
+    @State private var keyboardIsShown: Bool = false
+
     
     var body: some View {
         return GeometryReader { geometry in
@@ -43,14 +46,17 @@ struct MainMenuView: View {
                                         systemImage: "person.crop.circle",
                                         color: Colors.walnut)
                         }
+                        .ignoresSafeArea(.keyboard)
                         .fullScreenCover(isPresented: $showProfileView) {
                             ProfileView(showSignInView: $showProfileView)
                         }
                         
-                        HStack {
-                            SimpleImageView(imageName: "LogoBig", width: 250, height: 120)
-                                .padding(.top, -10)
-                        }
+                        
+                            HStack {
+                                SimpleImageView(imageName: "LogoBig", width: 250, height: 120)
+                                    .padding(.top, -10)
+                            }
+                        
                         
                         //
                         HStack {
@@ -66,7 +72,7 @@ struct MainMenuView: View {
                             } else {
                                 FadeOutImageView(content: URLImage(placeholder: Image("MainDog"), url: self.currentImage), width: 250, height: 250)
                             }
-
+                            
                             
                             SimpleButton(action: {
                                 if self.currentIndex < self.dataManager.posts.count - 1 {
@@ -81,40 +87,40 @@ struct MainMenuView: View {
                         MainSearchBar(text: $searchText) {
                             print("Searching for \(searchText)")
                         }
-
                         
                         Spacer()
                         
                         // Main buttons
-                        HStack(spacing: -3) {
-                            MainButton(action: { showAddView.toggle() },
-                                       imageName: "camera.fill",
-                                       buttonText: "Create",
-                                       imageColor: Colors.salmon,
-                                       buttonColor: Colors.snow)
-                            .padding()
-                            
-                            MainButton(action: { self.showMapView = true },
-                                       imageName: "map.fill",
-                                       buttonText: "Map",
-                                       imageColor: Colors.walnut,
-                                       buttonColor: Colors.snow)
-                            .padding()
-                            
-                            MainButton(action: { self.showStatsView = true },
-                                       imageName: "chart.bar.fill",
-                                       buttonText: "Stats",
-                                       imageColor: Colors.salmon,
-                                       buttonColor: Colors.snow)
-                            .padding()
-                            
-                        }
-                        // Opens the view modally
-                        .fullScreenCover(isPresented: $showMapView) {
-                            MapView(showMapView: $showMapView, region: "Europe")
-                        }
-                        .fullScreenCover(isPresented: $showAddView) {
-                            CreateView(showAddView: $showAddView)
+                        if !keyboardIsShown {
+                            HStack(spacing: -3) {
+                                MainButton(action: { showAddView.toggle() },
+                                           imageName: "camera.fill",
+                                           buttonText: "Create",
+                                           imageColor: Colors.salmon,
+                                           buttonColor: Colors.snow)
+                                .padding()
+                                
+                                MainButton(action: { self.showMapView = true },
+                                           imageName: "map.fill",
+                                           buttonText: "Map",
+                                           imageColor: Colors.walnut,
+                                           buttonColor: Colors.snow)
+                                .padding()
+                                
+                                MainButton(action: { self.showStatsView = true },
+                                           imageName: "chart.bar.fill",
+                                           buttonText: "Stats",
+                                           imageColor: Colors.salmon,
+                                           buttonColor: Colors.snow)
+                                .padding()
+                            }
+                            // Opens the view modally
+                            .fullScreenCover(isPresented: $showMapView) {
+                                MapView(showMapView: $showMapView, region: "Europe")
+                            }
+                            .fullScreenCover(isPresented: $showAddView) {
+                                CreateView(showAddView: $showAddView)
+                            }
                         }
                     }
                     PanelView(showSignInView: $showSignInView , width: geometry.size.width*0.7, showPanelView: self.showPanelView, closePanelView: { self.showPanelView = false })
@@ -124,6 +130,12 @@ struct MainMenuView: View {
                         .offset(x: self.showStatsView ? 0 : geometry.size.width)
                         .transition(.move(edge: .trailing))
                 }
+            }
+            .onAppear {
+                addKeyboardNotifications()
+            }
+            .onDisappear {
+                removeKeyboardNotifications()
             }
         }
         .onAppear(perform: updateCurrentImage)
@@ -135,6 +147,24 @@ struct MainMenuView: View {
                 self.currentImage = self.dataManager.posts[self.currentIndex].image
             }
         }
+    }
+    
+    private func addKeyboardNotifications() {
+        NotificationCenter.default.addObserver(forName: UIResponder.keyboardWillShowNotification, object: nil, queue: .main) { _ in
+            withAnimation {
+                keyboardIsShown = true
+            }
+        }
+        NotificationCenter.default.addObserver(forName: UIResponder.keyboardWillHideNotification, object: nil, queue: .main) { _ in
+            withAnimation {
+                keyboardIsShown = false
+            }
+        }
+    }
+    
+    private func removeKeyboardNotifications() {
+        NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillShowNotification, object: nil)
+        NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillHideNotification, object: nil)
     }
 }
 

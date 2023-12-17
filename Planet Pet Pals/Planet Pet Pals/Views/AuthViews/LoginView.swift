@@ -10,7 +10,6 @@ import Firebase
 
 struct LoginView: View {
     @Binding var showSignInView: Bool
-    //@ObservedObject var authManager = AuthManager()
     @StateObject private var viewModel = SignInEmailModel()
     
     @State private var email: String = ""
@@ -50,10 +49,6 @@ struct LoginView: View {
 //                        login()
                     }, buttonText: "Login", color: Color.blue)
                     
-//                    ColorButton(action: {
-//                        print("Sign in pressed")
-//                        try await viewModel.signIn()
-//                    }, buttonText: "Sign in", color: Color.green)
                     Button {
                         Task {
                             do {

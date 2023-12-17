@@ -23,7 +23,10 @@ struct MainSearchBar: View {
                 .background(Colors.snow)
                 .cornerRadius(30)
                 .overlay(
-                    Button(action: onCommit) {
+                    Button(action: {
+                        onCommit()
+                        UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
+                    }) {
                         Image(systemName: "pawprint.fill")
                             .resizable()
                             .frame(width: 25, height: 25)
@@ -38,3 +41,4 @@ struct MainSearchBar: View {
         .padding(.horizontal, 40)
     }
 }
+
