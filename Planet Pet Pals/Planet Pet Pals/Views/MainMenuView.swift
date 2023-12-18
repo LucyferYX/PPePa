@@ -115,8 +115,11 @@ struct MainMenuView: View {
                                 .padding()
                             }
                             // Opens the view modally
+//                            .fullScreenCover(isPresented: $showMapView) {
+//                                MapView(showMapView: $showMapView, region: "Europe")
+//                            }
                             .fullScreenCover(isPresented: $showMapView) {
-                                MapView(showMapView: $showMapView, region: "Europe")
+                                MapView(showMapView: $showMapView)
                             }
                             .fullScreenCover(isPresented: $showAddView) {
                                 CreateView(showAddView: $showAddView)

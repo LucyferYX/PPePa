@@ -9,7 +9,8 @@ import SwiftUI
 import Firebase
 import MapKit
 
-struct DatabasePost: Codable {
+struct DatabasePost: Codable, Identifiable {
+    var id: String { postId }
     let postId: String
     let userId: String
     let title: String
@@ -19,9 +20,9 @@ struct DatabasePost: Codable {
     var likes: Int
     var views: Int
     
-    let location: GeoPoint
-    var geopoint: CLLocationCoordinate2D {
-        CLLocationCoordinate2D(latitude: location.latitude, longitude: location.longitude)
+    let geopoint: GeoPoint
+    var location: CLLocationCoordinate2D {
+        CLLocationCoordinate2D(latitude: geopoint.latitude, longitude: geopoint.longitude)
     }
 
     init(
@@ -38,7 +39,7 @@ struct DatabasePost: Codable {
         self.title = title
         self.type = type
         self.description = description
-        self.location = geopoint
+        self.geopoint = geopoint
         self.image = image
         self.likes = 0
         self.views = 0
@@ -63,7 +64,7 @@ struct DatabasePost: Codable {
         title = try container.decode(String.self, forKey: .title)
         type = try container.decode(String.self, forKey: .type)
         description = try container.decode(String.self, forKey: .description)
-        location = try container.decode(GeoPoint.self, forKey: .geopoint)
+        geopoint = try container.decode(GeoPoint.self, forKey: .geopoint)
         image = try container.decode(String.self, forKey: .image)
         likes = try container.decode(Int.self, forKey: .likes)
         views = try container.decode(Int.self, forKey: .views)
@@ -76,13 +77,12 @@ struct DatabasePost: Codable {
         try container.encode(title, forKey: .title)
         try container.encode(type, forKey: .type)
         try container.encode(description, forKey: .description)
-        try container.encode(location, forKey: .geopoint)
+        try container.encode(geopoint, forKey: .geopoint)
         try container.encode(image, forKey: .image)
         try container.encode(likes, forKey: .likes)
         try container.encode(views, forKey: .views)
     }
 }
-
 
 class PostManager {
     static let shared = PostManager()
@@ -105,6 +105,12 @@ class PostManager {
         try await postsDocument(postId: postId).getDocument(as: DatabasePost.self)
     }
     
+    // ai
+    func getAllPosts() async throws -> [DatabasePost] {
+        let snapshot = try await postsCollection.getDocuments()
+        return snapshot.documents.compactMap { try? $0.data(as: DatabasePost.self) }
+    }
+
     func updatePostLikes(postId: String, likes: Int) async throws {
         let data: [String: Any] = [
             DatabasePost.CodingKeys.likes.rawValue : likes

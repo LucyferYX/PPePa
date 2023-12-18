@@ -10,8 +10,10 @@ import FirebaseAuth
 
 struct PanelContent: View {
     @StateObject private var viewModel = PanelViewModel()
+    //@StateObject var mapViewModel = MapViewModel()
     @Binding var showSignInView: Bool
     @State private var showAboutView = false
+    @State private var showSettingsView = false
     @State private var showingDeleteAlert = false
     
     var body: some View {
@@ -160,6 +162,7 @@ struct PanelContent: View {
                 }, systemImage: "", buttonText: "Favorites", size: 30, color: Colors.linen)
                 SimpleButton(action: {
                     print("Settings pressed")
+                    showSettingsView = true
                 }, systemImage: "", buttonText: "Settings", size: 30, color: Colors.linen)
                 SimpleButton(action: {
                     print("About pressed")
@@ -167,6 +170,9 @@ struct PanelContent: View {
                 }, systemImage: "", buttonText: "About", size: 30, color: Colors.linen)
                 .sheet(isPresented: $showAboutView) {
                     AboutView()
+                }
+                .sheet(isPresented: $showSettingsView) {
+                    SettingsView()
                 }
                 
             }
