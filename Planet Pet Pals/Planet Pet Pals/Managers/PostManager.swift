@@ -14,7 +14,7 @@ struct PostArray: Codable {
     let total: Int
 }
 
-struct Post: Codable, Identifiable {
+struct Post: Codable, Identifiable, Equatable {
     var id: String { postId }
     let postId: String
     let userId: String
@@ -64,6 +64,11 @@ struct Post: Codable, Identifiable {
         case views = "views"
     }
     
+    // For comparing 2 posts
+    static func == (lhs: Post, rhs: Post) -> Bool {
+        return lhs.id == rhs.id
+    }
+    
     init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         postId = try container.decode(String.self, forKey: .postId)
@@ -104,42 +109,44 @@ class PostManager {
         try await postsDocument(postId: postId).getDocument(as: Post.self)
     }
     
-    private func getAllPosts() async throws -> [Post] {
-        try await postsCollection.getDocuments(as: Post.self)
+    private func getAllPostsQuery() -> Query {
+        postsCollection
     }
     
-    private func getAllPostsSortedByLikes(descending: Bool) async throws -> [Post] {
-        try await postsCollection
+    private func getAllPostsSortedByLikesQuery(descending: Bool) -> Query {
+        postsCollection
             .order(by: Post.CodingKeys.likes.rawValue, descending: descending)
-            .getDocuments(as: Post.self)
     }
     
-    private func getAllPostsForTypes(type: String) async throws -> [Post] {
-        try await postsCollection
+    private func getAllPostsForTypesQuery(type: String) -> Query {
+        postsCollection
             .whereField(Post.CodingKeys.type.rawValue, isEqualTo: type)
-            .getDocuments(as: Post.self)
     }
     
-    private func getAllPostsSortedByLikesAndType(descending: Bool, type: String) async throws -> [Post] {
-        try await postsCollection
+    private func getAllPostsSortedByLikesAndTypeQuery(descending: Bool, type: String) -> Query {
+        postsCollection
             .whereField(Post.CodingKeys.type.rawValue, isEqualTo: type)
             .order(by: Post.CodingKeys.likes.rawValue, descending: descending)
-            .getDocuments(as: Post.self)
     }
     
-    func getAllPosts(likesDescending descending: Bool?, forType type: String?) async throws -> [Post] {
-        if let descending, let type {
-            return try await getAllPostsSortedByLikesAndType(descending: descending, type: type)
-        } else if let descending {
-            return try await getAllPostsSortedByLikes(descending: descending)
-        } else if let type {
-            return try await getAllPostsForTypes(type: type)
-        }
+    func getAllPosts(likesDescending descending: Bool?, forType type: String?, count: Int, lastDocument: DocumentSnapshot?)
+        async throws -> (posts: [Post], lastDocument: DocumentSnapshot?) {
+        var query: Query = getAllPostsQuery()
         
-        return try await getAllPosts()
+        if let descending, let type {
+            query = getAllPostsSortedByLikesAndTypeQuery(descending: descending, type: type)
+        } else if let descending {
+            query = getAllPostsSortedByLikesQuery(descending: descending)
+        } else if let type {
+            query = getAllPostsForTypesQuery(type: type)
+        }
+            
+        return try await query
+                .startOptional(afterDocument: lastDocument)
+                .getDocumentsWithSnapshot(as: Post.self)
     }
     
-    func getPostsByViews(count: Int, lastDocument: DocumentSnapshot?) async throws -> (products: [Post], lastDocument: DocumentSnapshot?) {
+    func getPostsByViews(count: Int, lastDocument: DocumentSnapshot?) async throws -> (posts: [Post], lastDocument: DocumentSnapshot?) {
         if let lastDocument {
             return try await postsCollection
                 .order(by: Post.CodingKeys.views.rawValue, descending: true)
@@ -154,20 +161,37 @@ class PostManager {
         }
     }
     
+    func getAllPostsCount() async throws -> Int {
+        try await postsCollection
+            .aggregateCount()
+    }
+    
 }
 
 extension Query {
     func getDocuments<T>(as type: T.Type) async throws -> [T] where T : Decodable {
-        try await getDocumentsWithSnapshot(as: type).products
+        try await getDocumentsWithSnapshot(as: type).posts
     }
     
-    func getDocumentsWithSnapshot<T>(as type: T.Type) async throws -> (products: [T], lastDocument: DocumentSnapshot?) where T : Decodable {
+    func getDocumentsWithSnapshot<T>(as type: T.Type) async throws -> (posts: [T], lastDocument: DocumentSnapshot?) where T : Decodable {
         let snapshot = try await self.getDocuments()
         
-        let products = try snapshot.documents.map({ document in
+        let posts = try snapshot.documents.map({ document in
             try document.data(as: T.self)
         })
         
-        return (products, snapshot.documents.last)
+        return (posts, snapshot.documents.last)
+    }
+    
+    func startOptional(afterDocument lastDocument: DocumentSnapshot?) -> Query {
+        guard let lastDocument else {
+            return self
+        }
+        return self.start(afterDocument: lastDocument)
+    }
+    
+    func aggregateCount() async throws -> Int {
+        let snapshot = try await self.count.getAggregation(source: .server)
+        return Int(truncating: snapshot.count)
     }
 }

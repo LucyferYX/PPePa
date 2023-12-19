@@ -31,6 +31,8 @@ class StatsViewModel: ObservableObject {
     
     func filterSelected(option: FilterOption) async throws {
         self.selectedFilter = option
+        self.posts = []
+        self.lastDocument = nil
         self.getPosts()
     }
     
@@ -50,12 +52,26 @@ class StatsViewModel: ObservableObject {
     
     func typeSelected(option: TypeOption) async throws {
         self.selectedType = option
+        self.posts = []
+        self.lastDocument = nil
         self.getPosts()
     }
     
     func getPosts() {
         Task {
-            self.posts = try await PostManager.shared.getAllPosts(likesDescending: selectedFilter?.likesDescending, forType: selectedType?.typeValue)
+            let (newPosts, lastDocument) = try await PostManager.shared.getAllPosts(likesDescending: selectedFilter?.likesDescending, forType: selectedType?.typeValue, count: 1, lastDocument: lastDocument)
+            self.posts.append(contentsOf: newPosts)
+            if let lastDocument {
+                self.lastDocument = lastDocument
+            }
+            self.lastDocument = lastDocument
+        }
+    }
+    
+    func getPostCount() {
+        Task{
+            let count = try await PostManager.shared.getAllPostsCount()
+            print("Post count: \(count)")
         }
     }
     
@@ -128,17 +144,23 @@ struct StatsView: View {
                 ZStack {
                     MainBackground()
                     List {
-//                        Button("Fetch more objects") {
-//                            viewModel.getPostsByViews()
-//                        }
                         ForEach(viewModel.posts) { post in
                             PostCellView(post: post)
+                            
+                            if post == viewModel.posts.last {
+                                ProgressView()
+                                    .onAppear {
+                                        print("More posts are being fetched.")
+                                        viewModel.getPosts()
+                                    }
+                            }
                         }
                     }
                 }
             }
         }
         .onAppear {
+            viewModel.getPostCount()
             viewModel.getPosts()
         }
         .transition(.move(edge: .trailing))
