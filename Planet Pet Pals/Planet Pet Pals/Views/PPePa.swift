@@ -22,8 +22,9 @@ struct PPePa: App {
 
 class AppDelegate: NSObject, UIApplicationDelegate {
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]? = nil) -> Bool {
+        FirebaseConfiguration.shared.setLoggerLevel(.min)
         FirebaseApp.configure()
-        print("Firebase is configured.")
+        //print("Firebase is configured.")
         return true
     }
 }

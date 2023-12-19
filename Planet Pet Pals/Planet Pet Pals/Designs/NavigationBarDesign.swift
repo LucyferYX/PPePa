@@ -28,3 +28,23 @@ struct MainNavigationBar: View {
         .background(Colors.walnut)
     }
 }
+
+struct MainToolbar: ToolbarContent {
+    let title: String
+    let leftButton: LeftNavigationButton
+    let rightButton: RightNavigationButton
+
+    var body: some ToolbarContent {
+        ToolbarItem(placement: .navigationBarLeading) {
+            leftButton
+        }
+        ToolbarItem(placement: .principal) {
+            Text(title)
+                .font(.custom("Baloo2-SemiBold", size: 25))
+                .foregroundColor(Colors.linen)
+        }
+        ToolbarItem(placement: .navigationBarTrailing) {
+            rightButton
+        }
+    }
+}

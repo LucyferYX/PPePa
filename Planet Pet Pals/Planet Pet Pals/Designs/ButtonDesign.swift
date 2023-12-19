@@ -41,18 +41,20 @@ struct MainButton: View {
 
 struct SimpleButton: View {
     let action: () -> Void
-    let systemImage: String
+    let systemImage: String?
     let buttonText: String
     let size: CGFloat
     let color: Color
 
     var body: some View {
         Button(action: action) {
-            Image(systemName: systemImage)
-                .resizable()
-                .aspectRatio(contentMode: .fit)
-                .frame(width: size, height: size)
-                .foregroundColor(color)
+            if let systemImage = systemImage {
+                Image(systemName: systemImage)
+                    .resizable()
+                    .aspectRatio(contentMode: .fit)
+                    .frame(width: size, height: size)
+                    .foregroundColor(color)
+            }
             Text(buttonText)
                 .padding(-5)
                 .font(.custom("Baloo2-SemiBold", size: size))
@@ -137,6 +139,35 @@ struct RightNavigationButton: View {
         }
     }
 }
+
+//struct RightNavigationButton<Content: View>: View {
+//    let action: () -> Void
+//    let imageName: String
+//    let buttonText: String
+//    let imageInvisible: Bool
+//    let textInvisible: Bool
+//    let content: () -> Content
+//
+//    let buttonSize: CGFloat = 20
+//
+//    var body: some View {
+//        Button(action: action) {
+//            HStack {
+//                if !buttonText.isEmpty {
+//                    Text(buttonText)
+//                        .font(.custom("Baloo2-SemiBold", size: 20))
+//                        .foregroundColor(textInvisible ? Color.clear : Colors.snow)
+//                }
+//                Image(systemName: imageName)
+//                    .resizable()
+//                    .aspectRatio(contentMode: .fit)
+//                    .frame(width: buttonSize, height: buttonSize)
+//                    .foregroundColor(imageInvisible ? Color.clear : Colors.snow)
+//            }
+//        }.popover(isPresented: .constant(true), content: content)
+//    }
+//}
+
 
 struct PanelButton: View {
     let action: () -> Void

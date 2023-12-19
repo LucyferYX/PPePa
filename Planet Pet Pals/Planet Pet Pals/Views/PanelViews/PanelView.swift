@@ -22,7 +22,7 @@ struct PanelContent: View {
                 
                 SimpleButton(action: {
                     print("Username pressed")
-                }, systemImage: "", buttonText: "Username", size: 30, color: Colors.linen)
+                }, systemImage: nil, buttonText: "Username", size: 30, color: Colors.linen)
                 
                 HStack {
                     RoundImage(systemName: "person.circle", size: 80, color: Colors.linen)
@@ -159,15 +159,15 @@ struct PanelContent: View {
                 
                 SimpleButton(action: {
                     print("Favorites pressed")
-                }, systemImage: "", buttonText: "Favorites", size: 30, color: Colors.linen)
+                }, systemImage: "heart", buttonText: "Favorites", size: 30, color: Colors.linen)
                 SimpleButton(action: {
                     print("Settings pressed")
                     showSettingsView = true
-                }, systemImage: "", buttonText: "Settings", size: 30, color: Colors.linen)
+                }, systemImage: "gearshape", buttonText: "Settings", size: 30, color: Colors.linen)
                 SimpleButton(action: {
                     print("About pressed")
                     showAboutView = true
-                }, systemImage: "", buttonText: "About", size: 30, color: Colors.linen)
+                }, systemImage: "info.circle", buttonText: "About", size: 30, color: Colors.linen)
                 .sheet(isPresented: $showAboutView) {
                     AboutView()
                 }

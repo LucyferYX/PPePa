@@ -9,7 +9,12 @@ import SwiftUI
 import Firebase
 import MapKit
 
-struct DatabasePost: Codable, Identifiable {
+struct PostArray: Codable {
+    let posts: [Post]
+    let total: Int
+}
+
+struct Post: Codable, Identifiable {
     var id: String { postId }
     let postId: String
     let userId: String
@@ -17,8 +22,8 @@ struct DatabasePost: Codable, Identifiable {
     let type: String
     let description: String
     let image: String
-    var likes: Int
-    var views: Int
+    var likes: Int?
+    var views: Int?
     
     let geopoint: GeoPoint
     var location: CLLocationCoordinate2D {
@@ -32,7 +37,9 @@ struct DatabasePost: Codable, Identifiable {
         type: String,
         description: String,
         geopoint: GeoPoint,
-        image: String
+        image: String,
+        likes: Int,
+        views: Int
     ) {
         self.postId = postId
         self.userId = userId
@@ -66,8 +73,8 @@ struct DatabasePost: Codable, Identifiable {
         description = try container.decode(String.self, forKey: .description)
         geopoint = try container.decode(GeoPoint.self, forKey: .geopoint)
         image = try container.decode(String.self, forKey: .image)
-        likes = try container.decode(Int.self, forKey: .likes)
-        views = try container.decode(Int.self, forKey: .views)
+        likes = try container.decodeIfPresent(Int.self, forKey: .likes)
+        views = try container.decodeIfPresent(Int.self, forKey: .views)
     }
 
     func encode(to encoder: Encoder) throws {
@@ -93,35 +100,74 @@ class PostManager {
         postsCollection.document(postId)
     }
     
-    func createNewPost(post: DatabasePost) async throws {
-        try postsDocument(postId: post.postId).setData(from: post, merge: false)
+    func getPost(postId: String) async throws -> Post {
+        try await postsDocument(postId: postId).getDocument(as: Post.self)
     }
     
-    func deletePost(postId: String) async throws {
-        try await postsDocument(postId: postId).delete()
+    private func getAllPosts() async throws -> [Post] {
+        try await postsCollection.getDocuments(as: Post.self)
     }
     
-    func getPost(postId: String) async throws -> DatabasePost {
-        try await postsDocument(postId: postId).getDocument(as: DatabasePost.self)
+    private func getAllPostsSortedByLikes(descending: Bool) async throws -> [Post] {
+        try await postsCollection
+            .order(by: Post.CodingKeys.likes.rawValue, descending: descending)
+            .getDocuments(as: Post.self)
     }
     
-    // ai
-    func getAllPosts() async throws -> [DatabasePost] {
-        let snapshot = try await postsCollection.getDocuments()
-        return snapshot.documents.compactMap { try? $0.data(as: DatabasePost.self) }
+    private func getAllPostsForTypes(type: String) async throws -> [Post] {
+        try await postsCollection
+            .whereField(Post.CodingKeys.type.rawValue, isEqualTo: type)
+            .getDocuments(as: Post.self)
     }
+    
+    private func getAllPostsSortedByLikesAndType(descending: Bool, type: String) async throws -> [Post] {
+        try await postsCollection
+            .whereField(Post.CodingKeys.type.rawValue, isEqualTo: type)
+            .order(by: Post.CodingKeys.likes.rawValue, descending: descending)
+            .getDocuments(as: Post.self)
+    }
+    
+    func getAllPosts(likesDescending descending: Bool?, forType type: String?) async throws -> [Post] {
+        if let descending, let type {
+            return try await getAllPostsSortedByLikesAndType(descending: descending, type: type)
+        } else if let descending {
+            return try await getAllPostsSortedByLikes(descending: descending)
+        } else if let type {
+            return try await getAllPostsForTypes(type: type)
+        }
+        
+        return try await getAllPosts()
+    }
+    
+    func getPostsByViews(count: Int, lastDocument: DocumentSnapshot?) async throws -> (products: [Post], lastDocument: DocumentSnapshot?) {
+        if let lastDocument {
+            return try await postsCollection
+                .order(by: Post.CodingKeys.views.rawValue, descending: true)
+                .limit(to: count)
+                .start(afterDocument: lastDocument)
+                .getDocumentsWithSnapshot(as: Post.self)
+        } else {
+            return try await postsCollection
+                .order(by: Post.CodingKeys.views.rawValue, descending: true)
+                .limit(to: count)
+                .getDocumentsWithSnapshot(as: Post.self)
+        }
+    }
+    
+}
 
-    func updatePostLikes(postId: String, likes: Int) async throws {
-        let data: [String: Any] = [
-            DatabasePost.CodingKeys.likes.rawValue : likes
-        ]
-        try await postsDocument(postId: postId).updateData(data)
+extension Query {
+    func getDocuments<T>(as type: T.Type) async throws -> [T] where T : Decodable {
+        try await getDocumentsWithSnapshot(as: type).products
     }
     
-    func updatePostViews(postId: String, views: Int) async throws {
-        let data: [String: Any] = [
-            DatabasePost.CodingKeys.views.rawValue : views
-        ]
-        try await postsDocument(postId: postId).updateData(data)
+    func getDocumentsWithSnapshot<T>(as type: T.Type) async throws -> (products: [T], lastDocument: DocumentSnapshot?) where T : Decodable {
+        let snapshot = try await self.getDocuments()
+        
+        let products = try snapshot.documents.map({ document in
+            try document.data(as: T.self)
+        })
+        
+        return (products, snapshot.documents.last)
     }
 }

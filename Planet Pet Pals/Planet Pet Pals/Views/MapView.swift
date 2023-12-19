@@ -10,8 +10,8 @@ import MapKit
 
 struct MapView: View {
     @Binding var showMapView: Bool
-    @AppStorage("selectedRegion") var selectedRegion: String = "Europe" // Default value
-    @State var posts: [DatabasePost] = []
+    @AppStorage("selectedRegion") var selectedRegion: String = "Europe"
+    @State var posts: [Post] = []
 
     var region: MKCoordinateRegion {
         let ((latitude, longitude), (latitudeDelta, longitudeDelta)) = regions[selectedRegion]!
@@ -53,15 +53,15 @@ struct MapView: View {
                     .edgesIgnoringSafeArea(.all)
                 }
             }
-            .onAppear {
-                Task {
-                    do {
-                        posts = try await PostManager.shared.getAllPosts()
-                    } catch {
-                        print("Failed to fetch posts: \(error)")
-                    }
-                }
-            }
+//            .onAppear {
+//                Task {
+//                    do {
+//                        posts = try await PostManager.shared.getAllPosts()
+//                    } catch {
+//                        print("Failed to fetch posts: \(error)")
+//                    }
+//                }
+//            }
         }
         .transition(.move(edge: .bottom))
     }

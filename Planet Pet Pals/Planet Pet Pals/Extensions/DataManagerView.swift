@@ -13,45 +13,45 @@ class DataManager: ObservableObject {
     @Published var posts: [Post] = []
     
     init() {
-        fetchPosts()
-        print("fetchposts init accessed")
+        //fetchPosts()
+        //print("fetchposts init accessed")
     }
     
-    func fetchPosts() {
-        //print("fetchPosts called")
-        posts.removeAll()
-        let db = Firestore.firestore()
-        let ref = db.collection("Post")
-        ref.getDocuments { snapshot, error in
-            //print("Firestore query completed")
-            guard error == nil else {
-                print("Error fetching documents: \(error!.localizedDescription)")
-                return
-            }
-            
-            if let snapshot = snapshot {
-                //print("Number of documents fetched: \(snapshot.documents.count)")
-                for document in snapshot.documents {
-                    let data = document.data()
-                    
-                    let id = data["id"] as? String ?? ""
-                    let title = data["title"] as? String ?? ""
-                    let description = data["description"] as? String ?? ""
-                    let type = data["type"] as? String ?? ""
-                    let image = data["image"] as? String ?? ""
-                    let likes = data["likes"] as? Int ?? 0
-                    let views = data["views"] as? Int ?? 0
-                    let geoPoint = data["location"] as? GeoPoint
-                    let location = CLLocationCoordinate2D(latitude: geoPoint?.latitude ?? 0, longitude: geoPoint?.longitude ?? 0)
-                    
-                    let post = Post(id: id, title: title, description: description, type: type, image: image, location: location, views: views, likes: likes)
-                    self.posts.append(post)
-                    //print("Fetched post: id = \(post.id), type = \(post.type)")
-                    print("Current post count from fetchPosts(): \(self.posts.count)")
-                }
-            }
-        }
-    }
+//    func fetchPosts() {
+//        //print("fetchPosts called")
+//        posts.removeAll()
+//        let db = Firestore.firestore()
+//        let ref = db.collection("Post")
+//        ref.getDocuments { snapshot, error in
+//            //print("Firestore query completed")
+//            guard error == nil else {
+//                print("Error fetching documents: \(error!.localizedDescription)")
+//                return
+//            }
+//
+//            if let snapshot = snapshot {
+//                //print("Number of documents fetched: \(snapshot.documents.count)")
+//                for document in snapshot.documents {
+//                    let data = document.data()
+//
+//                    let id = data["id"] as? String ?? ""
+//                    let title = data["title"] as? String ?? ""
+//                    let description = data["description"] as? String ?? ""
+//                    let type = data["type"] as? String ?? ""
+//                    let image = data["image"] as? String ?? ""
+//                    let likes = data["likes"] as? Int ?? 0
+//                    let views = data["views"] as? Int ?? 0
+//                    let geoPoint = data["location"] as? GeoPoint
+//                    let location = CLLocationCoordinate2D(latitude: geoPoint?.latitude ?? 0, longitude: geoPoint?.longitude ?? 0)
+//
+//                    let post = Post(id: id, title: title, description: description, type: type, image: image, location: location, views: views, likes: likes)
+//                    self.posts.append(post)
+//                    //print("Fetched post: id = \(post.id), type = \(post.type)")
+//                    print("Current post count from fetchPosts(): \(self.posts.count)")
+//                }
+//            }
+//        }
+//    }
     
     
     func newPost(title: String, description: String, type: String, image: String, location: CLLocationCoordinate2D, views: Int, likes: Int) {
