@@ -34,7 +34,8 @@ struct RootView: View {
             ZStack {
                 if showLaunchView {
                     LaunchView(showLaunchView: $showLaunchView)
-                        .transition(.move(edge: .leading))
+//                        .transition(.move(edge: .leading))
+//                        .transition(.opacity)
                 }
             }
             .zIndex(2.0)

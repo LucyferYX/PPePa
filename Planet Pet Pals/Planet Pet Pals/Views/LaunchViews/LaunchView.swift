@@ -42,6 +42,8 @@ struct LaunchView: View {
             }
             .offset(y: 0)
         }
+        .opacity(showLaunchView ? 1 : 0)
+        .animation(.easeOut(duration: 1.0), value: showLaunchView)
         .onAppear {
             showLaunchText.toggle()
         }
