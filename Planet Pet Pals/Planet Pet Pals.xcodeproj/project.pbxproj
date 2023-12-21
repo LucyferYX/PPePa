@@ -54,6 +54,8 @@
 		DCF671D82B24EDE00012D505 /* CreateView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCF671D72B24EDE00012D505 /* CreateView.swift */; };
 		DCF6ECFE2B34F84B00BC5B11 /* StatsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCF6ECFD2B34F84B00BC5B11 /* StatsViewModel.swift */; };
 		DCF6ED002B34F88400BC5B11 /* LikedPostsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCF6ECFF2B34F88400BC5B11 /* LikedPostsViewModel.swift */; };
+		DCF6ED022B34F95800BC5B11 /* LikesViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCF6ED012B34F95800BC5B11 /* LikesViewModel.swift */; };
+		DCF6ED042B34F9B300BC5B11 /* ProfileViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCF6ED032B34F9B300BC5B11 /* ProfileViewModel.swift */; };
 		DCFC5DA92B28EBF100AA9EB3 /* AuthManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCFC5DA82B28EBF100AA9EB3 /* AuthManager.swift */; };
 		DCFC5DAB2B28FD9B00AA9EB3 /* RootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCFC5DAA2B28FD9B00AA9EB3 /* RootView.swift */; };
 		DCFC5DAD2B290E5E00AA9EB3 /* AuthView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCFC5DAC2B290E5E00AA9EB3 /* AuthView.swift */; };
@@ -100,6 +102,8 @@
 		DCF671D72B24EDE00012D505 /* CreateView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateView.swift; sourceTree = "<group>"; };
 		DCF6ECFD2B34F84B00BC5B11 /* StatsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatsViewModel.swift; sourceTree = "<group>"; };
 		DCF6ECFF2B34F88400BC5B11 /* LikedPostsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LikedPostsViewModel.swift; sourceTree = "<group>"; };
+		DCF6ED012B34F95800BC5B11 /* LikesViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LikesViewModel.swift; sourceTree = "<group>"; };
+		DCF6ED032B34F9B300BC5B11 /* ProfileViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewModel.swift; sourceTree = "<group>"; };
 		DCFC5DA82B28EBF100AA9EB3 /* AuthManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthManager.swift; sourceTree = "<group>"; };
 		DCFC5DAA2B28FD9B00AA9EB3 /* RootView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootView.swift; sourceTree = "<group>"; };
 		DCFC5DAC2B290E5E00AA9EB3 /* AuthView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthView.swift; sourceTree = "<group>"; };
@@ -150,8 +154,8 @@
 			children = (
 				7EC3725D2ADDF24E001876AD /* Views */,
 				7EC810DA2AD187E100A5DDD0 /* Designs */,
-				DC4540772B30AF88008322F9 /* Managers */,
 				DC3ECCBB2B2CF98200D142B6 /* ViewModels */,
+				DC4540772B30AF88008322F9 /* Managers */,
 				DC9FB3D72B1539CA0035C0A7 /* Data */,
 				DC418C492B08F2EA0070D226 /* Extensions */,
 				7EC3725C2ADDF227001876AD /* Fonts */,
@@ -222,6 +226,8 @@
 				DC3ECCC12B2CFC8500D142B6 /* SignInViewModel.swift */,
 				DCF6ECFD2B34F84B00BC5B11 /* StatsViewModel.swift */,
 				DCF6ECFF2B34F88400BC5B11 /* LikedPostsViewModel.swift */,
+				DCF6ED012B34F95800BC5B11 /* LikesViewModel.swift */,
+				DCF6ED032B34F9B300BC5B11 /* ProfileViewModel.swift */,
 			);
 			path = ViewModels;
 			sourceTree = "<group>";
@@ -410,6 +416,7 @@
 				DC14520A2B0D44F30059FE96 /* MapView.swift in Sources */,
 				7E7B49422AD1F94D006AA8B6 /* SearchBarDesign.swift in Sources */,
 				DCFC5DAD2B290E5E00AA9EB3 /* AuthView.swift in Sources */,
+				DCF6ED042B34F9B300BC5B11 /* ProfileViewModel.swift in Sources */,
 				DC49FBCD2B33960800770741 /* SettingsView.swift in Sources */,
 				DC97E3552B14D4BF00014018 /* RegionData.swift in Sources */,
 				DCE5CB2C2B0E4078005E5760 /* NavigationBarDesign.swift in Sources */,
@@ -419,6 +426,7 @@
 				DC3ECCBF2B2CFABD00D142B6 /* AuthViewModel.swift in Sources */,
 				DCF6ED002B34F88400BC5B11 /* LikedPostsViewModel.swift in Sources */,
 				DC44007F2B1D006A001F6609 /* ShapeDesign.swift in Sources */,
+				DCF6ED022B34F95800BC5B11 /* LikesViewModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
