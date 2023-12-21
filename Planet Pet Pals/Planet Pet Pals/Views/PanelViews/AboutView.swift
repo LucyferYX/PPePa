@@ -26,8 +26,17 @@ struct AboutView: View {
                         Spacer()
                     }
                     Spacer()
+                    
+                    Text("App Version: \(getAppVersion())")
                 }
             }
         }
+    }
+    
+    func getAppVersion() -> String {
+        if let version = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String {
+            return version
+        }
+        return "1.0"
     }
 }

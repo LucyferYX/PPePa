@@ -8,11 +8,6 @@
 import SwiftUI
 import FirebaseFirestore
 
-//@MainActor
-//class LikedPostsViewModel: ObservableObject {
-//    @Published private(set) var userLikedPosts: [UserLikedPost] = []
-//}
-
 @MainActor
 class LikedPostsViewModel: ObservableObject {
     static let shared = LikedPostsViewModel()
@@ -36,6 +31,7 @@ class LikedPostsViewModel: ObservableObject {
         Task {
             let authDataResult = try AuthManager.shared.getAuthenticatedUser()
             try? await UserManager.shared.addUserLikedPost(userId: authDataResult.uid, postId: postId)
+            try? await PostManager.shared.incrementLikes(postId: postId)
         }
     }
 }
@@ -112,13 +108,6 @@ class StatsViewModel: ObservableObject {
     }
     
     // MARK: Likes
-    //    func removeUserLikedPost(postId: String) {
-    //        Task {
-    //            let authDataResult = try AuthManager.shared.getAuthenticatedUser()
-    //            try? await UserManager.shared.removeUserLikedPost(userId: authDataResult.uid, likedPostId: postId)
-    //        }
-    //    }
-    
     func addUserLikedPost(postId: String) {
         Task {
             let authDataResult = try AuthManager.shared.getAuthenticatedUser()
@@ -128,8 +117,6 @@ class StatsViewModel: ObservableObject {
     
     func getLikes() {
         Task {
-//            let authDataResult = try AuthManager.shared.getAuthenticatedUser()
-//            self.userLikedPosts = try await UserManager.shared.getAllUserLikes(userId: authDataResult.uid)
             let authDataResult = try AuthManager.shared.getAuthenticatedUser()
             let likes = try await UserManager.shared.getAllUserLikes(userId: authDataResult.uid)
             self.likedPostsViewModel.updateUserLikedPosts(with: likes)
@@ -145,17 +132,17 @@ class StatsViewModel: ObservableObject {
         }
     }
 
-    func isPostLiked(postId: String) async -> Bool {
-        let authDataResult = try? AuthManager.shared.getAuthenticatedUser()
-        let likedPosts = try? await UserManager.shared.getAllUserLikes(userId: authDataResult?.uid ?? "No posts")
-        return likedPosts?.contains(where: { $0.postId == postId }) ?? false
-    }
+//    func isPostLiked(postId: String) async -> Bool {
+//        let authDataResult = try? AuthManager.shared.getAuthenticatedUser()
+//        let likedPosts = try? await UserManager.shared.getAllUserLikes(userId: authDataResult?.uid ?? "No posts")
+//        return likedPosts?.contains(where: { $0.postId == postId }) ?? false
+//    }
     
-    func getLikedPostId(postId: String) async -> String? {
-        let authDataResult = try? AuthManager.shared.getAuthenticatedUser()
-        let likedPosts = try? await UserManager.shared.getAllUserLikes(userId: authDataResult?.uid ?? "No posts")
-        return likedPosts?.first(where: { $0.postId == postId })?.id
-    }
+//    func getLikedPostId(postId: String) async -> String? {
+//        let authDataResult = try? AuthManager.shared.getAuthenticatedUser()
+//        let likedPosts = try? await UserManager.shared.getAllUserLikes(userId: authDataResult?.uid ?? "No posts")
+//        return likedPosts?.first(where: { $0.postId == postId })?.id
+//    }
     
 //    func getPostsByViews() {
 //        Task {
@@ -185,7 +172,7 @@ struct StatsView: View {
                     MainBackground()
                     List {
                         ForEach(viewModel.posts) { post in
-                            PostCellView(post: post)
+                            PostCellView(post: post, showLikeButton: true)
                             
                             if post == viewModel.posts.last {
                                 ProgressView()

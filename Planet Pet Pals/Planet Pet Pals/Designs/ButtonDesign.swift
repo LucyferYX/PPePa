@@ -140,35 +140,6 @@ struct RightNavigationButton: View {
     }
 }
 
-//struct RightNavigationButton<Content: View>: View {
-//    let action: () -> Void
-//    let imageName: String
-//    let buttonText: String
-//    let imageInvisible: Bool
-//    let textInvisible: Bool
-//    let content: () -> Content
-//
-//    let buttonSize: CGFloat = 20
-//
-//    var body: some View {
-//        Button(action: action) {
-//            HStack {
-//                if !buttonText.isEmpty {
-//                    Text(buttonText)
-//                        .font(.custom("Baloo2-SemiBold", size: 20))
-//                        .foregroundColor(textInvisible ? Color.clear : Colors.snow)
-//                }
-//                Image(systemName: imageName)
-//                    .resizable()
-//                    .aspectRatio(contentMode: .fit)
-//                    .frame(width: buttonSize, height: buttonSize)
-//                    .foregroundColor(imageInvisible ? Color.clear : Colors.snow)
-//            }
-//        }.popover(isPresented: .constant(true), content: content)
-//    }
-//}
-
-
 struct PanelButton: View {
     let action: () -> Void
     let systemImage: String

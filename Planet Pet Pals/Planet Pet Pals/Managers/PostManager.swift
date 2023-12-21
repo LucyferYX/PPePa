@@ -130,7 +130,7 @@ class PostManager {
     }
     
     func getAllPosts(likesDescending descending: Bool?, forType type: String?, count: Int, lastDocument: DocumentSnapshot?)
-        async throws -> (posts: [Post], lastDocument: DocumentSnapshot?) {
+    async throws -> (posts: [Post], lastDocument: DocumentSnapshot?) {
         var query: Query = getAllPostsQuery()
         
         if let descending, let type {
@@ -140,10 +140,10 @@ class PostManager {
         } else if let type {
             query = getAllPostsForTypesQuery(type: type)
         }
-            
+        
         return try await query
-                .startOptional(afterDocument: lastDocument)
-                .getDocumentsWithSnapshot(as: Post.self)
+            .startOptional(afterDocument: lastDocument)
+            .getDocumentsWithSnapshot(as: Post.self)
     }
     
     func getPostsByViews(count: Int, lastDocument: DocumentSnapshot?) async throws -> (posts: [Post], lastDocument: DocumentSnapshot?) {
@@ -166,6 +166,44 @@ class PostManager {
             .aggregateCount()
     }
     
+    //MARK: Likes
+    func incrementLikes(postId: String) async throws {
+        let postRef = postsDocument(postId: postId)
+        _ = try await Firestore.firestore().runTransaction { transaction, errorPointer in
+            do {
+                let postSnapshot = try transaction.getDocument(postRef)
+                guard let oldLikes = postSnapshot.data()?["likes"] as? Int else {
+                    errorPointer?.pointee = NSError(domain: "AppErrorDomain", code: -1, userInfo: [
+                        NSLocalizedDescriptionKey: "Unable to retrieve likes from snapshot \(postSnapshot)"
+                    ])
+                    return nil
+                }
+                transaction.updateData(["likes": oldLikes + 1], forDocument: postRef)
+            } catch let fetchError as NSError {
+                errorPointer?.pointee = fetchError
+            }
+            return nil
+        }
+    }
+    
+    func decrementLikes(postId: String) async throws {
+        let postRef = postsDocument(postId: postId)
+        _ = try await Firestore.firestore().runTransaction { transaction, errorPointer in
+            do {
+                let postSnapshot = try transaction.getDocument(postRef)
+                guard let oldLikes = postSnapshot.data()?["likes"] as? Int else {
+                    errorPointer?.pointee = NSError(domain: "AppErrorDomain", code: -1, userInfo: [
+                        NSLocalizedDescriptionKey: "Unable to retrieve likes from snapshot \(postSnapshot)"
+                    ])
+                    return nil
+                }
+                transaction.updateData(["likes": oldLikes - 1], forDocument: postRef)
+            } catch let fetchError as NSError {
+                errorPointer?.pointee = fetchError
+            }
+            return nil
+        }
+    }
 }
 
 extension Query {

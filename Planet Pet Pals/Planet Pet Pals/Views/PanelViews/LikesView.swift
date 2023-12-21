@@ -9,16 +9,8 @@ import SwiftUI
 
 @MainActor
 final class LikesViewModel: ObservableObject {
-//    @Published private(set) var userLikedPosts: [UserLikedPost] = []
     @ObservedObject var likedPostsViewModel = LikedPostsViewModel.shared
 
-//    func getLikes() {
-//        Task {
-//            let authDataResult = try AuthManager.shared.getAuthenticatedUser()
-//            self.userLikedPosts = try await UserManager.shared.getAllUserLikes(userId: authDataResult.uid)
-//        }
-//    }
-    
     func getLikes() {
         Task {
             let authDataResult = try AuthManager.shared.getAuthenticatedUser()
@@ -30,7 +22,11 @@ final class LikesViewModel: ObservableObject {
     func removeFromLikes(likedPostId: String) {
         Task {
             let authDataResult = try AuthManager.shared.getAuthenticatedUser()
+            let postId = likedPostsViewModel.userLikedPosts.first(where: { $0.id == likedPostId })?.postId
             try await UserManager.shared.removeUserLikedPost(userId: authDataResult.uid, likedPostId: likedPostId)
+            if let postId = postId {
+                try? await PostManager.shared.decrementLikes(postId: postId)
+            }
             getLikes()
         }
     }
@@ -50,7 +46,7 @@ struct LikesView: View {
             
             List {
                 ForEach(likedPostsViewModel.userLikedPosts, id: \.id.self) { post in
-                    PostCellViewBuilder(postId: post.postId)
+                    PostCellViewBuilder(postId: post.postId, showLikeButton: false)
                 }
                 .onDelete { indexSet in
                     for index in indexSet {
@@ -58,16 +54,6 @@ struct LikesView: View {
                     }
                 }
             }
-//            List {
-//                ForEach(likedPostsViewModel.userLikedPosts, id: \.id.self) { post in
-//                    PostCellViewBuilder(postId: post.postId)
-//                }
-//                .onDelete { indexSet in
-//                    for index in indexSet {
-//                        viewModel.removeFromLikes(likedPostId: viewModel.userLikedPosts[index].id)
-//                    }
-//                }
-//            }
             .onAppear {
                 viewModel.getLikes()
             }
