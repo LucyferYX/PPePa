@@ -8,8 +8,42 @@
 import SwiftUI
 import FirebaseFirestore
 
+//@MainActor
+//class LikedPostsViewModel: ObservableObject {
+//    @Published private(set) var userLikedPosts: [UserLikedPost] = []
+//}
+
+@MainActor
+class LikedPostsViewModel: ObservableObject {
+    static let shared = LikedPostsViewModel()
+    @Published private(set) var userLikedPosts: [UserLikedPost] = []
+    @Published var isLiked: [String: Bool] = [:]
+    
+    func updateUserLikedPosts(with posts: [UserLikedPost]) {
+        self.userLikedPosts = posts
+        self.isLiked = posts.reduce(into: [:]) { $0[$1.postId] = true }
+    }
+    
+    func isPostLiked(postId: String) -> Bool {
+        return isLiked[postId] ?? false
+    }
+    
+    func getLikedPostId(postId: String) -> String? {
+        return userLikedPosts.first(where: { $0.postId == postId })?.id
+    }
+    
+    func addUserLikedPost(postId: String) {
+        Task {
+            let authDataResult = try AuthManager.shared.getAuthenticatedUser()
+            try? await UserManager.shared.addUserLikedPost(userId: authDataResult.uid, postId: postId)
+        }
+    }
+}
+
+
 @MainActor
 class StatsViewModel: ObservableObject {
+    @ObservedObject var likedPostsViewModel = LikedPostsViewModel.shared
     @Published private(set) var posts: [Post] = []
     @Published private(set) var userLikedPosts: [UserLikedPost] = []
     @Published var selectedFilter: FilterOption? = nil
@@ -78,6 +112,13 @@ class StatsViewModel: ObservableObject {
     }
     
     // MARK: Likes
+    //    func removeUserLikedPost(postId: String) {
+    //        Task {
+    //            let authDataResult = try AuthManager.shared.getAuthenticatedUser()
+    //            try? await UserManager.shared.removeUserLikedPost(userId: authDataResult.uid, likedPostId: postId)
+    //        }
+    //    }
+    
     func addUserLikedPost(postId: String) {
         Task {
             let authDataResult = try AuthManager.shared.getAuthenticatedUser()
@@ -85,17 +126,14 @@ class StatsViewModel: ObservableObject {
         }
     }
     
-//    func removeUserLikedPost(postId: String) {
-//        Task {
-//            let authDataResult = try AuthManager.shared.getAuthenticatedUser()
-//            try? await UserManager.shared.removeUserLikedPost(userId: authDataResult.uid, likedPostId: postId)
-//        }
-//    }
-    
     func getLikes() {
         Task {
+//            let authDataResult = try AuthManager.shared.getAuthenticatedUser()
+//            self.userLikedPosts = try await UserManager.shared.getAllUserLikes(userId: authDataResult.uid)
             let authDataResult = try AuthManager.shared.getAuthenticatedUser()
-            self.userLikedPosts = try await UserManager.shared.getAllUserLikes(userId: authDataResult.uid)
+            let likes = try await UserManager.shared.getAllUserLikes(userId: authDataResult.uid)
+            self.likedPostsViewModel.updateUserLikedPosts(with: likes)
+
         }
     }
     
@@ -147,12 +185,7 @@ struct StatsView: View {
                     MainBackground()
                     List {
                         ForEach(viewModel.posts) { post in
-                            PostCellView(viewModel: viewModel, post: post)
-                                .contextMenu {
-                                    Button("Add to likes") {
-                                        viewModel.addUserLikedPost(postId: post.id)
-                                    }
-                                }
+                            PostCellView(post: post)
                             
                             if post == viewModel.posts.last {
                                 ProgressView()
@@ -165,10 +198,12 @@ struct StatsView: View {
                     }
                 }
             }
+
         }
         .onAppear {
             viewModel.getPostCount()
             viewModel.getPosts()
+            viewModel.getLikes()
         }
         .transition(.move(edge: .trailing))
         .animation(.default, value: showHStack)
