@@ -11,10 +11,30 @@ import FirebaseFirestore
 @MainActor
 class StatsViewModel: ObservableObject {
     @Published private(set) var posts: [Post] = []
+    @Published private(set) var userLikedPosts: [UserLikedPost] = []
     @Published var selectedFilter: FilterOption? = nil
     @Published var selectedType: TypeOption? = nil
     private var lastDocument: DocumentSnapshot? = nil
     
+    func getPosts() {
+        Task {
+            let (newPosts, lastDocument) = try await PostManager.shared.getAllPosts(likesDescending: selectedFilter?.likesDescending, forType: selectedType?.typeValue, count: 1, lastDocument: lastDocument)
+            self.posts.append(contentsOf: newPosts)
+            if let lastDocument {
+                self.lastDocument = lastDocument
+            }
+            self.lastDocument = lastDocument
+        }
+    }
+    
+    func getPostCount() {
+        Task{
+            let count = try await PostManager.shared.getAllPostsCount()
+            print("Post count: \(count)")
+        }
+    }
+    
+    //MARK: Filters
     enum FilterOption: String, CaseIterable {
         case noFilter
         case likesDescending
@@ -57,22 +77,46 @@ class StatsViewModel: ObservableObject {
         self.getPosts()
     }
     
-    func getPosts() {
+    // MARK: Likes
+    func addUserLikedPost(postId: String) {
         Task {
-            let (newPosts, lastDocument) = try await PostManager.shared.getAllPosts(likesDescending: selectedFilter?.likesDescending, forType: selectedType?.typeValue, count: 1, lastDocument: lastDocument)
-            self.posts.append(contentsOf: newPosts)
-            if let lastDocument {
-                self.lastDocument = lastDocument
-            }
-            self.lastDocument = lastDocument
+            let authDataResult = try AuthManager.shared.getAuthenticatedUser()
+            try? await UserManager.shared.addUserLikedPost(userId: authDataResult.uid, postId: postId)
         }
     }
     
-    func getPostCount() {
-        Task{
-            let count = try await PostManager.shared.getAllPostsCount()
-            print("Post count: \(count)")
+//    func removeUserLikedPost(postId: String) {
+//        Task {
+//            let authDataResult = try AuthManager.shared.getAuthenticatedUser()
+//            try? await UserManager.shared.removeUserLikedPost(userId: authDataResult.uid, likedPostId: postId)
+//        }
+//    }
+    
+    func getLikes() {
+        Task {
+            let authDataResult = try AuthManager.shared.getAuthenticatedUser()
+            self.userLikedPosts = try await UserManager.shared.getAllUserLikes(userId: authDataResult.uid)
         }
+    }
+    
+    func removeFromLikes(likedPostId: String) {
+        Task {
+            let authDataResult = try AuthManager.shared.getAuthenticatedUser()
+            try await UserManager.shared.removeUserLikedPost(userId: authDataResult.uid, likedPostId: likedPostId)
+            getLikes()
+        }
+    }
+
+    func isPostLiked(postId: String) async -> Bool {
+        let authDataResult = try? AuthManager.shared.getAuthenticatedUser()
+        let likedPosts = try? await UserManager.shared.getAllUserLikes(userId: authDataResult?.uid ?? "No posts")
+        return likedPosts?.contains(where: { $0.postId == postId }) ?? false
+    }
+    
+    func getLikedPostId(postId: String) async -> String? {
+        let authDataResult = try? AuthManager.shared.getAuthenticatedUser()
+        let likedPosts = try? await UserManager.shared.getAllUserLikes(userId: authDataResult?.uid ?? "No posts")
+        return likedPosts?.first(where: { $0.postId == postId })?.id
     }
     
 //    func getPostsByViews() {
@@ -94,58 +138,21 @@ struct StatsView: View {
     var body: some View {
         VStack {
             
-            MainNavigationBar(
-                title: "Stats",
-                leftButton: LeftNavigationButton(
-                    action: { self.showStatsView = false },
-                    imageName: "chevron.left",
-                    buttonText: "Back",
-                    imageInvisible: false,
-                    textInvisible: false
-                ),
-                rightButton: RightNavigationButton(
-                    action: { self.showHStack.toggle() },
-                    imageName: "slider.horizontal.3",
-                    buttonText: "Filter",
-                    imageInvisible: false,
-                    textInvisible: false
-                )
-            )
+            NavigationBar()
             
-            if showHStack {
-                HStack {
-                    Menu(viewModel.selectedFilter != nil ? "Filter: \(viewModel.selectedFilter!.rawValue)" : "Select filter") {
-                        ForEach(StatsViewModel.FilterOption.allCases, id: \.self) { filterOption in
-                            Button(filterOption.rawValue) {
-                                Task {
-                                    try? await viewModel.filterSelected(option: filterOption)
-                                }
-                            }
-                        }
-                    }
-                    
-                    Spacer()
-                    
-                    Menu(viewModel.selectedType != nil ? "Type: \(viewModel.selectedType!.rawValue)" : "Select type") {
-                        ForEach(StatsViewModel.TypeOption.allCases, id: \.self) { typeOption in
-                            Button(typeOption.rawValue) {
-                                Task {
-                                    try? await viewModel.typeSelected(option: typeOption)
-                                }
-                            }
-                        }
-                    }
-                }
-                .padding()
-                .transition(.move(edge: .top))
-            }
+            showMenu()
             
             NavigationView {
                 ZStack {
                     MainBackground()
                     List {
                         ForEach(viewModel.posts) { post in
-                            PostCellView(post: post)
+                            PostCellView(viewModel: viewModel, post: post)
+                                .contextMenu {
+                                    Button("Add to likes") {
+                                        viewModel.addUserLikedPost(postId: post.id)
+                                    }
+                                }
                             
                             if post == viewModel.posts.last {
                                 ProgressView()
@@ -176,36 +183,57 @@ struct StatsView: View {
 //}
 
 
-struct PostCellView: View {
-    let post: Post
-    
-    var body: some View {
-        HStack {
-            
-            AsyncImage(url: URL(string: post.image)) { image in
-                image
-                    .resizable()
-                    .scaledToFill()
-                    .frame(width: 70, height: 70)
-                    .cornerRadius(10)
-            } placeholder: {
-                ProgressView()
-            }
-            .frame(width: 70, height: 70)
-            .shadow(color: Colors.walnut.opacity(0.3), radius: 4, x: 0, y: 2)
-            
-            VStack {
-                Text(post.title)
-                    .font(.headline)
-                Text(post.description)
-                Label {
-                    Text(post.type)
-                } icon: {
-                    Image(systemName: "pawprint.fill")
+extension StatsView {
+    @ViewBuilder
+    func showMenu() -> some View {
+        if showHStack {
+            HStack {
+                Menu(viewModel.selectedFilter != nil ? "Filter: \(viewModel.selectedFilter!.rawValue)" : "Select filter") {
+                    ForEach(StatsViewModel.FilterOption.allCases, id: \.self) { filterOption in
+                        Button(filterOption.rawValue) {
+                            Task {
+                                try? await viewModel.filterSelected(option: filterOption)
+                            }
+                        }
+                    }
                 }
-                Text("\(post.likes ?? 0)")
+                
+                Spacer()
+                
+                Menu(viewModel.selectedType != nil ? "Type: \(viewModel.selectedType!.rawValue)" : "Select type") {
+                    ForEach(StatsViewModel.TypeOption.allCases, id: \.self) { typeOption in
+                        Button(typeOption.rawValue) {
+                            Task {
+                                try? await viewModel.typeSelected(option: typeOption)
+                            }
+                        }
+                    }
+                }
             }
-            .foregroundColor(.secondary)
+            .padding()
+            .transition(.move(edge: .top))
+        } else {
+            EmptyView()
         }
+    }
+    
+    func NavigationBar() -> some View {
+        MainNavigationBar(
+            title: "Stats",
+            leftButton: LeftNavigationButton(
+                action: { self.showStatsView = false },
+                imageName: "chevron.left",
+                buttonText: "Back",
+                imageInvisible: false,
+                textInvisible: false
+            ),
+            rightButton: RightNavigationButton(
+                action: { self.showHStack.toggle() },
+                imageName: "slider.horizontal.3",
+                buttonText: "Filter",
+                imageInvisible: false,
+                textInvisible: false
+            )
+        )
     }
 }

@@ -12,8 +12,11 @@ struct PanelContent: View {
     @StateObject private var viewModel = PanelViewModel()
     //@StateObject var mapViewModel = MapViewModel()
     @Binding var showSignInView: Bool
-    @State private var showAboutView = false
+    
     @State private var showSettingsView = false
+    @State private var showLikesView = false
+    @State private var showAboutView = false
+    
     @State private var showingDeleteAlert = false
     
     var body: some View {
@@ -158,21 +161,22 @@ struct PanelContent: View {
                 Line()
                 
                 SimpleButton(action: {
-                    print("Favorites pressed")
-                }, systemImage: "heart", buttonText: "Favorites", size: 30, color: Colors.linen)
-                SimpleButton(action: {
-                    print("Settings pressed")
                     showSettingsView = true
                 }, systemImage: "gearshape", buttonText: "Settings", size: 30, color: Colors.linen)
                 SimpleButton(action: {
-                    print("About pressed")
+                    showLikesView = true
+                }, systemImage: "heart", buttonText: "Likes", size: 30, color: Colors.linen)
+                SimpleButton(action: {
                     showAboutView = true
                 }, systemImage: "info.circle", buttonText: "About", size: 30, color: Colors.linen)
-                .sheet(isPresented: $showAboutView) {
-                    AboutView()
-                }
                 .sheet(isPresented: $showSettingsView) {
                     SettingsView()
+                }
+                .sheet(isPresented: $showLikesView) {
+                    LikesView()
+                }
+                .sheet(isPresented: $showAboutView) {
+                    AboutView()
                 }
                 
             }

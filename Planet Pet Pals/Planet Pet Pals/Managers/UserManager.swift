@@ -85,10 +85,18 @@ class UserManager {
     static let shared = UserManager()
     private init() {}
     // Firestore collection named Users
-    private let usersCollection = Firestore.firestore().collection("Users")
+    private let usersCollection: CollectionReference = Firestore.firestore().collection("Users")
     
     private func usersDocument(userId: String) -> DocumentReference {
         usersCollection.document(userId)
+    }
+    
+    private func userLikesCollection(userId: String) -> CollectionReference {
+        usersDocument(userId: userId).collection("liked_posts")
+    }
+    
+    private func userLikesDocument(userId: String, likedPostId: String) -> DocumentReference {
+        userLikesCollection(userId: userId).document(likedPostId)
     }
     
     func createNewUser(user: DatabaseUser) async throws {
@@ -123,4 +131,53 @@ class UserManager {
         ]
         try await usersDocument(userId: userId).updateData(data)
     }
+    
+    //MARK: Likes
+    func addUserLikedPost(userId: String, postId: String) async throws {
+        let document = userLikesCollection(userId: userId).document()
+        let documentId = document.documentID
+        
+        let data: [String: Any] = [
+            UserLikedPost.CodingKeys.id.rawValue : documentId,
+            UserLikedPost.CodingKeys.postId.rawValue : postId,
+            UserLikedPost.CodingKeys.dateCreated.rawValue : Timestamp()
+        ]
+        
+        try await document.setData(data, merge: false)
+    }
+    
+    func removeUserLikedPost(userId: String, likedPostId: String) async throws {
+        try await userLikesDocument(userId: userId, likedPostId: likedPostId).delete()
+    }
+    
+    func getAllUserLikes(userId: String) async throws -> [UserLikedPost] {
+        try await userLikesCollection(userId: userId).getDocuments(as: UserLikedPost.self)
+    }
 }
+
+struct UserLikedPost: Codable {
+    let id: String
+    let postId: String
+    let dateCreated: Date
+
+    enum CodingKeys: String, CodingKey {
+        case id = "id"
+        case postId = "post_id"
+        case dateCreated = "date_created"
+    }
+    
+    init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        id = try container.decode(String.self, forKey: .id)
+        postId = try container.decode(String.self, forKey: .postId)
+        dateCreated = try container.decode(Date.self, forKey: .dateCreated)
+    }
+    
+    func encode(to encoder: Encoder) throws {
+        var container = encoder.container(keyedBy: CodingKeys.self)
+        try container.encode(id, forKey: .id)
+        try container.encode(postId, forKey: .postId)
+        try container.encode(dateCreated, forKey: .dateCreated)
+    }
+}
+
