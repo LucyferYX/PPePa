@@ -54,11 +54,13 @@ struct SimpleButton: View {
                     .aspectRatio(contentMode: .fit)
                     .frame(width: size, height: size)
                     .foregroundColor(color)
+                    .padding(.leading)
             }
             Text(buttonText)
                 .padding(-5)
                 .font(.custom("Baloo2-SemiBold", size: size))
                 .foregroundColor(color)
+                .padding(.leading)
                 
         }
     }

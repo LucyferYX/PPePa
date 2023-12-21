@@ -17,6 +17,7 @@ struct PostCellView: View {
 
     let post: Post
     let showLikeButton: Bool
+    let showLikes: Bool
 
     var body: some View {
         HStack {
@@ -25,28 +26,39 @@ struct PostCellView: View {
                 image
                     .resizable()
                     .scaledToFill()
-                    .frame(width: 70, height: 70)
+                    .frame(width: 75, height: 75)
                     .cornerRadius(10)
             } placeholder: {
                 ProgressView()
             }
             .frame(width: 70, height: 70)
             .shadow(color: Colors.walnut.opacity(0.3), radius: 4, x: 0, y: 2)
+            .padding(.trailing)
 
 
             VStack(alignment: .leading, spacing: 4) {
+                Text("Post")
+                    .font(.custom("Baloo2-Regular", size: 10))
+                    .opacity(0)
                 Text(post.title)
                     .font(.headline)
                     .foregroundColor(.primary)
-                Text(post.description)
-                Label {
-                    Text(post.type)
-                } icon: {
-                    Image(systemName: "pawprint.fill")
+                    .font(.custom("Baloo2-SemiBold", size: 20))
+//                Text(post.description)
+//                Label {
+//                    Text(post.type)
+//                } icon: {
+//                    Image(systemName: "pawprint.fill")
+//                }
+                if showLikes {
+                    Text("Likes: \(post.likes ?? 0)")
+                        .font(.custom("Baloo2-Regular", size: 15))
+                        .foregroundColor(.secondary)
                 }
-                Text("Likes: \(post.likes ?? 0)")
             }
             .foregroundColor(.secondary)
+            
+            Spacer()
             
             if showLikeButton {
                 Button(action: {
@@ -81,6 +93,14 @@ struct PostCellView: View {
                         isLiked = likedPostsViewModel.isPostLiked(postId: post.id)
                     }
                 }
+            } else {
+                HStack {
+                    Image(systemName: "chevron.left")
+                    Text("Delete")
+                        .font(.headline)
+                        .foregroundColor(.primary)
+                        .font(.custom("Baloo2-SemiBold", size: 20))
+                }
             }
 
             if showMessage {
@@ -91,6 +111,8 @@ struct PostCellView: View {
             }
 
         }
+        .cornerRadius(10)
+        .background(Colors.linen)
     }
 }
 
@@ -100,11 +122,13 @@ struct PostCellViewBuilder: View {
     @State private var post: Post? = nil
     let postId: String
     let showLikeButton: Bool
+    let showLikes: Bool
     
     var body: some View {
         ZStack {
             if let post {
-                PostCellView(post: post, showLikeButton: showLikeButton)
+                PostCellView(post: post, showLikeButton: showLikeButton, showLikes: showLikes)
+                    .listRowBackground(Colors.walnut)
             }
         }
         .task {

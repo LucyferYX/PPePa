@@ -11,6 +11,13 @@ import SwiftUI
 final class LikesViewModel: ObservableObject {
     @ObservedObject var likedPostsViewModel = LikedPostsViewModel.shared
 
+//    func addListenerForLikes() {
+//        guard let authDataResult = try? AuthManager.shared.getAuthenticatedUser() else { return }
+//        UserManager.shared.addListenerForPostsLiked(userId: authDataResult.uid) { [weak self] posts in
+//            self?.likedPostsViewModel.userLikedPosts = posts
+//        }
+//    }
+
     func getLikes() {
         Task {
             let authDataResult = try AuthManager.shared.getAuthenticatedUser()
@@ -36,26 +43,37 @@ final class LikesViewModel: ObservableObject {
 struct LikesView: View {
     @StateObject private var viewModel = LikesViewModel()
     @StateObject var likedPostsViewModel = LikedPostsViewModel.shared
-
     
+    init() {
+       UITableView.appearance().separatorStyle = .none
+        UITableViewCell.appearance().backgroundColor = .red
+       UITableView.appearance().backgroundColor = .green
+    }
+
     var body: some View {
-        VStack {
-            Text("Your liked posts")
-                .font(.custom("Baloo2-SemiBold", size: 20))
-                .foregroundColor(Colors.linen)
-            
-            List {
-                ForEach(likedPostsViewModel.userLikedPosts, id: \.id.self) { post in
-                    PostCellViewBuilder(postId: post.postId, showLikeButton: false)
-                }
-                .onDelete { indexSet in
-                    for index in indexSet {
-                        viewModel.removeFromLikes(likedPostId: likedPostsViewModel.userLikedPosts[index].id)
+        ZStack {
+            Colors.walnut.ignoresSafeArea()
+            VStack {
+                Text("Your liked posts")
+                    .font(.custom("Baloo2-SemiBold", size: 30))
+                    .foregroundColor(Colors.linen)
+                    .padding(.top)
+                List {
+                    ForEach(likedPostsViewModel.userLikedPosts, id: \.id.self) { post in
+                        PostCellViewBuilder(postId: post.postId, showLikeButton: false, showLikes: true)
+                            .listRowBackground(Colors.linen)
+                    }
+                    .onDelete { indexSet in
+                        for index in indexSet {
+                            viewModel.removeFromLikes(likedPostId: likedPostsViewModel.userLikedPosts[index].id)
+                        }
                     }
                 }
-            }
-            .onAppear {
-                viewModel.getLikes()
+                .background(Colors.walnut)
+                .scrollContentBackground(.hidden)
+                .onAppear {
+                    viewModel.getLikes()
+                }
             }
         }
     }

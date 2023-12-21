@@ -10,7 +10,6 @@ import FirebaseAuth
 
 struct PanelContent: View {
     @StateObject private var viewModel = PanelViewModel()
-    //@StateObject var mapViewModel = MapViewModel()
     @Binding var showSignInView: Bool
     
     @State private var showSettingsView = false
@@ -28,7 +27,7 @@ struct PanelContent: View {
                 }, systemImage: nil, buttonText: "Username", size: 30, color: Colors.linen)
                 
                 HStack {
-                    RoundImage(systemName: "person.circle", size: 80, color: Colors.linen)
+                    RoundImage(systemName: "person.circle", size: 60, color: Colors.linen)
                     VStack(alignment: .leading) {
                         Text("LN3569")
                             .font(.custom("Baloo2-SemiBold", size: 20))

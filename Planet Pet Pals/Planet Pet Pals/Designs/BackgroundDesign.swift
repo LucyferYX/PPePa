@@ -14,6 +14,13 @@ struct MainBackground: View {
     }
 }
 
+struct MainBackground2: View {
+    var body: some View {
+        LinearGradient(gradient: Gradient(colors: [Colors.salmon, Colors.walnut]), startPoint: .topLeading, endPoint: .bottomTrailing)
+            .edgesIgnoringSafeArea(.all)
+    }
+}
+
 //struct SimpleBackground: View {
 //    var body: some View {
 //        .background(Colors.walnut)

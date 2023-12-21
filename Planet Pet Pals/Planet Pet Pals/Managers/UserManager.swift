@@ -153,6 +153,18 @@ class UserManager {
     func getAllUserLikes(userId: String) async throws -> [UserLikedPost] {
         try await userLikesCollection(userId: userId).getDocuments(as: UserLikedPost.self)
     }
+    
+    func addListenerForPostsLiked(userId: String, completion: @escaping (_ posts: [UserLikedPost]) -> Void) {
+        userLikesCollection(userId: userId).addSnapshotListener { querySnapshot, error in
+            guard let documents = querySnapshot?.documents else {
+                print("No documents")
+                return
+            }
+            
+            let posts: [UserLikedPost] = documents.compactMap({try? $0.data(as: UserLikedPost.self)})
+            completion(posts)
+        }
+    }
 }
 
 struct UserLikedPost: Codable {
