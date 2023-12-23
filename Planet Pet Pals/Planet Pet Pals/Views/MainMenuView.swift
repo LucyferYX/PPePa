@@ -23,11 +23,12 @@ struct MainMenuView: View {
     
     @State private var showPanelView = false
     @State private var showProfileView = false
-    @State private var showAddView = false
+    @State private var showCreateView = false
     @State private var showMapView = false
     @State private var showStatsView = false
     
     @State private var keyboardIsShown: Bool = false
+    @State private var showButton: Bool = false
 
     
     var body: some View {
@@ -91,39 +92,10 @@ struct MainMenuView: View {
                         Spacer()
                         
                         // Main buttons
-                        if !keyboardIsShown {
-                            HStack(spacing: -3) {
-                                MainButton(action: { showAddView.toggle() },
-                                           imageName: "camera.fill",
-                                           buttonText: "Create",
-                                           imageColor: Colors.salmon,
-                                           buttonColor: Colors.snow)
-                                .padding()
-                                
-                                MainButton(action: { self.showMapView = true },
-                                           imageName: "map.fill",
-                                           buttonText: "Map",
-                                           imageColor: Colors.walnut,
-                                           buttonColor: Colors.snow)
-                                .padding()
-                                
-                                MainButton(action: { self.showStatsView = true },
-                                           imageName: "chart.bar.fill",
-                                           buttonText: "Stats",
-                                           imageColor: Colors.salmon,
-                                           buttonColor: Colors.snow)
-                                .padding()
-                            }
-                            // Opens the view modally
-//                            .fullScreenCover(isPresented: $showMapView) {
-//                                MapView(showMapView: $showMapView, region: "Europe")
-//                            }
-                            .fullScreenCover(isPresented: $showMapView) {
-                                MapView(showMapView: $showMapView)
-                            }
-                            .fullScreenCover(isPresented: $showAddView) {
-                                CreateView(showAddView: $showAddView)
-                            }
+                        if showButton {
+                            mainButtons
+                        } else if !keyboardIsShown {
+                            mainButtons
                         }
                     }
                     PanelView(showSignInView: $showSignInView , width: geometry.size.width*0.7, showPanelView: self.showPanelView, closePanelView: { self.showPanelView = false })
@@ -136,6 +108,7 @@ struct MainMenuView: View {
             }
             .onAppear {
                 addKeyboardNotifications()
+                self.showButton = false
             }
             .onDisappear {
                 removeKeyboardNotifications()
@@ -192,6 +165,39 @@ struct URLImage: View {
             self.uiImage = UIImage(data: imageData)
         } else {
             print("Failed to decode Base64 image")
+        }
+    }
+}
+
+extension MainMenuView {
+    var mainButtons: some View {
+        HStack(spacing: -3) {
+            MainButton(action: { showCreateView.toggle(); showButton.toggle() },
+                       imageName: "camera.fill",
+                       buttonText: "Create",
+                       imageColor: Colors.salmon,
+                       buttonColor: Colors.snow)
+            .padding()
+            
+            MainButton(action: { self.showMapView = true },
+                       imageName: "map.fill",
+                       buttonText: "Map",
+                       imageColor: Colors.walnut,
+                       buttonColor: Colors.snow)
+            .padding()
+            
+            MainButton(action: { self.showStatsView = true },
+                       imageName: "chart.bar.fill",
+                       buttonText: "Stats",
+                       imageColor: Colors.salmon,
+                       buttonColor: Colors.snow)
+            .padding()
+        }
+        .fullScreenCover(isPresented: $showMapView) {
+            MapView(showMapView: $showMapView)
+        }
+        .fullScreenCover(isPresented: $showCreateView) {
+            CreateView(showCreateView: $showCreateView, showButton: $showButton)
         }
     }
 }

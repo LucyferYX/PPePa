@@ -19,3 +19,11 @@ let regions = [
         "Australia and Oceania": ((-25.0, 135.0), (50.0, 70.0)),
         "Antarctica": ((-80.0, 0.0), (20.0, 360.0))
 ]
+
+let animals = [
+    "dog",
+    "cat",
+    "mouse",
+    "fish",
+    "snake"
+]

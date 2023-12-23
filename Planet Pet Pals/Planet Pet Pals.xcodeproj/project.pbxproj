@@ -45,7 +45,6 @@
 		DCB488A22B212D1E0092201A /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = DCB488A12B212D1E0092201A /* FirebaseAuth */; };
 		DCB488A42B212D1E0092201A /* FirebaseDatabase in Frameworks */ = {isa = PBXBuildFile; productRef = DCB488A32B212D1E0092201A /* FirebaseDatabase */; };
 		DCB488A62B212D1E0092201A /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = DCB488A52B212D1E0092201A /* FirebaseFirestore */; };
-		DCB488A82B212D1E0092201A /* FirebaseMessaging in Frameworks */ = {isa = PBXBuildFile; productRef = DCB488A72B212D1E0092201A /* FirebaseMessaging */; };
 		DCB488AA2B212D1E0092201A /* FirebasePerformance in Frameworks */ = {isa = PBXBuildFile; productRef = DCB488A92B212D1E0092201A /* FirebasePerformance */; };
 		DCB488AC2B212D1E0092201A /* FirebaseStorage in Frameworks */ = {isa = PBXBuildFile; productRef = DCB488AB2B212D1E0092201A /* FirebaseStorage */; };
 		DCB94C472B2E586600661077 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = DCB94C462B2E586600661077 /* LaunchScreen.storyboard */; };
@@ -120,7 +119,6 @@
 				DCB488A62B212D1E0092201A /* FirebaseFirestore in Frameworks */,
 				DCB488AA2B212D1E0092201A /* FirebasePerformance in Frameworks */,
 				DC3ECCBA2B2CF6C100D142B6 /* FirebaseFirestoreSwift in Frameworks */,
-				DCB488A82B212D1E0092201A /* FirebaseMessaging in Frameworks */,
 				DCB488AC2B212D1E0092201A /* FirebaseStorage in Frameworks */,
 				DCB488A02B212D1E0092201A /* FirebaseAnalytics in Frameworks */,
 				DCB488A22B212D1E0092201A /* FirebaseAuth in Frameworks */,
@@ -322,7 +320,6 @@
 				DCB488A12B212D1E0092201A /* FirebaseAuth */,
 				DCB488A32B212D1E0092201A /* FirebaseDatabase */,
 				DCB488A52B212D1E0092201A /* FirebaseFirestore */,
-				DCB488A72B212D1E0092201A /* FirebaseMessaging */,
 				DCB488A92B212D1E0092201A /* FirebasePerformance */,
 				DCB488AB2B212D1E0092201A /* FirebaseStorage */,
 				DC9158EB2B2A44890098A968 /* GoogleSignIn */,
@@ -695,11 +692,6 @@
 			isa = XCSwiftPackageProductDependency;
 			package = DCB4889E2B212D1D0092201A /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
 			productName = FirebaseFirestore;
-		};
-		DCB488A72B212D1E0092201A /* FirebaseMessaging */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = DCB4889E2B212D1D0092201A /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
-			productName = FirebaseMessaging;
 		};
 		DCB488A92B212D1E0092201A /* FirebasePerformance */ = {
 			isa = XCSwiftPackageProductDependency;
