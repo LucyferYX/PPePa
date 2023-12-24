@@ -11,9 +11,9 @@ import FirebaseFirestore
 @MainActor
 class LikedPostsViewModel: ObservableObject {
     static let shared = LikedPostsViewModel()
-    @Published private(set) var userLikedPosts: [UserLikedPost] = []
+    @Published var userLikedPosts: [UserLikedPost] = []
     @Published var isLiked: [String: Bool] = [:]
-    
+        
     func updateUserLikedPosts(with posts: [UserLikedPost]) {
         self.userLikedPosts = posts
         self.isLiked = posts.reduce(into: [:]) { $0[$1.postId] = true }

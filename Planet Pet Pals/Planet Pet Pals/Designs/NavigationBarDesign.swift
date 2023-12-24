@@ -13,7 +13,7 @@ struct MainNavigationBar: View {
     let rightButton: RightNavigationButton
 
     var body: some View {
-        HStack {
+        HStack(spacing: -10) {
             leftButton
                 .padding(.leading)
             Spacer()

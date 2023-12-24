@@ -20,10 +20,8 @@ struct ProfileView: View {
 
     var body: some View {
         VStack {
-            Button("Back") {
-                showProfileView = false
-            }
-            .padding()
+            NavigationBar()
+            
             List {
                 if let user = viewModel.user {
                     
@@ -76,5 +74,27 @@ struct ProfileView: View {
                 }
             })
         }
+    }
+}
+
+extension ProfileView {
+    func NavigationBar() -> some View {
+        MainNavigationBar(
+            title: "Profile",
+            leftButton: LeftNavigationButton(
+                action: { self.showProfileView = false },
+                imageName: "chevron.left",
+                buttonText: "Back",
+                imageInvisible: false,
+                textInvisible: false
+            ),
+            rightButton: RightNavigationButton(
+                action: {  },
+                imageName: "chevron.left",
+                buttonText: "Back",
+                imageInvisible: true,
+                textInvisible: true
+            )
+        )
     }
 }

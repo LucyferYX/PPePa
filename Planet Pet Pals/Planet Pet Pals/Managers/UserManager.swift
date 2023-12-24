@@ -167,10 +167,14 @@ class UserManager {
     }
 }
 
-struct UserLikedPost: Codable {
+struct UserLikedPost: Codable, Equatable {
     let id: String
     let postId: String
     let dateCreated: Date
+    
+    static func == (lhs: UserLikedPost, rhs: UserLikedPost) -> Bool {
+        return lhs.id == rhs.id
+    }
 
     enum CodingKeys: String, CodingKey {
         case id = "id"

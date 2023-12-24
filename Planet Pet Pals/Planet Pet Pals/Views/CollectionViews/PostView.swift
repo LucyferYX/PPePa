@@ -23,10 +23,7 @@ struct PostView: View {
 
     var body: some View {
         VStack {
-            Button("Back") {
-                showPostView = false
-            }
-            .padding()
+            NavigationBar()
             List {
                 if let post = viewModel.post {
                     Text("Post id: \(post.postId)")
@@ -62,10 +59,10 @@ extension PostView {
             ),
             rightButton: RightNavigationButton(
                 action: {  },
-                imageName: "slider.horizontal.3",
-                buttonText: "Filter",
-                imageInvisible: false,
-                textInvisible: false
+                imageName: "chevron.left",
+                buttonText: "Back",
+                imageInvisible: true,
+                textInvisible: true
             )
         )
     }

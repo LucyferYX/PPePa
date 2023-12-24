@@ -75,7 +75,7 @@ struct PostCellView: View {
                     HStack {
                         Button(action: {
                             if isLiked {
-                                print("This post has already been liked: \(post.postId)")
+                                print("Post with ID has already been liked: \(post.postId)")
                             } else {
                                 likedPostsViewModel.addUserLikedPost(postId: post.id)
                                 isLiked = true
@@ -83,19 +83,18 @@ struct PostCellView: View {
                                     showLikeAnimation = true
                                 }
                                 showMessage = true
-                                DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+                                DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
                                     withAnimation(.easeInOut(duration: 0.5)) {
                                         showMessage = false
                                     }
                                 }
-                                print("You liked post: \(post.postId)")
+                                print("Liked post with ID: \(post.postId)")
                             }
                         }) {
                             Image(systemName: isLiked ? "heart.fill" : "heart")
                                 .foregroundColor(isLiked ? .red : .gray)
-                                //.scaleEffect(showLikeAnimation ? 1.5 : 1.0)
                                 .animation(.easeInOut(duration: 0.2), value: showLikeAnimation)
-                                .frame(width: 30, height: 30)
+                                .frame(width: 50, height: 50)
                         }
                         .onAppear {
                             Task {
@@ -124,8 +123,8 @@ struct PostCellView: View {
                 if showMessage {
                     Text("Post liked!")
                         .transition(.move(edge: .bottom))
-                        .font(.custom("Baloo2-Regular", size: 15))
-                        .lineSpacing(-4)
+                        .font(.custom("Baloo2-Regular", size: 18))
+                        .lineSpacing(-7)
                 }
 
             }

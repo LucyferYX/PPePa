@@ -63,8 +63,8 @@ extension StatsView {
     @ViewBuilder
     func showMenu() -> some View {
         if showHStack {
-            HStack {
-                Menu(viewModel.selectedFilter != nil ? "Filter: \(viewModel.selectedFilter!.rawValue)" : "Select filter") {
+            HStack(spacing: 0) {
+                Menu {
                     ForEach(StatsViewModel.FilterOption.allCases, id: \.self) { filterOption in
                         Button(filterOption.rawValue) {
                             Task {
@@ -72,11 +72,19 @@ extension StatsView {
                             }
                         }
                     }
+                } label: {
+                    if viewModel.selectedFilter != nil {
+                        Text("\(viewModel.selectedFilter!.rawValue)")
+                            .font(Font.custom("Baloo2-SemiBold", size: 20))
+                    } else {
+                        Text("Select filter")
+                            .font(Font.custom("Baloo2-SemiBold", size: 20))
+                    }
                 }
                 
                 Spacer()
                 
-                Menu(viewModel.selectedType != nil ? "Type: \(viewModel.selectedType!.rawValue)" : "Select type") {
+                Menu {
                     ForEach(StatsViewModel.TypeOption.allCases, id: \.self) { typeOption in
                         Button(typeOption.rawValue) {
                             Task {
@@ -84,9 +92,18 @@ extension StatsView {
                             }
                         }
                     }
+                } label: {
+                    if viewModel.selectedFilter != nil {
+                        Text("\(viewModel.selectedFilter!.rawValue)")
+                            .font(Font.custom("Baloo2-SemiBold", size: 20))
+                    } else {
+                        Text("Select type")
+                            .font(Font.custom("Baloo2-SemiBold", size: 20))
+                    }
                 }
             }
-            .padding()
+            .padding(.leading)
+            .padding(.trailing)
             .transition(.move(edge: .top))
         } else {
             EmptyView()
