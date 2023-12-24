@@ -33,14 +33,25 @@ final class Utilities {
     
     @MainActor
     func topViewController(controller: UIViewController? = nil) -> UIViewController? {
-        let controller = controller ?? DispatchQueue.main.sync {
-            UIApplication.shared.connectedScenes
-                .filter({$0.activationState == .foregroundActive})
-                .map({$0 as? UIWindowScene})
-                .compactMap({$0})
-                .first?.windows
-                .filter({$0.isKeyWindow}).first?.rootViewController
-        }
+        let controller = controller ?? {
+            if Thread.isMainThread {
+                return UIApplication.shared.connectedScenes
+                    .filter({$0.activationState == .foregroundActive})
+                    .map({$0 as? UIWindowScene})
+                    .compactMap({$0})
+                    .first?.windows
+                    .filter({$0.isKeyWindow}).first?.rootViewController
+            } else {
+                return DispatchQueue.main.sync {
+                    UIApplication.shared.connectedScenes
+                        .filter({$0.activationState == .foregroundActive})
+                        .map({$0 as? UIWindowScene})
+                        .compactMap({$0})
+                        .first?.windows
+                        .filter({$0.isKeyWindow}).first?.rootViewController
+                }
+            }
+        }()
         if let navigationController = controller as? UINavigationController {
             return topViewController(controller: navigationController.visibleViewController)
         }
@@ -54,6 +65,31 @@ final class Utilities {
         }
         return controller
     }
+    
+//    @MainActor
+//    func topViewController(controller: UIViewController? = nil) -> UIViewController? {
+//        let controller = controller ?? DispatchQueue.main.sync {
+//            UIApplication.shared.connectedScenes
+//                .filter({$0.activationState == .foregroundActive})
+//                .map({$0 as? UIWindowScene})
+//                .compactMap({$0})
+//                .first?.windows
+//                .filter({$0.isKeyWindow}).first?.rootViewController
+//        }
+//        if let navigationController = controller as? UINavigationController {
+//            return topViewController(controller: navigationController.visibleViewController)
+//        }
+//        if let tabController = controller as? UITabBarController {
+//            if let selected = tabController.selectedViewController {
+//                return topViewController(controller: selected)
+//            }
+//        }
+//        if let presented = controller?.presentedViewController {
+//            return topViewController(controller: presented)
+//        }
+//        return controller
+//    }
+    
 //    @MainActor
 //    func topViewController(controller: UIViewController? = nil) -> UIViewController? {
 //        let controller = controller ?? UIApplication.shared.keyWindow?.rootViewController

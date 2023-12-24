@@ -84,7 +84,7 @@ class UserManager {
     // better not to use singletons, check alternatives
     static let shared = UserManager()
     private init() {}
-    // Firestore collection named Users
+
     private let usersCollection: CollectionReference = Firestore.firestore().collection("Users")
     
     private func usersDocument(userId: String) -> DocumentReference {
@@ -165,35 +165,12 @@ class UserManager {
             completion(posts)
         }
     }
-}
-
-struct UserLikedPost: Codable, Equatable {
-    let id: String
-    let postId: String
-    let dateCreated: Date
     
-    static func == (lhs: UserLikedPost, rhs: UserLikedPost) -> Bool {
-        return lhs.id == rhs.id
-    }
-
-    enum CodingKeys: String, CodingKey {
-        case id = "id"
-        case postId = "post_id"
-        case dateCreated = "date_created"
-    }
-    
-    init(from decoder: Decoder) throws {
-        let container = try decoder.container(keyedBy: CodingKeys.self)
-        id = try container.decode(String.self, forKey: .id)
-        postId = try container.decode(String.self, forKey: .postId)
-        dateCreated = try container.decode(Date.self, forKey: .dateCreated)
-    }
-    
-    func encode(to encoder: Encoder) throws {
-        var container = encoder.container(keyedBy: CodingKeys.self)
-        try container.encode(id, forKey: .id)
-        try container.encode(postId, forKey: .postId)
-        try container.encode(dateCreated, forKey: .dateCreated)
+    func updateUserAnonymousStatusAndEmail(userId: String, isAnonymous: Bool, email: String?) async throws {
+        let data: [String: Any] = [
+            DatabaseUser.CodingKeys.isAnonymous.rawValue : isAnonymous,
+            DatabaseUser.CodingKeys.email.rawValue : email ?? NSNull()
+        ]
+        try await usersDocument(userId: userId).updateData(data)
     }
 }
-

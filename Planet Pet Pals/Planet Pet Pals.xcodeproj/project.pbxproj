@@ -17,6 +17,7 @@
 		7EC372632ADDFEBF001876AD /* Baloo2.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 7EC372622ADDFEBF001876AD /* Baloo2.ttf */; };
 		7EC810DC2AD1881B00A5DDD0 /* ButtonDesign.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EC810DB2AD1881B00A5DDD0 /* ButtonDesign.swift */; };
 		DC14520A2B0D44F30059FE96 /* MapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC1452092B0D44F30059FE96 /* MapView.swift */; };
+		DC334A2A2B38D4CA00B027B8 /* UserLikedPostManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC334A292B38D4CA00B027B8 /* UserLikedPostManager.swift */; };
 		DC38EEBE2B3726E60000AEB5 /* StorageManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC38EEBD2B3726E60000AEB5 /* StorageManager.swift */; };
 		DC3ECCBA2B2CF6C100D142B6 /* FirebaseFirestoreSwift in Frameworks */ = {isa = PBXBuildFile; productRef = DC3ECCB92B2CF6C100D142B6 /* FirebaseFirestoreSwift */; };
 		DC3ECCBD2B2CF9A100D142B6 /* PanelViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC3ECCBC2B2CF9A100D142B6 /* PanelViewModel.swift */; };
@@ -75,6 +76,7 @@
 		7EC810DB2AD1881B00A5DDD0 /* ButtonDesign.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ButtonDesign.swift; sourceTree = "<group>"; };
 		7EE375752AD04FD500C9D0DA /* Planet-Pet-Pals-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "Planet-Pet-Pals-Info.plist"; sourceTree = "<group>"; };
 		DC1452092B0D44F30059FE96 /* MapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapView.swift; sourceTree = "<group>"; };
+		DC334A292B38D4CA00B027B8 /* UserLikedPostManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserLikedPostManager.swift; sourceTree = "<group>"; };
 		DC38EEBD2B3726E60000AEB5 /* StorageManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StorageManager.swift; sourceTree = "<group>"; };
 		DC3ECCBC2B2CF9A100D142B6 /* PanelViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PanelViewModel.swift; sourceTree = "<group>"; };
 		DC3ECCBE2B2CFABD00D142B6 /* AuthViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthViewModel.swift; sourceTree = "<group>"; };
@@ -260,6 +262,7 @@
 				DC3ECCC52B2D0EA000D142B6 /* UserManager.swift */,
 				DC4540782B30B005008322F9 /* PostManager.swift */,
 				DC38EEBD2B3726E60000AEB5 /* StorageManager.swift */,
+				DC334A292B38D4CA00B027B8 /* UserLikedPostManager.swift */,
 			);
 			path = Managers;
 			sourceTree = "<group>";
@@ -415,6 +418,7 @@
 				DC3ECCBD2B2CF9A100D142B6 /* PanelViewModel.swift in Sources */,
 				7EC810DC2AD1881B00A5DDD0 /* ButtonDesign.swift in Sources */,
 				DCA12F2C2B23B438001B08C2 /* DataManagerView.swift in Sources */,
+				DC334A2A2B38D4CA00B027B8 /* UserLikedPostManager.swift in Sources */,
 				DCF671D82B24EDE00012D505 /* CreateView.swift in Sources */,
 				DCB4889D2B20FFBB0092201A /* LoginView.swift in Sources */,
 				DC14520A2B0D44F30059FE96 /* MapView.swift in Sources */,

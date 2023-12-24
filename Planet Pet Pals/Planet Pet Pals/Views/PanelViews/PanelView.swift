@@ -156,6 +156,8 @@ struct PanelContent: View {
                 }
                 .background(Color.clear)
                 .frame(height: 300)
+                .padding(.bottom)
+                .padding(.top)
                 
                 Line()
                 

@@ -48,16 +48,34 @@ class PanelViewModel: ObservableObject {
         try await AuthManager.shared.updatePassword(password: password)
     }
     
-    func linkGoogleAccount() async throws {
+    @Published var errorMessage: String? = nil
+
+    func linkGoogleAccount() async {
         let helper = SignInGoogleHelper()
-        let tokens = try await helper.signIn()
-        self.authUser = try await AuthManager.shared.linkGoogle(tokens: tokens)
+        do {
+            let tokens = try await helper.signIn()
+            if let authUser = try? await AuthManager.shared.linkGoogle(tokens: tokens) {
+                self.authUser = authUser
+                try await UserManager.shared.updateUserAnonymousStatusAndEmail(userId: authUser.uid, isAnonymous: authUser.isAnonymous, email: authUser.email)
+            } else {
+                self.errorMessage = "Failed to link Google account."
+            }
+        } catch {
+            self.errorMessage = "An error occurred: \(error.localizedDescription)"
+        }
     }
     
-    // needs separate screen
+//    func linkGoogleAccount() async throws {
+//        let helper = SignInGoogleHelper()
+//        let tokens = try await helper.signIn()
+//        self.authUser = try await AuthManager.shared.linkGoogle(tokens: tokens)
+//        try await UserManager.shared.updateUserAnonymousStatusAndEmail(userId: authUser!.uid, isAnonymous: authUser!.isAnonymous, email: authUser!.email)
+//    }
+    
     func linkEmailAccount() async throws {
         let email = "hello123@gmail.com"
         let password = "hello123"
         self.authUser = try await AuthManager.shared.linkEmail(email: email, password: password)
+        try await UserManager.shared.updateUserAnonymousStatusAndEmail(userId: authUser!.uid, isAnonymous: authUser!.isAnonymous, email: authUser!.email)
     }
 }

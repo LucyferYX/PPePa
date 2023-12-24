@@ -31,7 +31,6 @@ class AuthManager: ObservableObject {
     static let shared = AuthManager()
     init() {}
     
-    // Doesn't have async meaning it'll check for user locally
     func getAuthenticatedUser() throws -> AuthDataResultModel {
         guard let user = Auth.auth().currentUser else {
             throw URLError(.badServerResponse)

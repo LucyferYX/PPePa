@@ -32,6 +32,10 @@ struct LikesView: View {
                         .font(.custom("Baloo2-SemiBold", size: 30))
                         .foregroundColor(Colors.linen)
                         .padding(.top)
+                    Text("Swipe left to remove from likes")
+                        .font(.custom("Baloo2-SemiBold", size: 25))
+                        .foregroundColor(Colors.linen)
+                        .foregroundColor(.secondary)
                     List {
                         ForEach(likedPostsViewModel.userLikedPosts, id: \.id.self) { post in
                             PostCellViewBuilder(postId: post.postId, showLikeButton: false, showLikes: true)
