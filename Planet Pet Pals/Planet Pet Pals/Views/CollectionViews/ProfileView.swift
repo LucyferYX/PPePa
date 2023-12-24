@@ -6,11 +6,12 @@
 //
 
 import SwiftUI
-import Combine
+import PhotosUI
 
 struct ProfileView: View {
     @StateObject private var viewModel = ProfileViewModel()
-    @Binding var showSignInView: Bool
+    @Binding var showProfileView: Bool
+    @State private var selectedItem: PhotosPickerItem? = nil
     
     let postOptions: [String] = ["cat", "dog", "mouse"]
     private func postSelected(text: String) -> Bool {
@@ -20,7 +21,7 @@ struct ProfileView: View {
     var body: some View {
         VStack {
             Button("Back") {
-                showSignInView = false
+                showProfileView = false
             }
             .padding()
             List {
@@ -56,6 +57,10 @@ struct ProfileView: View {
                         }
                     }
                     Text("User favorites: \((user.favorites ?? []).joined(separator: ", "))")
+                    
+                    PhotosPicker(selection: $selectedItem, matching: .images, photoLibrary: .shared()) {
+                        Text("Select a photo")
+                    }
                 }
             }
             .task {
@@ -65,6 +70,11 @@ struct ProfileView: View {
                     print("Failed to load user: \(error)")
                 }
             }
+            .onChange(of: selectedItem, perform: { newValue in
+                if let newValue {
+                    viewModel.saveProfileImage(item: newValue)
+                }
+            })
         }
     }
 }

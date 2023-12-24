@@ -49,7 +49,7 @@ struct MainMenuView: View {
                         }
                         .ignoresSafeArea(.keyboard)
                         .fullScreenCover(isPresented: $showProfileView) {
-                            ProfileView(showSignInView: $showProfileView)
+                            ProfileView(showProfileView: $showProfileView)
                         }
                         
                         

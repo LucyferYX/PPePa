@@ -17,6 +17,7 @@
 		7EC372632ADDFEBF001876AD /* Baloo2.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 7EC372622ADDFEBF001876AD /* Baloo2.ttf */; };
 		7EC810DC2AD1881B00A5DDD0 /* ButtonDesign.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EC810DB2AD1881B00A5DDD0 /* ButtonDesign.swift */; };
 		DC14520A2B0D44F30059FE96 /* MapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC1452092B0D44F30059FE96 /* MapView.swift */; };
+		DC38EEBE2B3726E60000AEB5 /* StorageManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC38EEBD2B3726E60000AEB5 /* StorageManager.swift */; };
 		DC3ECCBA2B2CF6C100D142B6 /* FirebaseFirestoreSwift in Frameworks */ = {isa = PBXBuildFile; productRef = DC3ECCB92B2CF6C100D142B6 /* FirebaseFirestoreSwift */; };
 		DC3ECCBD2B2CF9A100D142B6 /* PanelViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC3ECCBC2B2CF9A100D142B6 /* PanelViewModel.swift */; };
 		DC3ECCBF2B2CFABD00D142B6 /* AuthViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC3ECCBE2B2CFABD00D142B6 /* AuthViewModel.swift */; };
@@ -36,6 +37,7 @@
 		DC9158F32B2A4DFC0098A968 /* Utilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC9158F22B2A4DFC0098A968 /* Utilities.swift */; };
 		DC9366342B2F0C880077D2F7 /* LaunchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC9366332B2F0C880077D2F7 /* LaunchView.swift */; };
 		DC97E3552B14D4BF00014018 /* RegionData.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC97E3542B14D4BF00014018 /* RegionData.swift */; };
+		DC9B47542B37763200721504 /* PostView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC9B47532B37763200721504 /* PostView.swift */; };
 		DC9FB3D92B153A330035C0A7 /* ColorData.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC9FB3D82B153A330035C0A7 /* ColorData.swift */; };
 		DC9FF34C2B0FD49200DFCBD7 /* StatsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC9FF34B2B0FD49200DFCBD7 /* StatsView.swift */; };
 		DCA12F2C2B23B438001B08C2 /* DataManagerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCA12F2B2B23B438001B08C2 /* DataManagerView.swift */; };
@@ -73,6 +75,7 @@
 		7EC810DB2AD1881B00A5DDD0 /* ButtonDesign.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ButtonDesign.swift; sourceTree = "<group>"; };
 		7EE375752AD04FD500C9D0DA /* Planet-Pet-Pals-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "Planet-Pet-Pals-Info.plist"; sourceTree = "<group>"; };
 		DC1452092B0D44F30059FE96 /* MapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapView.swift; sourceTree = "<group>"; };
+		DC38EEBD2B3726E60000AEB5 /* StorageManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StorageManager.swift; sourceTree = "<group>"; };
 		DC3ECCBC2B2CF9A100D142B6 /* PanelViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PanelViewModel.swift; sourceTree = "<group>"; };
 		DC3ECCBE2B2CFABD00D142B6 /* AuthViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthViewModel.swift; sourceTree = "<group>"; };
 		DC3ECCC12B2CFC8500D142B6 /* SignInViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInViewModel.swift; sourceTree = "<group>"; };
@@ -90,6 +93,7 @@
 		DC9158F22B2A4DFC0098A968 /* Utilities.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Utilities.swift; sourceTree = "<group>"; };
 		DC9366332B2F0C880077D2F7 /* LaunchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LaunchView.swift; sourceTree = "<group>"; };
 		DC97E3542B14D4BF00014018 /* RegionData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegionData.swift; sourceTree = "<group>"; };
+		DC9B47532B37763200721504 /* PostView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostView.swift; sourceTree = "<group>"; };
 		DC9FB3D82B153A330035C0A7 /* ColorData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorData.swift; sourceTree = "<group>"; };
 		DC9FF34B2B0FD49200DFCBD7 /* StatsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatsView.swift; sourceTree = "<group>"; };
 		DCA12F2B2B23B438001B08C2 /* DataManagerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataManagerView.swift; sourceTree = "<group>"; };
@@ -221,11 +225,11 @@
 			children = (
 				DC3ECCBE2B2CFABD00D142B6 /* AuthViewModel.swift */,
 				DC3ECCBC2B2CF9A100D142B6 /* PanelViewModel.swift */,
+				DCF6ED032B34F9B300BC5B11 /* ProfileViewModel.swift */,
 				DC3ECCC12B2CFC8500D142B6 /* SignInViewModel.swift */,
 				DCF6ECFD2B34F84B00BC5B11 /* StatsViewModel.swift */,
 				DCF6ECFF2B34F88400BC5B11 /* LikedPostsViewModel.swift */,
 				DCF6ED012B34F95800BC5B11 /* LikesViewModel.swift */,
-				DCF6ED032B34F9B300BC5B11 /* ProfileViewModel.swift */,
 			);
 			path = ViewModels;
 			sourceTree = "<group>";
@@ -255,6 +259,7 @@
 				DCFC5DA82B28EBF100AA9EB3 /* AuthManager.swift */,
 				DC3ECCC52B2D0EA000D142B6 /* UserManager.swift */,
 				DC4540782B30B005008322F9 /* PostManager.swift */,
+				DC38EEBD2B3726E60000AEB5 /* StorageManager.swift */,
 			);
 			path = Managers;
 			sourceTree = "<group>";
@@ -292,8 +297,9 @@
 		DCF616512B3207610071378E /* CollectionViews */ = {
 			isa = PBXGroup;
 			children = (
-				DC9FF34B2B0FD49200DFCBD7 /* StatsView.swift */,
 				DC3ECCC32B2CFCB200D142B6 /* ProfileView.swift */,
+				DC9FF34B2B0FD49200DFCBD7 /* StatsView.swift */,
+				DC9B47532B37763200721504 /* PostView.swift */,
 				DC49FBCE2B339FD600770741 /* PostCellView.swift */,
 			);
 			path = CollectionViews;
@@ -396,6 +402,7 @@
 				DC9158F32B2A4DFC0098A968 /* Utilities.swift in Sources */,
 				DC3ECCC62B2D0EA000D142B6 /* UserManager.swift in Sources */,
 				DC49FBCB2B3395DD00770741 /* LikesView.swift in Sources */,
+				DC38EEBE2B3726E60000AEB5 /* StorageManager.swift in Sources */,
 				DC418C482B08F2D40070D226 /* ImageDesign.swift in Sources */,
 				DC4540792B30B005008322F9 /* PostManager.swift in Sources */,
 				7E9C2F9A2AD34B860042F562 /* PanelView.swift in Sources */,
@@ -423,6 +430,7 @@
 				DC3ECCBF2B2CFABD00D142B6 /* AuthViewModel.swift in Sources */,
 				DCF6ED002B34F88400BC5B11 /* LikedPostsViewModel.swift in Sources */,
 				DC44007F2B1D006A001F6609 /* ShapeDesign.swift in Sources */,
+				DC9B47542B37763200721504 /* PostView.swift in Sources */,
 				DCF6ED022B34F95800BC5B11 /* LikesViewModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

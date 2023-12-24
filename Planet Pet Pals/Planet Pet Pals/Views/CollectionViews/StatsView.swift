@@ -30,6 +30,7 @@ struct StatsView: View {
                             ForEach(viewModel.posts) { post in
                                 PostCellView(post: post, showLikeButton: true, showLikes: false)
                                     .listRowBackground(Colors.linen)
+                                    .buttonStyle(.borderless)
                                 
                                 if post == viewModel.posts.last {
                                     ProgressView()

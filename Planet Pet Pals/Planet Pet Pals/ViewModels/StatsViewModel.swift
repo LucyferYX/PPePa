@@ -29,11 +29,16 @@ class StatsViewModel: ObservableObject {
     }
     
     func getPostCount() {
-        Task{
-            let count = try await PostManager.shared.getAllPostsCount()
-            print("Post count: \(count)")
+        Task {
+            do {
+                let count = try await PostManager.shared.getAllPostsCount()
+                print("Post count: \(count)")
+            } catch {
+                print("Failed to get post count: \(error)")
+            }
         }
     }
+
     
     //MARK: Filters
     enum FilterOption: String, CaseIterable {
