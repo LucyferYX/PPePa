@@ -17,6 +17,10 @@ final class LikesViewModel: ObservableObject {
             self?.likedPostsViewModel.userLikedPosts = posts
         }
     }
+    
+    func removeListenerForLikes() {
+        UserManager.shared.removeListenerForPostsLiked()
+    }
 
     func getLikes() {
         Task {

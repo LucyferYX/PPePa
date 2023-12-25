@@ -154,10 +154,21 @@ class UserManager {
         try await userLikesCollection(userId: userId).getDocuments(as: UserLikedPost.self)
     }
     
+    func updateUserAnonymousStatusAndEmail(userId: String, isAnonymous: Bool, email: String?) async throws {
+        let data: [String: Any] = [
+            DatabaseUser.CodingKeys.isAnonymous.rawValue : isAnonymous,
+            DatabaseUser.CodingKeys.email.rawValue : email ?? NSNull()
+        ]
+        try await usersDocument(userId: userId).updateData(data)
+    }
+    
+    // MARK: Listener
+    private var userLikedPostsListener: ListenerRegistration? = nil
+    
     func addListenerForPostsLiked(userId: String, completion: @escaping (_ posts: [UserLikedPost]) -> Void) {
-        userLikesCollection(userId: userId).addSnapshotListener { querySnapshot, error in
+        self.userLikedPostsListener = userLikesCollection(userId: userId).addSnapshotListener { querySnapshot, error in
             guard let documents = querySnapshot?.documents else {
-                print("No documents")
+                print("No documents for liked posts found")
                 return
             }
             
@@ -166,11 +177,19 @@ class UserManager {
         }
     }
     
-    func updateUserAnonymousStatusAndEmail(userId: String, isAnonymous: Bool, email: String?) async throws {
-        let data: [String: Any] = [
-            DatabaseUser.CodingKeys.isAnonymous.rawValue : isAnonymous,
-            DatabaseUser.CodingKeys.email.rawValue : email ?? NSNull()
-        ]
-        try await usersDocument(userId: userId).updateData(data)
+    func removeListenerForPostsLiked() {
+        self.userLikedPostsListener?.remove()
     }
+    
+//    func addListenerForPostsLiked(userId: String, completion: @escaping (_ posts: [UserLikedPost]) -> Void) {
+//        userLikesCollection(userId: userId).addSnapshotListener { querySnapshot, error in
+//            guard let documents = querySnapshot?.documents else {
+//                print("No documents")
+//                return
+//            }
+//
+//            let posts: [UserLikedPost] = documents.compactMap({try? $0.data(as: UserLikedPost.self)})
+//            completion(posts)
+//        }
+//    }
 }

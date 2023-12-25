@@ -9,6 +9,8 @@ import SwiftUI
 import Firebase
 import CoreLocation
 
+// DELETE
+
 class DataManager: ObservableObject {
     @Published var posts: [Post] = []
     

@@ -71,7 +71,10 @@ struct LikesView: View {
         .onReceive(likedPostsViewModel.$userLikedPosts) { posts in
             postCount = posts.count
         }
-
+        .onDisappear {
+            viewModel.removeListenerForLikes()
+            print("Likes listener is turned off")
+        }
     }
 
     func delete(at offsets: IndexSet) {
