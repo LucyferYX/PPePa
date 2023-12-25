@@ -14,49 +14,100 @@ struct AuthView: View {
     @Binding var showSignInView: Bool
     @State private var flipped = false
     
+    @StateObject private var authManager = AuthManager.shared
+    @State private var showResetPassword = false
+    @State private var email = ""
+    
     var body: some View {
         ZStack {
-            Colors.snow
-            
-//            RoundedRectangle(cornerRadius: 30, style: .continuous)
-//                .fill(LinearGradient(gradient: Gradient(colors: [Colors.snow, Colors.salmon]), startPoint: .topLeading, endPoint: .bottomTrailing))
-//                .frame(width: 1000, height: 500)
-//                .rotationEffect(.degrees(35))
-//                .offset(y: -350)
+            AuthBackground(color1: Colors.orchid, color2: Colors.salmon)
 
-            VStack {
-                
-                // Text
-                HStack {
+            VStack(alignment: .leading) {
+                VStack(alignment: .leading, spacing: -5) {
                     Text("Welcome")
-                        .font(.custom("Baloo2-SemiBold", size: 50))
                         .foregroundColor(.primary)
-                    Spacer()
-                }
-                HStack {
+                        .font(.custom("Baloo2-SemiBold", size: 40))
+                        
                     Text("Sign in to continue")
-                        .font(.custom("Baloo2-SemiBold", size: 30))
                         .foregroundColor(.secondary)
-                    Spacer()
+                        .font(.custom("Baloo2-SemiBold", size: 25))
                 }
+                .padding(.bottom)
                 
                 VStack {
                     Spacer()
                     
                     ZStack {
-                        // Front view
-                        RoundedRectangle(cornerRadius: 20)
-                            .fill(Color.blue)
-                            .frame(width: 280, height: 280)
-                            .overlay(Text("Front").foregroundColor(.white))
-                            .opacity(flipped ? 0 : 1)
+                        // Login view
+                        RoundedSquare(color: Colors.walnut) {
+                            AnyView(
+                                VStack {
+                                    HStack {
+                                        Text("Login")
+                                            .font(.custom("Baloo2-SemiBold", size: 40))
+                                            .foregroundColor(Colors.snow)
+                                            .padding(.leading, 40)
+                                            .padding(.top, 40)
+                                        Spacer()
+                                    }
+                                    Spacer()
+                                    NavigationLink {
+                                        LoginView(showSignInView: $showSignInView)
+                                    } label: {
+                                        Text("Sign in with email")
+                                            .padding()
+                                            .frame(height: 55)
+                                            .font(.headline)
+                                            .background(Color.blue)
+                                            .foregroundColor(.white)
+                                            .cornerRadius(10)
+                                    }
+                                    
+                                    Button(action: {
+                                        self.showResetPassword = true
+                                    }) {
+                                        Text("Forgot password?")
+                                            .foregroundColor(Colors.snow)
+                                            .font(.custom("Baloo2-Regular", size: 20))
+                                    }
+                                    .sheet(isPresented: $showResetPassword) {
+                                        ResetPasswordView(authManager: authManager, showResetPassword: $showResetPassword, email: $email)
+                                    }
+                                    .padding(.bottom, 20)
+                                }
+                            )
+                        }
+                        .opacity(flipped ? 0 : 1)
                         
-                        // Back view
-                        RoundedRectangle(cornerRadius: 25)
-                            .fill(Color.red)
-                            .frame(width: 280, height: 280)
-                            .overlay(Text("Back").foregroundColor(.white)).scaleEffect(x: -1, y: 1)
-                            .opacity(flipped ? 1 : 0)
+                        // Sign up view
+                        RoundedSquare(color: Color.red) {
+                            AnyView(
+                                VStack {
+                                    HStack {
+                                        Text("Sign up")
+                                            .font(.custom("Baloo2-SemiBold", size: 40))
+                                            .foregroundColor(Colors.snow)
+                                            .padding(.leading, 40)
+                                            .padding(.top, 40)
+                                        Spacer()
+                                    }
+                                    Spacer()
+                                    GoogleSignInButton(viewModel: GoogleSignInButtonViewModel(scheme: .dark, style: .wide, state: .normal)) {
+                                        Task {
+                                            do {
+                                                try await viewModel.signInGoogle()
+                                                showSignInView = false
+                                            } catch {
+                                                print(error)
+                                            }
+                                        }
+                                    }
+                                    Text("Back").foregroundColor(.white)
+                                }
+                                .scaleEffect(x: -1, y: 1)
+                            )
+                        }
+                        .opacity(flipped ? 1 : 0)
                     }
                     .rotation3DEffect(
                         .degrees(flipped ? 180 : 0),
@@ -70,8 +121,23 @@ struct AuthView: View {
                             flipped.toggle()
                         }
                     }) {
-                        Text("Flip")
+                        Group {
+                            if flipped {
+                                Text("Don't have an account? ")
+                                    .font(.custom("Baloo2-Regular", size: 20)) +
+                                Text(" SIGN UP")
+                                    .foregroundColor(Colors.salmon)
+                                    .font(.custom("Baloo2-SemiBold", size: 20))
+                            } else {
+                                Text("Already have an account? ")
+                                    .font(.custom("Baloo2-Regular", size: 20)) +
+                                Text(" LOG IN")
+                                    .foregroundColor(Colors.salmon)
+                                    .font(.custom("Baloo2-SemiBold", size: 20))
+                            }
+                        }
                     }
+
                 }
                 
                 Button(action: {
@@ -105,28 +171,26 @@ struct AuthView: View {
                         .cornerRadius(10)
                 }
                 
-                GoogleSignInButton(viewModel: GoogleSignInButtonViewModel(scheme: .dark, style: .wide, state: .normal)) {
-                    Task {
-                        do {
-                            try await viewModel.signInGoogle()
-                            showSignInView = false
-                        } catch {
-                            print(error)
-                        }
-                    }
-                }
+//                GoogleSignInButton(viewModel: GoogleSignInButtonViewModel(scheme: .dark, style: .wide, state: .normal)) {
+//                    Task {
+//                        do {
+//                            try await viewModel.signInGoogle()
+//                            showSignInView = false
+//                        } catch {
+//                            print(error)
+//                        }
+//                    }
+//                }
                 
                 Spacer()
             }
             .padding()
-            .navigationTitle("Login")
         }
-        .ignoresSafeArea()
     }
 }
 
-struct AuthPreview: PreviewProvider {
-    static var previews: some View {
-        AuthView(showSignInView: .constant(false))
-    }
-}
+//struct AuthPreview: PreviewProvider {
+//    static var previews: some View {
+//        AuthView(showSignInView: .constant(false))
+//    }
+//}
