@@ -24,28 +24,29 @@ struct AuthView: View {
 
             VStack(alignment: .leading) {
                 VStack(alignment: .leading, spacing: -5) {
-                    Text("Welcome")
-                        .foregroundColor(.primary)
+                    Text("welcome")
+                        .foregroundColor(Colors.snow)
                         .font(.custom("Baloo2-SemiBold", size: 40))
                         
-                    Text("Sign in to continue")
-                        .foregroundColor(.secondary)
+                    Text("sign in continue")
+                        .foregroundColor(Colors.linen)
                         .font(.custom("Baloo2-SemiBold", size: 25))
                 }
                 .padding(.bottom)
+                
                 
                 VStack {
                     Spacer()
                     
                     ZStack {
                         // Login view
-                        RoundedSquare(color: Colors.walnut) {
+                        RoundedSquare(color: Colors.seashell)  {
                             AnyView(
                                 VStack {
                                     HStack {
                                         Text("Login")
                                             .font(.custom("Baloo2-SemiBold", size: 40))
-                                            .foregroundColor(Colors.snow)
+                                            .foregroundColor(Colors.gondola)
                                             .padding(.leading, 40)
                                             .padding(.top, 40)
                                         Spacer()
@@ -80,7 +81,7 @@ struct AuthView: View {
                         .opacity(flipped ? 0 : 1)
                         
                         // Sign up view
-                        RoundedSquare(color: Color.red) {
+                        RoundedSquare(color: Colors.snow) {
                             AnyView(
                                 VStack {
                                     HStack {
@@ -137,8 +138,8 @@ struct AuthView: View {
                             }
                         }
                     }
-
                 }
+                .padding(.bottom)
                 
                 Button(action: {
                     Task {
@@ -171,17 +172,6 @@ struct AuthView: View {
                         .cornerRadius(10)
                 }
                 
-//                GoogleSignInButton(viewModel: GoogleSignInButtonViewModel(scheme: .dark, style: .wide, state: .normal)) {
-//                    Task {
-//                        do {
-//                            try await viewModel.signInGoogle()
-//                            showSignInView = false
-//                        } catch {
-//                            print(error)
-//                        }
-//                    }
-//                }
-                
                 Spacer()
             }
             .padding()
@@ -189,8 +179,8 @@ struct AuthView: View {
     }
 }
 
-//struct AuthPreview: PreviewProvider {
-//    static var previews: some View {
-//        AuthView(showSignInView: .constant(false))
-//    }
-//}
+struct AuthPreview: PreviewProvider {
+    static var previews: some View {
+        AuthView(showSignInView: .constant(false))
+    }
+}

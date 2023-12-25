@@ -16,7 +16,7 @@ struct ResetPasswordView: View {
 
     var body: some View {
         ZStack {
-            MainBackground()
+            MainBackground3()
             VStack(spacing: 2) {
                 Button(action: {
                     showResetPassword = false
@@ -26,6 +26,7 @@ struct ResetPasswordView: View {
                         .frame(width: 60, height: 60)
                         .foregroundColor(Colors.salmon)
                 }
+                .padding(.top)
                 
                 Spacer()
                 
@@ -38,15 +39,21 @@ struct ResetPasswordView: View {
                 
                 Spacer()
                 
-                TextField("Email", text: $email)
-                    .padding(.leading, 20)
-                    .font(.custom("Baloo2-SemiBold", size: 20))
-                    .autocapitalization(.none)
-                    .disableAutocorrection(true)
-                    .textFieldStyle(.plain)
+                HStack(spacing: 1) {
+                    Image(systemName: "envelope")
+                        .foregroundColor(Colors.salmon)
+                        .imageScale(.large)
+                    TextField("Email", text: $email)
+                        .padding(.leading, 20)
+                        .font(.custom("Baloo2-SemiBold", size: 20))
+                        .autocapitalization(.none)
+                        .disableAutocorrection(true)
+                        .textFieldStyle(.plain)
+                }
+                .padding(.leading)
                 
                 Rectangle()
-                    .frame(width: 320, height: 3)
+                    .frame(width: 325, height: 3)
                     .foregroundColor(Colors.salmon)
                 
                 Button(action: {
@@ -113,9 +120,9 @@ enum PasswordResetError: LocalizedError {
 }
 
 
-struct ResetPasswordViewPreview: PreviewProvider {
-    @State static var email = "laima@gmail.com"
-    static var previews: some View {
-        ResetPasswordView(authManager: AuthManager.shared, showResetPassword: .constant(true), email: $email)
-    }
-}
+//struct ResetPasswordViewPreview: PreviewProvider {
+//    @State static var email = "laima@gmail.comAAAAAAAAAAAAAAAAAAA"
+//    static var previews: some View {
+//        ResetPasswordView(authManager: AuthManager.shared, showResetPassword: .constant(true), email: $email)
+//    }
+//}

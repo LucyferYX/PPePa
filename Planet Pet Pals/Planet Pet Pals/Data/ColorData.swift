@@ -9,7 +9,9 @@ import SwiftUI
 
 struct Colors {
     static let snow = Color(hex: "FFFAF7")
-    static let linen = Color(hex: "F9EEE8")
+    static let seashell = Color(hex: "F9EEE8")
+    static let linen = Color(hex: "F8E2D2")
+    
     static let vanilla = Color(hex: "FFFCAF")
     
     static let salmon = Color(hex: "FFAF97")

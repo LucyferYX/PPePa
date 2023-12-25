@@ -22,7 +22,8 @@ struct RoundedSquare: View {
 
     var body: some View {
         RoundedRectangle(cornerRadius: 25)
-            .fill(color)
+//            .fill(color)
+            .fill(LinearGradient(gradient: Gradient(colors: [Colors.snow, color]), startPoint: .top, endPoint: .bottom))
             .frame(width: 300, height: 400)
             .overlay(overlayContent())
     }
