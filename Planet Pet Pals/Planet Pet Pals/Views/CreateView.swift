@@ -36,7 +36,7 @@ struct CreateView: View {
                             showCreateView.toggle()
                             showButton.toggle()
                         }
-                        .foregroundColor(Colors.walnut)
+                        .foregroundColor(Color("Walnut"))
                     }
                     Section(header: Text("Information")) {
                         TextField("Title", text: $title)
@@ -158,32 +158,32 @@ struct PickMapView: UIViewRepresentable {
 //            ForEach(0..<5) { index in
 //                if index < currentStep {
 //                    Circle()
-//                        .fill(Colors.salmon)
+//                        .fill(Color("Salmon"))
 //                        .frame(width: 10, height: 10)
 //                        .matchedGeometryEffect(id: "circle\(index)", in: animation)
 //                    if index != 4 {
 //                        Rectangle()
-//                            .fill(Colors.salmon)
+//                            .fill(Color("Salmon"))
 //                            .frame(height: 2)
 //                            .matchedGeometryEffect(id: "line\(index)", in: animation)
 //                    }
 //                } else if index == currentStep {
 //                    Circle()
-//                        .fill(Colors.salmon)
+//                        .fill(Color("Salmon"))
 //                        .frame(width: 10, height: 10)
 //                        .matchedGeometryEffect(id: "circle\(index)", in: animation)
 //                    if index != 4 {
 //                        Rectangle()
-//                            .fill(Colors.snow)
+//                            .fill(Color("Snow"))
 //                            .frame(height: 2)
 //                    }
 //                } else {
 //                    Circle()
-//                        .fill(Colors.snow)
+//                        .fill(Color("Snow"))
 //                        .frame(width: 10, height: 10)
 //                    if index != 4 {
 //                        Rectangle()
-//                            .fill(Colors.snow)
+//                            .fill(Color("Snow"))
 //                            .frame(height: 2)
 //                    }
 //                }
@@ -210,7 +210,7 @@ struct PickMapView: UIViewRepresentable {
 //                        currentStep -= 1
 //                    }) {
 //                        Text("Back")
-//                            .foregroundColor(Colors.salmon)
+//                            .foregroundColor(Color("Salmon"))
 //                    }
 //                }
 //
@@ -224,7 +224,7 @@ struct PickMapView: UIViewRepresentable {
 //                    }
 //                }) {
 //                    Text("Next")
-//                        .foregroundColor(textFields[currentStep].isEmpty ? .gray : Colors.salmon)
+//                        .foregroundColor(textFields[currentStep].isEmpty ? .gray : Color("Salmon"))
 //                }
 //                .disabled(textFields[currentStep].isEmpty)
 //            }
@@ -251,7 +251,7 @@ struct PickMapView: UIViewRepresentable {
 //                    showCreateView.toggle()
 //                }) {
 //                    Text("Finish")
-//                        .foregroundColor(Colors.salmon)
+//                        .foregroundColor(Color("Salmon"))
 //                }
 //            }
 //        }

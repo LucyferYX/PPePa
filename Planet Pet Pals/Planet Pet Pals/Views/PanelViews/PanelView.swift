@@ -24,14 +24,14 @@ struct PanelContent: View {
                 
                 SimpleButton(action: {
                     print("Username pressed")
-                }, systemImage: nil, buttonText: "Username", size: 30, color: Colors.linen)
+                }, systemImage: nil, buttonText: "Username", size: 30, color: Color("Linen"))
                 
                 HStack {
-                    RoundImage(systemName: "person.circle", size: 60, color: Colors.linen)
+                    RoundImage(systemName: "person.circle", size: 60, color: Color("Linen"))
                     VStack(alignment: .leading) {
                         Text("LN3569")
                             .font(.custom("Baloo2-SemiBold", size: 20))
-                            .foregroundColor(Colors.linen)
+                            .foregroundColor(Color("Linen"))
                         
                         // MARK: Registered accounts
                         if viewModel.authProviders.contains(.email) {
@@ -163,13 +163,13 @@ struct PanelContent: View {
                 
                 SimpleButton(action: {
                     showSettingsView = true
-                }, systemImage: "gearshape", buttonText: "Settings", size: 30, color: Colors.linen)
+                }, systemImage: "gearshape", buttonText: "Settings", size: 30, color: Color("Linen"))
                 SimpleButton(action: {
                     showLikesView = true
-                }, systemImage: "heart", buttonText: "Likes", size: 30, color: Colors.linen)
+                }, systemImage: "heart", buttonText: "Likes", size: 30, color: Color("Linen"))
                 SimpleButton(action: {
                     showAboutView = true
-                }, systemImage: "info.circle", buttonText: "About", size: 30, color: Colors.linen)
+                }, systemImage: "info.circle", buttonText: "About", size: 30, color: Color("Linen"))
                 .sheet(isPresented: $showSettingsView) {
                     SettingsView()
                 }
@@ -199,11 +199,11 @@ struct PanelView: View {
             HStack {
                 PanelContent(showSignInView: $showSignInView)
                     .frame(width: self.width)
-                    .background(Colors.walnut)
+                    .background(Color("Walnut"))
                     .offset(x: showPanelView ? 0 : -self.width)
                 Spacer()
             }
-            .background(Colors.walnut.opacity(showPanelView ? 0.5 : 0.0))
+            .background(Color("Walnut").opacity(showPanelView ? 0.5 : 0.0))
             // Closing view with tap or sliding from right side
             .onTapGesture {
                 withAnimation(.easeIn.delay(0.1)) {

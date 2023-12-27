@@ -40,7 +40,7 @@ struct PostCellView: View {
                     ProgressView()
                 }
                 .frame(width: 70, height: 70)
-                .shadow(color: Colors.walnut.opacity(0.3), radius: 4, x: 0, y: 2)
+                .shadow(color: Color("Walnut").opacity(0.3), radius: 4, x: 0, y: 2)
                 .padding(.trailing)
                 
                 VStack(alignment: .leading, spacing: 4) {
@@ -135,7 +135,7 @@ struct PostCellView: View {
                 showPostView = true
             }
             .cornerRadius(10)
-            .background(Colors.linen)
+            .background(Color("Linen"))
         }
     }
 }
@@ -152,7 +152,7 @@ struct PostCellViewBuilder: View {
         ZStack {
             if let post {
                 PostCellView(post: post, showLikeButton: showLikeButton, showLikes: showLikes)
-                    .listRowBackground(Colors.walnut)
+                    .listRowBackground(Color("Walnut"))
             }
         }
         .task {

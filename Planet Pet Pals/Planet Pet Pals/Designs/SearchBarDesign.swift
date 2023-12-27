@@ -20,7 +20,7 @@ struct MainSearchBar: View {
                 .padding(.trailing, 40)
                 .font(.custom("Baloo2-Regular", size: 20))
                 .frame(height: 60)
-                .background(Colors.snow)
+                .background(Color("Snow"))
                 .cornerRadius(30)
                 .overlay(
                     Button(action: {
@@ -30,7 +30,7 @@ struct MainSearchBar: View {
                         Image(systemName: "pawprint.fill")
                             .resizable()
                             .frame(width: 25, height: 25)
-                            .foregroundColor(Colors.salmon)
+                            .foregroundColor(Color("Salmon"))
                             .rotationEffect(.degrees(45))
                             .padding(.horizontal, 20)
                     },

@@ -25,26 +25,26 @@ struct LikesView: View {
 
     var body: some View {
         ZStack {
-            Colors.walnut.ignoresSafeArea()
+            Color("Walnut").ignoresSafeArea()
             if postCount > 0 {
                 VStack {
                     Text("Your liked post count: \(postCount)")
                         .font(.custom("Baloo2-SemiBold", size: 30))
-                        .foregroundColor(Colors.linen)
+                        .foregroundColor(Color("Linen"))
                         .padding(.top)
                     Text("Swipe left to remove from likes")
                         .font(.custom("Baloo2-SemiBold", size: 25))
-                        .foregroundColor(Colors.linen)
+                        .foregroundColor(Color("Linen"))
                         .foregroundColor(.secondary)
                     List {
                         ForEach(likedPostsViewModel.userLikedPosts, id: \.id.self) { post in
                             PostCellViewBuilder(postId: post.postId, showLikeButton: false, showLikes: true)
-                                .listRowBackground(Colors.linen)
+                                .listRowBackground(Color("Linen"))
                                 .buttonStyle(.borderless)
                         }
                         .onDelete(perform: delete)
                     }
-                    .background(Colors.walnut)
+                    .background(Color("Walnut"))
                     .scrollContentBackground(.hidden)
                     // 1 second until another post is deleted
                     .alert(isPresented: $showAlert) {
@@ -57,7 +57,7 @@ struct LikesView: View {
             } else {
                 Text("No liked posts yet.")
                     .font(.custom("Baloo2-SemiBold", size: 30))
-                    .foregroundColor(Colors.linen)
+                    .foregroundColor(Color("Linen"))
                     .padding(.top)
             }
         }

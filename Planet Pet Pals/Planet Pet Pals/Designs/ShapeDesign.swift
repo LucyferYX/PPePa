@@ -10,9 +10,25 @@ import SwiftUI
 struct Line: View {
     var body: some View {
         Rectangle()
-            .fill(Colors.linen)
+            .fill(Color("Linen"))
             .frame(height: 2)
             .padding(.vertical)
+    }
+}
+
+struct Line2: View {
+    var body: some View {
+        Rectangle()
+            .frame(width: 325, height: 3)
+            .foregroundColor(Color("Salmon"))
+    }
+}
+
+struct Line3: View {
+    var body: some View {
+        Rectangle()
+            .frame(width: 270, height: 3)
+            .foregroundColor(Color("Salmon"))
     }
 }
 
@@ -22,9 +38,8 @@ struct RoundedSquare: View {
 
     var body: some View {
         RoundedRectangle(cornerRadius: 25)
-//            .fill(color)
-            .fill(LinearGradient(gradient: Gradient(colors: [Colors.snow, color]), startPoint: .top, endPoint: .bottom))
-            .frame(width: 300, height: 400)
+            .fill(LinearGradient(gradient: Gradient(colors: [Color("Snow"), color]), startPoint: .top, endPoint: .bottom))
+            .frame(width: 300, height: 550)
             .overlay(overlayContent())
     }
 }
@@ -34,7 +49,7 @@ struct AuthBackground: View {
     var color2: Color
     
     var body: some View {
-        Colors.snow
+        Color("Snow")
         RoundedRectangle(cornerRadius: 30, style: .continuous)
             .fill(LinearGradient(gradient: Gradient(colors: [color1, color2]), startPoint: .topLeading, endPoint: .bottomTrailing))
             .frame(width: 1000, height: 500)

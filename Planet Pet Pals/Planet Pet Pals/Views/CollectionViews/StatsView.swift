@@ -16,7 +16,7 @@ struct StatsView: View {
     
     var body: some View {
         ZStack {
-            Colors.snow.ignoresSafeArea()
+            Color("Snow").ignoresSafeArea()
             VStack {
                 
                 NavigationBar()
@@ -29,7 +29,7 @@ struct StatsView: View {
                         List {
                             ForEach(viewModel.posts) { post in
                                 PostCellView(post: post, showLikeButton: true, showLikes: false)
-                                    .listRowBackground(Colors.linen)
+                                    .listRowBackground(Color("Linen"))
                                     .buttonStyle(.borderless)
                                 
                                 if post == viewModel.posts.last {
@@ -41,7 +41,7 @@ struct StatsView: View {
                                 }
                             }
                         }
-                        .background(Colors.snow)
+                        .background(Color("Snow"))
                         .scrollContentBackground(.hidden)
                     }
                 }

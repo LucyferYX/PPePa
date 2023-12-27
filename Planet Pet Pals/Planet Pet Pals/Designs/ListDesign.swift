@@ -14,16 +14,16 @@ struct CellView: View {
                 .resizable()
                 .aspectRatio(contentMode: .fit)
                 .frame(width: 40, height: 40)
-                .foregroundColor(Colors.walnut)
+                .foregroundColor(Color("Walnut"))
             Text("Placeholder")
                 .font(.custom("Baloo2-SemiBold", size: 20))
-                .foregroundColor(Colors.walnut)
+                .foregroundColor(Color("Walnut"))
             Spacer()
             Image(systemName: "chevron.right")
-                .foregroundColor(Colors.walnut)
+                .foregroundColor(Color("Walnut"))
         }
         .padding()
-        .background(Colors.linen)
+        .background(Color("Linen"))
         .cornerRadius(40)
     }
 }

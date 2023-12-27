@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import GoogleSignInSwift
 
 struct MainButton: View {
     let action: () -> Void
@@ -26,7 +27,7 @@ struct MainButton: View {
                     .aspectRatio(contentMode: .fit)
                     .padding(20)
                     .foregroundColor(imageColor)
-                    .background(Colors.snow)
+                    .background(Color("Snow"))
                     .clipShape(Circle())
                     .frame(width: 85, height: 85)
                 
@@ -104,11 +105,11 @@ struct LeftNavigationButton: View {
                     .resizable()
                     .aspectRatio(contentMode: .fit)
                     .frame(width: buttonSize, height: buttonSize)
-                    .foregroundColor(imageInvisible ? Color.clear : Colors.snow)
+                    .foregroundColor(imageInvisible ? Color.clear : Color("Snow"))
                 if !buttonText.isEmpty {
                     Text(buttonText)
                         .font(.custom("Baloo2-SemiBold", size: 20))
-                        .foregroundColor(textInvisible ? Color.clear : Colors.snow)
+                        .foregroundColor(textInvisible ? Color.clear : Color("Snow"))
                 }
             }
         }
@@ -130,13 +131,13 @@ struct RightNavigationButton: View {
                 if !buttonText.isEmpty {
                     Text(buttonText)
                         .font(.custom("Baloo2-SemiBold", size: 20))
-                        .foregroundColor(textInvisible ? Color.clear : Colors.snow)
+                        .foregroundColor(textInvisible ? Color.clear : Color("Snow"))
                 }
                 Image(systemName: imageName)
                     .resizable()
                     .aspectRatio(contentMode: .fit)
                     .frame(width: buttonSize, height: buttonSize)
-                    .foregroundColor(imageInvisible ? Color.clear : Colors.snow)
+                    .foregroundColor(imageInvisible ? Color.clear : Color("Snow"))
             }
         }
     }
@@ -161,5 +162,22 @@ struct PanelButton: View {
         }
         .padding(.top, 10)
         .padding(.leading, 30)
+    }
+}
+
+
+struct LabelButton: View {
+    var action: () -> Void
+    var title: LocalizedStringKey
+    var color: Color
+    var fontSize: CGFloat
+
+    var body: some View {
+        Button(action: action) {
+            Text(title)
+                .foregroundColor(color)
+                .font(.custom("Baloo2-Regular", size: fontSize))
+                .padding(.bottom)
+        }
     }
 }

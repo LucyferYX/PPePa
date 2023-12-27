@@ -6,13 +6,14 @@
 //
 
 import SwiftUI
+import FirebaseAuth
 
 struct ResetPasswordView: View {
     @ObservedObject var authManager: AuthManager
     @Binding var showResetPassword: Bool
     @Binding var email: String
     @State private var showAlert = false
-    @State private var alertMessage = "No such email"
+    @State private var alertMessage = "alert"
 
     var body: some View {
         ZStack {
@@ -24,7 +25,7 @@ struct ResetPasswordView: View {
                     Image(systemName: "pawprint.fill")
                         .resizable()
                         .frame(width: 60, height: 60)
-                        .foregroundColor(Colors.salmon)
+                        .foregroundColor(Color("Salmon"))
                 }
                 .padding(.top)
                 
@@ -32,7 +33,7 @@ struct ResetPasswordView: View {
                 
                 Text("Input your email address linked to your account and we will send you passowrd reset email.")
                     .font(.custom("Baloo2-Regular", size: 20))
-                    .foregroundColor(Colors.gondola)
+                    .foregroundColor(Color("Gondola"))
                     .multilineTextAlignment(.center)
                     .lineSpacing(0)
                     .padding()
@@ -41,7 +42,7 @@ struct ResetPasswordView: View {
                 
                 HStack(spacing: 1) {
                     Image(systemName: "envelope")
-                        .foregroundColor(Colors.salmon)
+                        .foregroundColor(Color("Salmon"))
                         .imageScale(.large)
                     TextField("Email", text: $email)
                         .padding(.leading, 20)
@@ -52,24 +53,26 @@ struct ResetPasswordView: View {
                 }
                 .padding(.leading)
                 
-                Rectangle()
-                    .frame(width: 325, height: 3)
-                    .foregroundColor(Colors.salmon)
+                Line2()
                 
                 Button(action: {
                     Task {
                         do {
                             guard !email.isEmpty else {
-                                throw PasswordResetError.emptyEmail
+                                throw EmailError.emptyEmail
                             }
                             guard email.contains("@") else {
-                                throw PasswordResetError.invalidEmail
+                                throw EmailError.invalidEmail
+                            }
+                            let methods = try await Auth.auth().fetchSignInMethods(forEmail: email)
+                            guard !(methods.isEmpty) else {
+                                throw EmailError.emailNotFound
                             }
                             try await authManager.resetPassword(email: email)
                             showResetPassword = false
                             alertMessage = "Reset email sent!"
                             print("Password reset for email: \(email)")
-                        } catch let error as PasswordResetError {
+                        } catch let error as EmailError {
                             print("Failed to reset password: \(error)")
                             alertMessage = error.localizedDescription
                             showAlert = true
@@ -85,9 +88,9 @@ struct ResetPasswordView: View {
                         .font(.custom("Baloo2-SemiBold", size: 18))
                         .background(
                             RoundedRectangle(cornerRadius: 10)
-                                .fill(.linearGradient(colors: [Colors.orchid, Colors.salmon], startPoint: .leading, endPoint: .trailing))
+                                .fill(.linearGradient(colors: [Color("Orchid"), Color("Salmon")], startPoint: .leading, endPoint: .trailing))
                         )
-                        .foregroundColor(Colors.snow)
+                        .foregroundColor(Color("Snow"))
                 }
                 .padding()
                 .alert(isPresented: $showAlert) {
@@ -102,7 +105,7 @@ struct ResetPasswordView: View {
 }
 
 
-enum PasswordResetError: LocalizedError {
+enum EmailError: LocalizedError {
     case emptyEmail
     case invalidEmail
     case emailNotFound

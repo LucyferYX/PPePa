@@ -18,7 +18,7 @@ struct LaunchView: View {
     
     var body: some View {
         ZStack {
-            Colors.walnut
+            Color("Walnut")
                 .ignoresSafeArea()
             Image("LogoSmall")
                 .resizable()
@@ -33,7 +33,7 @@ struct LaunchView: View {
                         ForEach(launchText.indices, id: \.self) { index in
                             Text(launchText[index])
                                 .font(.custom("Baloo2-Bold", size: 40))
-                                .foregroundColor(Colors.snow)
+                                .foregroundColor(Color("Snow"))
                                 .offset(y: counter == index ? -20 : 0)
                         }
                     }

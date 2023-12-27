@@ -19,13 +19,13 @@ struct MainNavigationBar: View {
             Spacer()
             Text(title)
                 .font(.custom("Baloo2-SemiBold", size: 25))
-                .foregroundColor(Colors.linen)
+                .foregroundColor(Color("Linen"))
             Spacer()
             rightButton
                 .padding(.trailing)
         }
         .padding()
-        .background(Colors.walnut)
+        .background(Color("Walnut"))
     }
 }
 
@@ -41,7 +41,7 @@ struct MainToolbar: ToolbarContent {
         ToolbarItem(placement: .principal) {
             Text(title)
                 .font(.custom("Baloo2-SemiBold", size: 25))
-                .foregroundColor(Colors.linen)
+                .foregroundColor(Color("Linen"))
         }
         ToolbarItem(placement: .navigationBarTrailing) {
             rightButton

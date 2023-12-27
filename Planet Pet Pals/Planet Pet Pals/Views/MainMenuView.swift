@@ -41,11 +41,11 @@ struct MainMenuView: View {
                         HStack {
                             PanelButton(action: { showPanelView.toggle() },
                                         systemImage: "line.3.horizontal",
-                                        color: Colors.walnut)
+                                        color: Color("Walnut"))
                             Spacer()
                             PanelButton(action: { showProfileView.toggle() },
                                         systemImage: "person.crop.circle",
-                                        color: Colors.walnut)
+                                        color: Color("Walnut"))
                         }
                         .ignoresSafeArea(.keyboard)
                         .fullScreenCover(isPresented: $showProfileView) {
@@ -65,7 +65,7 @@ struct MainMenuView: View {
                                 if self.currentIndex > 0 {
                                     self.currentIndex -= 1
                                 }
-                            }, systemImage: "chevron.left", buttonText: "", size: 30, color: Colors.snow)
+                            }, systemImage: "chevron.left", buttonText: "", size: 30, color: Color("Snow"))
                             
                             if dataManager.posts.isEmpty || currentImage.isEmpty {
                                 // Display a placeholder or a loading sign
@@ -79,7 +79,7 @@ struct MainMenuView: View {
                                 if self.currentIndex < self.dataManager.posts.count - 1 {
                                     self.currentIndex += 1
                                 }
-                            }, systemImage: "chevron.right", buttonText: "", size: 30, color: Colors.snow)
+                            }, systemImage: "chevron.right", buttonText: "", size: 30, color: Color("Snow"))
                         }
                         //
                         
@@ -175,22 +175,22 @@ extension MainMenuView {
             MainButton(action: { showCreateView.toggle(); showButton.toggle() },
                        imageName: "camera.fill",
                        buttonText: "Create",
-                       imageColor: Colors.salmon,
-                       buttonColor: Colors.snow)
+                       imageColor: Color("Salmon"),
+                       buttonColor: Color("Snow"))
             .padding()
             
             MainButton(action: { self.showMapView = true },
                        imageName: "map.fill",
                        buttonText: "Map",
-                       imageColor: Colors.walnut,
-                       buttonColor: Colors.snow)
+                       imageColor: Color("Walnut"),
+                       buttonColor: Color("Snow"))
             .padding()
             
             MainButton(action: { self.showStatsView = true },
                        imageName: "chart.bar.fill",
                        buttonText: "Stats",
-                       imageColor: Colors.salmon,
-                       buttonColor: Colors.snow)
+                       imageColor: Color("Salmon"),
+                       buttonColor: Color("Snow"))
             .padding()
         }
         .fullScreenCover(isPresented: $showMapView) {

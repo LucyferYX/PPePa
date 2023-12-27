@@ -9,28 +9,28 @@ import SwiftUI
 
 struct MainBackground: View {
     var body: some View {
-        LinearGradient(gradient: Gradient(colors: [Colors.linen, Colors.salmon]), startPoint: .topLeading, endPoint: .bottomTrailing)
+        LinearGradient(gradient: Gradient(colors: [Color("Linen"), Color("Salmon")]), startPoint: .topLeading, endPoint: .bottomTrailing)
             .edgesIgnoringSafeArea(.all)
     }
 }
 
 struct MainBackground2: View {
     var body: some View {
-        LinearGradient(gradient: Gradient(colors: [Colors.salmon, Colors.walnut]), startPoint: .topLeading, endPoint: .bottomTrailing)
+        LinearGradient(gradient: Gradient(colors: [Color("Salmon"), Color("Walnut")]), startPoint: .topLeading, endPoint: .bottomTrailing)
             .edgesIgnoringSafeArea(.all)
     }
 }
 
 struct MainBackground3: View {
     var body: some View {
-        LinearGradient(gradient: Gradient(colors: [Colors.snow, Colors.linen]), startPoint: .topLeading, endPoint: .bottomTrailing)
+        LinearGradient(gradient: Gradient(colors: [Color("Snow"), Color("Linen")]), startPoint: .topLeading, endPoint: .bottomTrailing)
             .edgesIgnoringSafeArea(.all)
     }
 }
 
 //struct SimpleBackground: View {
 //    var body: some View {
-//        .background(Colors.walnut)
+//        .background(Color("Walnut"))
 //        .edgesIgnoringSafeArea(.all)
 //    }
 //}

@@ -10,7 +10,7 @@ import Firebase
 
 struct LoginView: View {
     @Binding var showSignInView: Bool
-    @StateObject private var viewModel = SignInEmailModel()
+    @StateObject private var viewModel = AuthViewModel()
     
     @State private var email: String = ""
     @State private var password: String = ""
@@ -90,13 +90,13 @@ struct LoginView: View {
 //        }
 //    }
     
-    func register() {
-        Auth.auth().createUser(withEmail: email, password: password) { result, error in
-            if error != nil {
-                print(error!.localizedDescription)
-            }
-        }
-    }
+//    func register() {
+//        Auth.auth().createUser(withEmail: email, password: password) { result, error in
+//            if error != nil {
+//                print(error!.localizedDescription)
+//            }
+//        }
+//    }
 }
 
 //struct LoginPreview: PreviewProvider {
