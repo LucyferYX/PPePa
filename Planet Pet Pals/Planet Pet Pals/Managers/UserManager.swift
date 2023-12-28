@@ -80,8 +80,8 @@ struct DatabaseUser: Codable {
     }
 }
 
+// better not to use singletons, check alternatives
 class UserManager {
-    // better not to use singletons, check alternatives
     static let shared = UserManager()
     private init() {}
 
@@ -128,6 +128,13 @@ class UserManager {
     func removeUserFavorites(userId: String, favorite: String) async throws {
         let data: [String: Any] = [
             DatabaseUser.CodingKeys.favorites.rawValue : FieldValue.arrayRemove([favorite])
+        ]
+        try await usersDocument(userId: userId).updateData(data)
+    }
+    
+    func updateUserPhotoUrl(userId: String, photoUrl: String) async throws {
+        let data: [String: Any] = [
+            DatabaseUser.CodingKeys.photoUrl.rawValue : photoUrl
         ]
         try await usersDocument(userId: userId).updateData(data)
     }

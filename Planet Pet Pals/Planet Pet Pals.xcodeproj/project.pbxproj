@@ -34,6 +34,7 @@
 		DC49FBCD2B33960800770741 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC49FBCC2B33960800770741 /* SettingsView.swift */; };
 		DC49FBCF2B339FD600770741 /* PostCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC49FBCE2B339FD600770741 /* PostCellView.swift */; };
 		DC5670B52B39EC1000807F2E /* ResetPasswordView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC5670B42B39EC1000807F2E /* ResetPasswordView.swift */; };
+		DC63B2012B3C6DFD0084C97C /* MaintenanceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC63B2002B3C6DFD0084C97C /* MaintenanceView.swift */; };
 		DC9158EC2B2A44890098A968 /* GoogleSignIn in Frameworks */ = {isa = PBXBuildFile; productRef = DC9158EB2B2A44890098A968 /* GoogleSignIn */; };
 		DC9158EE2B2A44890098A968 /* GoogleSignInSwift in Frameworks */ = {isa = PBXBuildFile; productRef = DC9158ED2B2A44890098A968 /* GoogleSignInSwift */; };
 		DC9158F02B2A45BF0098A968 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = DC9158EF2B2A45BF0098A968 /* GoogleService-Info.plist */; };
@@ -95,6 +96,7 @@
 		DC49FBCC2B33960800770741 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		DC49FBCE2B339FD600770741 /* PostCellView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostCellView.swift; sourceTree = "<group>"; };
 		DC5670B42B39EC1000807F2E /* ResetPasswordView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResetPasswordView.swift; sourceTree = "<group>"; };
+		DC63B2002B3C6DFD0084C97C /* MaintenanceView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MaintenanceView.swift; sourceTree = "<group>"; };
 		DC9158EF2B2A45BF0098A968 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../../../Downloads/GoogleService-Info.plist"; sourceTree = "<group>"; };
 		DC9158F12B2A45E20098A968 /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		DC9158F22B2A4DFC0098A968 /* Utilities.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Utilities.swift; sourceTree = "<group>"; };
@@ -291,6 +293,7 @@
 			children = (
 				DCB94C462B2E586600661077 /* LaunchScreen.storyboard */,
 				DC9366332B2F0C880077D2F7 /* LaunchView.swift */,
+				DC63B2002B3C6DFD0084C97C /* MaintenanceView.swift */,
 			);
 			path = LaunchViews;
 			sourceTree = "<group>";
@@ -447,6 +450,7 @@
 				DCF6ED002B34F88400BC5B11 /* LikedPostsViewModel.swift in Sources */,
 				DC44007F2B1D006A001F6609 /* ShapeDesign.swift in Sources */,
 				DC9B47542B37763200721504 /* PostView.swift in Sources */,
+				DC63B2012B3C6DFD0084C97C /* MaintenanceView.swift in Sources */,
 				DCF6ED022B34F95800BC5B11 /* LikesViewModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

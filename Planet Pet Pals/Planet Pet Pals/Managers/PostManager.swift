@@ -23,8 +23,6 @@ struct Post: Codable, Identifiable, Equatable {
     let description: String
     
     let image: String
-    //let postImagePath: String
-    
     var likes: Int?
     var views: Int?
     
@@ -41,7 +39,6 @@ struct Post: Codable, Identifiable, Equatable {
         description: String,
         geopoint: GeoPoint,
         image: String,
-        //postImagePath: String,
         likes: Int,
         views: Int
     ) {
@@ -52,7 +49,6 @@ struct Post: Codable, Identifiable, Equatable {
         self.description = description
         self.geopoint = geopoint
         self.image = image
-        //self.postImagePath = postImagePath
         self.likes = 0
         self.views = 0
     }
@@ -65,7 +61,6 @@ struct Post: Codable, Identifiable, Equatable {
         case description = "description"
         case geopoint = "geopoint"
         case image = "image"
-        //case postImagePath = "post_image_path"
         case likes = "likes"
         case views = "views"
     }
@@ -84,7 +79,6 @@ struct Post: Codable, Identifiable, Equatable {
         description = try container.decode(String.self, forKey: .description)
         geopoint = try container.decode(GeoPoint.self, forKey: .geopoint)
         image = try container.decode(String.self, forKey: .image)
-        //postImagePath = try container.decode(String.self, forKey: .postImagePath)
         likes = try container.decodeIfPresent(Int.self, forKey: .likes)
         views = try container.decodeIfPresent(Int.self, forKey: .views)
     }
@@ -98,7 +92,6 @@ struct Post: Codable, Identifiable, Equatable {
         try container.encode(description, forKey: .description)
         try container.encode(geopoint, forKey: .geopoint)
         try container.encode(image, forKey: .image)
-        //try container.encode(postImagePath, forKey: .postImagePath)
         try container.encode(likes, forKey: .likes)
         try container.encode(views, forKey: .views)
     }
@@ -116,6 +109,26 @@ class PostManager {
     func getPost(postId: String) async throws -> Post {
         try await postsDocument(postId: postId).getDocument(as: Post.self)
     }
+    
+    func savePost(post: Post) async throws {
+        let encoder = Firestore.Encoder()
+        let data = try encoder.encode(post)
+        let docRef = postsDocument(postId: post.postId)
+        
+        return try await withCheckedThrowingContinuation { continuation in
+            docRef.setData(data) { error in
+                if let error = error {
+                    continuation.resume(throwing: error)
+                } else {
+                    continuation.resume(returning: ())
+                }
+            }
+        }
+    }
+
+//    func savePost(post: Post) async throws {
+//        try postsDocument(postId: post.postId).setData(from: post)
+//    }
     
     // MARK: Collection images
 //    func uploadPostImage(postId: String, path: String) async throws {

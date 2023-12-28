@@ -11,7 +11,8 @@ import PhotosUI
 struct ProfileView: View {
     @StateObject private var viewModel = ProfileViewModel()
     @Binding var showProfileView: Bool
-    @State private var selectedItem: PhotosPickerItem? = nil
+//    @State private var selectedItem: PhotosPickerItem? = nil
+    @State private var profileImages: [String] = []
     
     let postOptions: [String] = ["cat", "dog", "mouse"]
     private func postSelected(text: String) -> Bool {
@@ -24,6 +25,26 @@ struct ProfileView: View {
             
             List {
                 if let user = viewModel.user {
+                    
+                    
+                    if let photoUrl = user.photoUrl, let url = URL(string: photoUrl) {
+                        AsyncImage(url: url) { image in
+                            image
+                                .resizable()
+                                .aspectRatio(contentMode: .fit)
+                                .frame(width: 100, height: 100)
+                        } placeholder: {
+                            ProgressView()
+                        }
+                        .contextMenu {
+                            Button(action: {
+                                UIPasteboard.general.string = photoUrl
+                            }) {
+                                Label("Copy URL", systemImage: "doc.on.doc")
+                            }
+                        }
+                        Text(photoUrl)
+                    }
                     
                     // MARK: User ID
                     Text("User id: \(user.userId)")
@@ -56,8 +77,21 @@ struct ProfileView: View {
                     }
                     Text("User favorites: \((user.favorites ?? []).joined(separator: ", "))")
                     
-                    PhotosPicker(selection: $selectedItem, matching: .images, photoLibrary: .shared()) {
-                        Text("Select a photo")
+//                    PhotosPicker(selection: $selectedItem, matching: .images, photoLibrary: .shared()) {
+//                        Text("Select a photo")
+//                    }
+                    ForEach(profileImages, id: \.self) { imageName in
+                        Button(action: {
+                            Task {
+                                do {
+                                    try await viewModel.updateProfileImage(imageName: imageName)
+                                } catch {
+                                    print("Failed to update profile image: \(error)")
+                                }
+                            }
+                        }) {
+                            Text(imageName)
+                        }
                     }
                 }
             }
@@ -68,11 +102,19 @@ struct ProfileView: View {
                     print("Failed to load user: \(error)")
                 }
             }
-            .onChange(of: selectedItem, perform: { newValue in
-                if let newValue {
-                    viewModel.saveProfileImage(item: newValue)
+//            .onChange(of: selectedItem, perform: { newValue in
+//                if let newValue {
+//                    viewModel.saveProfileImage(item: newValue)
+//                }
+//            })
+            .task {
+                do {
+                    try await viewModel.loadCurrentUser()
+                    profileImages = try await StorageManager.shared.getProfileImages()
+                } catch {
+                    print("Failed to load user or profile images: \(error)")
                 }
-            })
+            }
         }
     }
 }

@@ -6,25 +6,90 @@
 //
 
 import SwiftUI
-import Firebase
+import FirebaseFirestore
+import FirebaseAuth
 import CoreLocation
 import MapKit
 import PhotosUI
 
+
+class CreateViewModel: ObservableObject {
+    @Published private(set) var user: DatabaseUser? = nil
+    
+    func fetchUser() async {
+        do {
+            if let userId = Auth.auth().currentUser?.uid {
+                let fetchedUser = try await UserManager.shared.getUser(userId: userId)
+                DispatchQueue.main.async {
+                    self.user = fetchedUser
+                }
+            }
+        } catch {
+            print("Failed to fetch user: \(error)")
+        }
+    }
+    
+    
+    func saveImage(item: PhotosPickerItem, title: String, type: String, description: String, location: CLLocationCoordinate2D) {
+        guard let user = user else {
+            print("User is nil")
+            return
+        }
+        Task {
+            do {
+                guard let data = try await item.loadTransferable(type: Data.self) else {
+                    print("Failed to load image data")
+                    return
+                }
+                print("Image data loaded")
+                
+                let (path, name) = try await StorageManager.shared.saveImage(data: data, userId: user.userId)
+                print("Image uploaded to storage: \(path), \(name)")
+                
+                let imageUrl = try await StorageManager.shared.getDownloadUrl(userId: user.userId, path: name) // pass the image name here
+                print("Image download URL: \(imageUrl)")
+                
+                let post = Post(postId: UUID().uuidString, userId: user.userId, title: title, type: type, description: description, geopoint: GeoPoint(latitude: location.latitude, longitude: location.longitude), image: imageUrl, likes: 0, views: 0)
+                try await PostManager.shared.savePost(post: post)
+                print("Post saved successfully")
+            } catch {
+                print("Failed to upload post: \(error)")
+            }
+        }
+    }
+}
+
+
+
+    
+//    func saveImage(item: PhotosPickerItem, title: String, type: String, description: String, location: CLLocationCoordinate2D) throws {
+//        guard let user else { return }
+//        Task {
+//            guard let data = try await item.loadTransferable(type: Data.self) else {return}
+//            let (path, name) = try await StorageManager.shared.saveImage(data: data, userId: user.userId)
+//
+//            let imageUrl = await StorageManager.shared.getDownloadUrl(userId: user.userId, path: path)
+//
+//            let post = Post(postId: UUID().uuidString, userId: user.userId, title: title, type: type, description: description, geopoint: GeoPoint(latitude: location.latitude, longitude: location.longitude), image: imageUrl, likes: 0, views: 0)
+//            try Firestore.firestore().collection("Posts").document(post.postId).setData(from: post)
+//            print("Post image uploaded: \(path) and \(name)")
+//        }
+//    }
+
+
 struct CreateView: View {
+    @StateObject private var viewModel = CreateViewModel()
     @State private var title = ""
     @State private var description = ""
-    @State private var type = ""
+    @State private var type = "cat"
     
-//    @State private var image: UIImage? = nil
+    @State private var image: UIImage? = nil
     @State private var selectedItem: PhotosPickerItem?
     @State private var geopoint: CLLocationCoordinate2D? = nil
-//    @State private var showingImagePicker = false
-    @State private var inputImage: UIImage?
     
-    @State private var keyboardIsShown: Bool = false
     @Binding var showCreateView: Bool
     @Binding var showButton: Bool
+    @State private var showPhotosPicker: Bool = false
     
     var body: some View {
         NavigationView {
@@ -48,53 +113,99 @@ struct CreateView: View {
                         }
                     }
                     Section(header: Text("Image")) {
-//                        VStack {
-//                            Button(action: {
-//                                self.showingImagePicker = true
-//                            }) {
-//                                Text("Select Image")
-//                            }
-//                            if image != nil {
-//                                Image(uiImage: image!)
-//                                    .resizable()
-//                                    .aspectRatio(contentMode: .fit)
-//                            }
-//                        }
-                        PhotosPicker(selection: $selectedItem, matching: .images, photoLibrary: .shared()) {
-                            Text("Select photo")
+                        VStack {
+                            if let image {
+                                HStack {
+                                    Image(uiImage: image)
+                                        .resizable()
+                                        .scaledToFill()
+                                        .frame(width: 100, height: 100)
+                                        .cornerRadius(10)
+                                    VStack {
+                                        Text("Name:")
+                                        Text("Format:")
+                                    }
+                                }
+                            }
+                            PhotosPicker(selection: $selectedItem, matching: .images, photoLibrary: .shared()) {
+                                Text("Select photo")
+                            }
+                            .onChange(of: selectedItem) { _ in
+                                loadImage()
+                            }
                         }
                     }
                     Section(header: Text("Location")) {
-                        PickMapView(coordinate: $geopoint)
+                        CustomMapView(centerCoordinate: Binding(
+                            get: { self.geopoint ?? CLLocationCoordinate2D() },
+                            set: { self.geopoint = $0 }
+                        ))
+                        .frame(width: 300, height: 300)
+                        if let coordinate = geopoint {
+                            Text("Latitude: \(coordinate.latitude), Longitude: \(coordinate.longitude)")
+                        }
                     }
+                    
+                    // MARK: Upload
+                    Button(action: {
+                        print("Image has these fields: \(title), \(description), \(type), \(String(describing: selectedItem)), \(String(describing: geopoint)).")
+                        loadImage()
+                        if let item = selectedItem, let geopoint = geopoint {
+                            Task {
+                                do {
+                                    try await viewModel.saveImage(item: item, title: title, type: type, description: description, location: geopoint)
+                                } catch {
+                                    print("Failed to upload post: \(error)")
+                                }
+                            }
+                        }
+                    }) {
+                        Text("Upload")
+                    }
+
+
                 }
-//                .sheet(isPresented: $showingImagePicker, onDismiss: loadImage) {
-//                    ImagePicker(image: self.$inputImage)
-//                }
+            }
+        }
+        .onAppear {
+            Task {
+                await viewModel.fetchUser()
             }
         }
     }
     
-//    func loadImage() {
-//        guard let inputImage = inputImage else { return }
-//        image = inputImage
-//    }
+    func loadImage() {
+        if let item = selectedItem {
+            Task {
+                do {
+                    if let imageData = try await item.loadTransferable(type: Data.self),
+                       let uiImage = UIImage(data: imageData) {
+                        image = uiImage
+                    }
+                    print("Selected image identifier: \(item.itemIdentifier ?? "No item")")
+                } catch {
+                    print("Failed to load image: \(error)")
+                }
+            }
+        }
+    }
+
 }
 
-struct PickMapView: UIViewRepresentable {
-    @Binding var coordinate: CLLocationCoordinate2D?
+
+struct CustomMapView: UIViewRepresentable {
+    @Binding var centerCoordinate: CLLocationCoordinate2D
 
     func makeUIView(context: Context) -> MKMapView {
         let mapView = MKMapView()
         mapView.delegate = context.coordinator
+        let gestureRecognizer = UITapGestureRecognizer(target: context.coordinator, action: #selector(Coordinator.handleTap(_:)))
+        mapView.addGestureRecognizer(gestureRecognizer)
         return mapView
     }
 
-    func updateUIView(_ view: MKMapView, context: Context) {
-        if let coordinate = coordinate {
-            let region = MKCoordinateRegion(center: coordinate, latitudinalMeters: 1000, longitudinalMeters: 1000)
-            view.setRegion(region, animated: true)
-        }
+    func updateUIView(_ uiView: MKMapView, context: Context) {
+        uiView.setCenter(centerCoordinate, animated: true)
     }
 
     func makeCoordinator() -> Coordinator {
@@ -102,17 +213,68 @@ struct PickMapView: UIViewRepresentable {
     }
 
     class Coordinator: NSObject, MKMapViewDelegate {
-        var parent: PickMapView
+        var parent: CustomMapView
 
-        init(_ parent: PickMapView) {
+        init(_ parent: CustomMapView) {
             self.parent = parent
         }
 
-        func mapView(_ pickMapView: MKMapView, regionDidChangeAnimated animated: Bool) {
-            parent.coordinate = pickMapView.centerCoordinate
+        @objc func handleTap(_ gestureRecognizer: UITapGestureRecognizer) {
+            let location = gestureRecognizer.location(in: gestureRecognizer.view)
+            let coordinate = (gestureRecognizer.view as? MKMapView)?.convert(location, toCoordinateFrom: gestureRecognizer.view)
+            
+            // Remove all existing annotations
+            let allAnnotations = (gestureRecognizer.view as? MKMapView)?.annotations
+            (gestureRecognizer.view as? MKMapView)?.removeAnnotations(allAnnotations ?? [])
+            
+            // Add a pin at the tapped location
+            let annotation = MKPointAnnotation()
+            annotation.coordinate = coordinate!
+            (gestureRecognizer.view as? MKMapView)?.addAnnotation(annotation)
+            
+            // Update the centerCoordinate
+            parent.centerCoordinate = coordinate!
+            
+            print("Tapped at latitude: \(coordinate!.latitude), longitude: \(coordinate!.longitude)")
         }
     }
 }
+
+
+
+
+//struct PickMapView: UIViewRepresentable {
+//    @Binding var coordinate: CLLocationCoordinate2D?
+//
+//    func makeUIView(context: Context) -> MKMapView {
+//        let mapView = MKMapView()
+//        mapView.delegate = context.coordinator
+//        return mapView
+//    }
+//
+//    func updateUIView(_ view: MKMapView, context: Context) {
+//        if let coordinate = coordinate {
+//            let region = MKCoordinateRegion(center: coordinate, latitudinalMeters: 1000, longitudinalMeters: 1000)
+//            view.setRegion(region, animated: true)
+//        }
+//    }
+//
+//    func makeCoordinator() -> Coordinator {
+//        Coordinator(self)
+//    }
+//
+//    class Coordinator: NSObject, MKMapViewDelegate {
+//        var parent: PickMapView
+//
+//        init(_ parent: PickMapView) {
+//            self.parent = parent
+//        }
+//
+//        func mapView(_ pickMapView: MKMapView, regionDidChangeAnimated animated: Bool) {
+//            parent.coordinate = pickMapView.centerCoordinate
+//        }
+//    }
+//}
 
 //struct ImagePicker: UIViewControllerRepresentable {
 //    @Environment(\.presentationMode) var presentationMode
