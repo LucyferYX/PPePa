@@ -30,33 +30,32 @@ class CreateViewModel: ObservableObject {
     }
     
     
-    func saveImage(item: PhotosPickerItem, title: String, type: String, description: String, location: CLLocationCoordinate2D) {
+    func saveImage(item: PhotosPickerItem, title: String, type: String, description: String, location: CLLocationCoordinate2D) async throws {
         guard let user = user else {
             print("User is nil")
             return
         }
-        Task {
-            do {
-                guard let data = try await item.loadTransferable(type: Data.self) else {
-                    print("Failed to load image data")
-                    return
-                }
-                print("Image data loaded")
-                
-                let (path, name) = try await StorageManager.shared.saveImage(data: data, userId: user.userId)
-                print("Image uploaded to storage: \(path), \(name)")
-                
-                let imageUrl = try await StorageManager.shared.getDownloadUrl(userId: user.userId, path: name) // pass the image name here
-                print("Image download URL: \(imageUrl)")
-                
-                let post = Post(postId: UUID().uuidString, userId: user.userId, title: title, type: type, description: description, geopoint: GeoPoint(latitude: location.latitude, longitude: location.longitude), image: imageUrl, likes: 0, views: 0)
-                try await PostManager.shared.savePost(post: post)
-                print("Post saved successfully")
-            } catch {
-                print("Failed to upload post: \(error)")
+        do {
+            guard let data = try await item.loadTransferable(type: Data.self) else {
+                print("Failed to load image data")
+                return
             }
+            print("Image data loaded")
+            
+            let (path, name) = try await StorageManager.shared.saveImage(data: data, userId: user.userId)
+            print("Image uploaded to storage: \(path), \(name)")
+            
+            let imageUrl = try await StorageManager.shared.getDownloadUrl(userId: user.userId, path: name)
+            print("Image download URL: \(imageUrl)")
+            
+            let post = Post(postId: UUID().uuidString, userId: user.userId, title: title, type: type, description: description, geopoint: GeoPoint(latitude: location.latitude, longitude: location.longitude), image: imageUrl, likes: 0, views: 0)
+            try await PostManager.shared.savePost(post: post)
+            print("Post saved successfully")
+        } catch {
+            print("Failed to upload post: \(error)")
         }
     }
+
 }
 
 
@@ -162,6 +161,7 @@ struct CreateView: View {
                     }) {
                         Text("Upload")
                     }
+
 
 
                 }

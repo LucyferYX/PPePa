@@ -21,5 +21,7 @@
 	<array>
 		<string>Baloo2.ttf</string>
 	</array>
+	<key>CFBundleIdentifier</key>
+	<string>com.liene.planet-pet-pals</string>
 </dict>
 </plist>

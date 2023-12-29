@@ -16,7 +16,9 @@ struct PanelContent: View {
     @State private var showLikesView = false
     @State private var showAboutView = false
     
-    @State private var showingDeleteAlert = false
+    @State private var showDeleteAlert = false
+    @State private var showEmailAlert = false
+    @State private var emailAlertMessage = ""
     
     var body: some View {
         GeometryReader { geometry in
@@ -55,6 +57,8 @@ struct PanelContent: View {
                                         print("Email updated")
                                     } catch {
                                         print("Error: \(error)")
+                                        emailAlertMessage = error.localizedDescription
+                                        showEmailAlert = true
                                     }
                                 }
                             }
@@ -66,6 +70,8 @@ struct PanelContent: View {
                                         print("Password updated")
                                     } catch {
                                         print("Error: \(error)")
+                                        emailAlertMessage = error.localizedDescription
+                                        showEmailAlert = true
                                     }
                                 }
                             }
@@ -78,7 +84,6 @@ struct PanelContent: View {
                                 Task {
                                     do {
                                         try await viewModel.linkGoogleAccount()
-                                        print("Google account linked")
                                     } catch {
                                         print("Error: \(error)")
                                     }
@@ -97,6 +102,7 @@ struct PanelContent: View {
                             }
                         }
                         
+                        
                         // MARK: All accounts
                         Button("Sign out") {
                             Task {
@@ -110,11 +116,11 @@ struct PanelContent: View {
                         }
                         
                         Button(role: .destructive) {
-                            showingDeleteAlert = true
+                            showDeleteAlert = true
                         } label: {
                             Text("Delete Account")
                         }
-                        .alert(isPresented: $showingDeleteAlert) {
+                        .alert(isPresented: $showDeleteAlert) {
                             Alert(title: Text("Delete Account"),
                                   message: Text("Would you like to delete account? This action cannot be undone."),
                                   primaryButton: .destructive(Text("Delete").foregroundColor(.red)) {
@@ -182,6 +188,9 @@ struct PanelContent: View {
                 
             }
             .frame(height: geometry.size.height)
+            .alert(isPresented: $showEmailAlert) {
+                Alert(title: Text("Error"), message: Text(emailAlertMessage), dismissButton: .default(Text("OK")))
+            }
         }
     }
 }

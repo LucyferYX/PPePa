@@ -181,3 +181,18 @@ struct LabelButton: View {
         }
     }
 }
+
+struct PawButton: View {
+    let action: () -> Void
+    let color: Color
+
+    var body: some View {
+        Button(action: action) {
+            Image(systemName: "pawprint.fill")
+                .resizable()
+                .frame(width: 60, height: 60)
+                .foregroundColor(color)
+        }
+        .padding(.top)
+    }
+}

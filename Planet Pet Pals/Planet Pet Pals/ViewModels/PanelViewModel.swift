@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import FirebaseAuth
 
 @MainActor
 class PanelViewModel: ObservableObject {
@@ -50,20 +51,38 @@ class PanelViewModel: ObservableObject {
     
     @Published var errorMessage: String? = nil
 
-    func linkGoogleAccount() async {
+    func linkGoogleAccount() async throws {
         let helper = SignInGoogleHelper()
         do {
             let tokens = try await helper.signIn()
-            if let authUser = try? await AuthManager.shared.linkGoogle(tokens: tokens) {
-                self.authUser = authUser
-                try await UserManager.shared.updateUserAnonymousStatusAndEmail(userId: authUser.uid, isAnonymous: authUser.isAnonymous, email: authUser.email)
-            } else {
-                self.errorMessage = "Failed to link Google account."
-            }
+            let authUser = try await AuthManager.shared.linkGoogle(tokens: tokens)
+            self.authUser = authUser
+            try await UserManager.shared.updateUserAnonymousStatusAndEmail(userId: authUser.uid, isAnonymous: authUser.isAnonymous, email: authUser.email)
+        } catch let error as NSError where error.code == AuthErrorCode.accountExistsWithDifferentCredential.rawValue {
+            print(error.localizedDescription)
+            self.errorMessage = error.localizedDescription
         } catch {
+            print("An error occurred: \(error.localizedDescription)")
             self.errorMessage = "An error occurred: \(error.localizedDescription)"
         }
     }
+
+
+    
+//    func linkGoogleAccount() async {
+//        let helper = SignInGoogleHelper()
+//        do {
+//            let tokens = try await helper.signIn()
+//            if let authUser = try? await AuthManager.shared.linkGoogle(tokens: tokens) {
+//                self.authUser = authUser
+//                try await UserManager.shared.updateUserAnonymousStatusAndEmail(userId: authUser.uid, isAnonymous: authUser.isAnonymous, email: authUser.email)
+//            } else {
+//                self.errorMessage = "Failed to link Google account."
+//            }
+//        } catch {
+//            self.errorMessage = "An error occurred: \(error.localizedDescription)"
+//        }
+//    }
     
 //    func linkGoogleAccount() async throws {
 //        let helper = SignInGoogleHelper()

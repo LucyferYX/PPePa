@@ -82,7 +82,7 @@ struct AuthView: View {
                                         self.showResetPasswordView = true
                                     }, title: "forgot password", color: Color("Gondola"), fontSize: 18)
                                     .sheet(isPresented: $showResetPasswordView) {
-                                        ResetPasswordView(authManager: authManager, showResetPassword: $showResetPasswordView, email: $email)
+                                        ResetPasswordView(authManager: authManager, email: $email)
                                     }
                                     .padding(.bottom, 20)
                                 }

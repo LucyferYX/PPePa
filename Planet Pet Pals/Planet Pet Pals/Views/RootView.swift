@@ -22,6 +22,7 @@ struct RootView: View {
                     if !showSignInView {
                         NavigationStack {
                             MainMenuView(showSignInView: $showSignInView)
+//                            PostListView()
                         }
                     }
                 }

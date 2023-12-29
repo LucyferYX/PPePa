@@ -91,6 +91,14 @@ class UserManager {
         usersCollection.document(userId)
     }
     
+    func getUser(userId: String) async throws -> DatabaseUser {
+        try await usersDocument(userId: userId).getDocument(as: DatabaseUser.self)
+    }
+    
+    func getAllUsers() async throws -> [DatabaseUser] {
+        try await usersCollection.getDocuments(as: DatabaseUser.self)
+    }
+    
     private func userLikesCollection(userId: String) -> CollectionReference {
         usersDocument(userId: userId).collection("liked_posts")
     }
@@ -105,10 +113,6 @@ class UserManager {
     
     func deleteUser(userId: String) async throws {
         try await usersDocument(userId: userId).delete()
-    }
-    
-    func getUser(userId: String) async throws -> DatabaseUser {
-        try await usersDocument(userId: userId).getDocument(as: DatabaseUser.self)
     }
     
     func updateUserPremiumStatus(userId: String, isPremium: Bool) async throws {

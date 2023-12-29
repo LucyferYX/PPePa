@@ -9,8 +9,9 @@ import SwiftUI
 import FirebaseAuth
 
 struct ResetPasswordView: View {
+    @Environment(\.presentationMode) var presentationMode
     @ObservedObject var authManager: AuthManager
-    @Binding var showResetPassword: Bool
+//    @Binding var showResetPassword: Bool
     @Binding var email: String
     @State private var showAlert = false
     @State private var alertMessage = "alert"
@@ -19,15 +20,11 @@ struct ResetPasswordView: View {
         ZStack {
             MainBackground3()
             VStack(spacing: 2) {
-                Button(action: {
-                    showResetPassword = false
-                }) {
-                    Image(systemName: "pawprint.fill")
-                        .resizable()
-                        .frame(width: 60, height: 60)
-                        .foregroundColor(Color("Salmon"))
-                }
-                .padding(.top)
+                PawButton(action: {
+                    presentationMode.wrappedValue.dismiss()
+//                    showResetPassword = false
+                }, color: Color("Salmon"))
+
                 
                 Spacer()
                 
@@ -69,7 +66,8 @@ struct ResetPasswordView: View {
                                 throw EmailError.emailNotFound
                             }
                             try await authManager.resetPassword(email: email)
-                            showResetPassword = false
+//                            showResetPassword = false
+                            presentationMode.wrappedValue.dismiss()
                             alertMessage = "Reset email sent!"
                             print("Password reset for email: \(email)")
                         } catch let error as EmailError {

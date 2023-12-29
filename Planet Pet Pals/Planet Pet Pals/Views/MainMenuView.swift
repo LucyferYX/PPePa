@@ -7,16 +7,9 @@
 
 import SwiftUI
 
-struct MainMenuView: View {
-    @ObservedObject var dataManager = DataManager()
-    
+struct MainMenuView: View {    
     @State private var searchText = ""
     @State private var currentImage: String = ""
-    @State private var currentIndex: Int = 0 {
-        didSet {
-            updateCurrentImage()
-        }
-    }
     
     @Binding var showSignInView: Bool
     @FocusState private var isTextFieldFocused: Bool
@@ -62,26 +55,20 @@ struct MainMenuView: View {
                         //
                         HStack {
                             SimpleButton(action: {
-                                if self.currentIndex > 0 {
-                                    self.currentIndex -= 1
-                                }
+
                             }, systemImage: "chevron.left", buttonText: "", size: 30, color: Color("Snow"))
                             
-                            if dataManager.posts.isEmpty || currentImage.isEmpty {
-                                // Display a placeholder or a loading sign
-                                Text("Loading...")
-                            } else {
-                                FadeOutImageView(content: URLImage(placeholder: Image("MainDog"), url: self.currentImage), width: 250, height: 250)
-                            }
+//                            if dataManager.posts.isEmpty || currentImage.isEmpty {
+//                                ProgressView()
+//                            } else {
+//                                FadeOutImageView(content: URLImage(placeholder: Image("MainDog"), url: self.currentImage), width: 250, height: 250)
+//                            }
                             
                             
                             SimpleButton(action: {
-                                if self.currentIndex < self.dataManager.posts.count - 1 {
-                                    self.currentIndex += 1
-                                }
+
                             }, systemImage: "chevron.right", buttonText: "", size: 30, color: Color("Snow"))
                         }
-                        //
                         
                         Spacer()
                         
@@ -114,16 +101,16 @@ struct MainMenuView: View {
                 removeKeyboardNotifications()
             }
         }
-        .onAppear(perform: updateCurrentImage)
+//        .onAppear(perform: updateCurrentImage)
     }
     
-    private func updateCurrentImage() {
-        if !dataManager.posts.isEmpty {
-            DispatchQueue.main.async {
-                self.currentImage = self.dataManager.posts[self.currentIndex].image
-            }
-        }
-    }
+//    private func updateCurrentImage() {
+//        if !dataManager.posts.isEmpty {
+//            DispatchQueue.main.async {
+//                self.currentImage = self.dataManager.posts[self.currentIndex].image
+//            }
+//        }
+//    }
     
     private func addKeyboardNotifications() {
         NotificationCenter.default.addObserver(forName: UIResponder.keyboardWillShowNotification, object: nil, queue: .main) { _ in

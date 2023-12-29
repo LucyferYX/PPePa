@@ -134,7 +134,22 @@ extension AuthManager {
         guard let user = Auth.auth().currentUser else {
             throw URLError(.badURL)
         }
-        let authDataResult = try await user.link(with: credential)
-        return AuthDataResultModel(user: authDataResult.user)
+        do {
+            let authDataResult = try await user.link(with: credential)
+            return AuthDataResultModel(user: authDataResult.user)
+        } catch let error as NSError where error.code == AuthErrorCode.accountExistsWithDifferentCredential.rawValue {
+            print("An account already exists with the same email address but different sign-in credentials.")
+            throw NSError(domain: "AuthManager", code: AuthErrorCode.accountExistsWithDifferentCredential.rawValue, userInfo: [NSLocalizedDescriptionKey: "An account already exists with the same email address but different sign-in credentials."])
+        } catch {
+            throw error
+        }
     }
+    
+//    private func linkCredential(credential: AuthCredential) async throws -> AuthDataResultModel {
+//        guard let user = Auth.auth().currentUser else {
+//            throw URLError(.badURL)
+//        }
+//        let authDataResult = try await user.link(with: credential)
+//        return AuthDataResultModel(user: authDataResult.user)
+//    }
 }

@@ -10,12 +10,11 @@ import Firebase
 
 @main
 struct PPePa: App {
-    @StateObject var dataManager = DataManager()
     @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
 
     var body: some Scene {
         WindowGroup {
-            RootView().environmentObject(dataManager)
+            RootView()
         }
     }
 }

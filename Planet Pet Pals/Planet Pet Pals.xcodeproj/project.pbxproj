@@ -34,6 +34,7 @@
 		DC49FBCD2B33960800770741 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC49FBCC2B33960800770741 /* SettingsView.swift */; };
 		DC49FBCF2B339FD600770741 /* PostCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC49FBCE2B339FD600770741 /* PostCellView.swift */; };
 		DC5670B52B39EC1000807F2E /* ResetPasswordView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC5670B42B39EC1000807F2E /* ResetPasswordView.swift */; };
+		DC5BDF262B3DDDB9005F6B06 /* FirebaseCrashlytics in Frameworks */ = {isa = PBXBuildFile; productRef = DC5BDF252B3DDDB9005F6B06 /* FirebaseCrashlytics */; };
 		DC63B2012B3C6DFD0084C97C /* MaintenanceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC63B2002B3C6DFD0084C97C /* MaintenanceView.swift */; };
 		DC9158EC2B2A44890098A968 /* GoogleSignIn in Frameworks */ = {isa = PBXBuildFile; productRef = DC9158EB2B2A44890098A968 /* GoogleSignIn */; };
 		DC9158EE2B2A44890098A968 /* GoogleSignInSwift in Frameworks */ = {isa = PBXBuildFile; productRef = DC9158ED2B2A44890098A968 /* GoogleSignInSwift */; };
@@ -44,9 +45,7 @@
 		DC9B47542B37763200721504 /* PostView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC9B47532B37763200721504 /* PostView.swift */; };
 		DC9FB3D92B153A330035C0A7 /* ColorData.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC9FB3D82B153A330035C0A7 /* ColorData.swift */; };
 		DC9FF34C2B0FD49200DFCBD7 /* StatsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC9FF34B2B0FD49200DFCBD7 /* StatsView.swift */; };
-		DCA12F2C2B23B438001B08C2 /* DataManagerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCA12F2B2B23B438001B08C2 /* DataManagerView.swift */; };
 		DCB4889B2B20EFD10092201A /* ListDesign.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCB4889A2B20EFD10092201A /* ListDesign.swift */; };
-		DCB4889D2B20FFBB0092201A /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCB4889C2B20FFBB0092201A /* LoginView.swift */; };
 		DCB488A02B212D1E0092201A /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = DCB4889F2B212D1E0092201A /* FirebaseAnalytics */; };
 		DCB488A22B212D1E0092201A /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = DCB488A12B212D1E0092201A /* FirebaseAuth */; };
 		DCB488A42B212D1E0092201A /* FirebaseDatabase in Frameworks */ = {isa = PBXBuildFile; productRef = DCB488A32B212D1E0092201A /* FirebaseDatabase */; };
@@ -57,6 +56,7 @@
 		DCE5CB2C2B0E4078005E5760 /* NavigationBarDesign.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCE5CB2B2B0E4078005E5760 /* NavigationBarDesign.swift */; };
 		DCE6084A2B1E6143007C926A /* AboutView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCE608492B1E6143007C926A /* AboutView.swift */; };
 		DCEDF5A12B3A5255000AACAB /* TextDesign.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCEDF5A02B3A5255000AACAB /* TextDesign.swift */; };
+		DCF581592B3E4D4000147095 /* PostListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCF581582B3E4D4000147095 /* PostListView.swift */; };
 		DCF671D82B24EDE00012D505 /* CreateView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCF671D72B24EDE00012D505 /* CreateView.swift */; };
 		DCF6ECFE2B34F84B00BC5B11 /* StatsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCF6ECFD2B34F84B00BC5B11 /* StatsViewModel.swift */; };
 		DCF6ED002B34F88400BC5B11 /* LikedPostsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCF6ECFF2B34F88400BC5B11 /* LikedPostsViewModel.swift */; };
@@ -98,20 +98,18 @@
 		DC5670B42B39EC1000807F2E /* ResetPasswordView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResetPasswordView.swift; sourceTree = "<group>"; };
 		DC63B2002B3C6DFD0084C97C /* MaintenanceView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MaintenanceView.swift; sourceTree = "<group>"; };
 		DC9158EF2B2A45BF0098A968 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../../../Downloads/GoogleService-Info.plist"; sourceTree = "<group>"; };
-		DC9158F12B2A45E20098A968 /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		DC9158F22B2A4DFC0098A968 /* Utilities.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Utilities.swift; sourceTree = "<group>"; };
 		DC9366332B2F0C880077D2F7 /* LaunchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LaunchView.swift; sourceTree = "<group>"; };
 		DC97E3542B14D4BF00014018 /* RegionData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegionData.swift; sourceTree = "<group>"; };
 		DC9B47532B37763200721504 /* PostView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostView.swift; sourceTree = "<group>"; };
 		DC9FB3D82B153A330035C0A7 /* ColorData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorData.swift; sourceTree = "<group>"; };
 		DC9FF34B2B0FD49200DFCBD7 /* StatsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatsView.swift; sourceTree = "<group>"; };
-		DCA12F2B2B23B438001B08C2 /* DataManagerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataManagerView.swift; sourceTree = "<group>"; };
 		DCB4889A2B20EFD10092201A /* ListDesign.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListDesign.swift; sourceTree = "<group>"; };
-		DCB4889C2B20FFBB0092201A /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
 		DCB94C462B2E586600661077 /* LaunchScreen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = LaunchScreen.storyboard; sourceTree = "<group>"; };
 		DCE5CB2B2B0E4078005E5760 /* NavigationBarDesign.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationBarDesign.swift; sourceTree = "<group>"; };
 		DCE608492B1E6143007C926A /* AboutView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AboutView.swift; sourceTree = "<group>"; };
 		DCEDF5A02B3A5255000AACAB /* TextDesign.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextDesign.swift; sourceTree = "<group>"; };
+		DCF581582B3E4D4000147095 /* PostListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostListView.swift; sourceTree = "<group>"; };
 		DCF671D72B24EDE00012D505 /* CreateView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateView.swift; sourceTree = "<group>"; };
 		DCF6ECFD2B34F84B00BC5B11 /* StatsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatsViewModel.swift; sourceTree = "<group>"; };
 		DCF6ECFF2B34F88400BC5B11 /* LikedPostsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LikedPostsViewModel.swift; sourceTree = "<group>"; };
@@ -134,6 +132,7 @@
 				DCB488AA2B212D1E0092201A /* FirebasePerformance in Frameworks */,
 				DC3ECCBA2B2CF6C100D142B6 /* FirebaseFirestoreSwift in Frameworks */,
 				DCB488AC2B212D1E0092201A /* FirebaseStorage in Frameworks */,
+				DC5BDF262B3DDDB9005F6B06 /* FirebaseCrashlytics in Frameworks */,
 				DCB488A02B212D1E0092201A /* FirebaseAnalytics in Frameworks */,
 				DCB488A22B212D1E0092201A /* FirebaseAuth in Frameworks */,
 			);
@@ -249,7 +248,6 @@
 			isa = PBXGroup;
 			children = (
 				DCFC5DAC2B290E5E00AA9EB3 /* AuthView.swift */,
-				DCB4889C2B20FFBB0092201A /* LoginView.swift */,
 				DC5670B42B39EC1000807F2E /* ResetPasswordView.swift */,
 			);
 			path = AuthViews;
@@ -258,7 +256,6 @@
 		DC418C492B08F2EA0070D226 /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
-				DCA12F2B2B23B438001B08C2 /* DataManagerView.swift */,
 				DC9158F22B2A4DFC0098A968 /* Utilities.swift */,
 				7E5923372ACE155B000B96F5 /* ColorExtension.swift */,
 			);
@@ -303,7 +300,6 @@
 			children = (
 				DC9FB3D82B153A330035C0A7 /* ColorData.swift */,
 				DC97E3542B14D4BF00014018 /* RegionData.swift */,
-				DC9158F12B2A45E20098A968 /* GoogleService-Info.plist */,
 				DC01C5122B3A455E00486BCB /* Localizable.strings */,
 			);
 			path = Data;
@@ -316,6 +312,7 @@
 				DC9FF34B2B0FD49200DFCBD7 /* StatsView.swift */,
 				DC9B47532B37763200721504 /* PostView.swift */,
 				DC49FBCE2B339FD600770741 /* PostCellView.swift */,
+				DCF581582B3E4D4000147095 /* PostListView.swift */,
 			);
 			path = CollectionViews;
 			sourceTree = "<group>";
@@ -330,6 +327,7 @@
 				7E5923222ACE0014000B96F5 /* Sources */,
 				7E5923232ACE0014000B96F5 /* Frameworks */,
 				7E5923242ACE0014000B96F5 /* Resources */,
+				DC5BDF272B3E19F4005F6B06 /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -346,6 +344,7 @@
 				DC9158EB2B2A44890098A968 /* GoogleSignIn */,
 				DC9158ED2B2A44890098A968 /* GoogleSignInSwift */,
 				DC3ECCB92B2CF6C100D142B6 /* FirebaseFirestoreSwift */,
+				DC5BDF252B3DDDB9005F6B06 /* FirebaseCrashlytics */,
 			);
 			productName = "Planet Pet Pals";
 			productReference = 7E5923262ACE0014000B96F5 /* Planet Pet Pals.app */;
@@ -404,6 +403,31 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		DC5BDF272B3E19F4005F6B06 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${DWARF_DSYM_FOLDER_PATH}/${DWARF_DSYM_FILE_NAME}",
+				"${DWARF_DSYM_FOLDER_PATH}/${DWARF_DSYM_FILE_NAME}/Contents/Resources/DWARF/${PRODUCT_NAME}",
+				"${DWARF_DSYM_FOLDER_PATH}/${DWARF_DSYM_FILE_NAME}/Contents/Info.plist",
+				"$(TARGET_BUILD_DIR)/$(UNLOCALIZED_RESOURCES_FOLDER_PATH)/GoogleService-Info.plist",
+				"$(TARGET_BUILD_DIR)/$(EXECUTABLE_PATH)",
+			);
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# Type a script or drag a script file from your workspace to insert its path.\n\"${BUILD_DIR%/Build/*}/SourcePackages/checkouts/firebase-ios-sdk/Crashlytics/run\"\n";
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		7E5923222ACE0014000B96F5 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
@@ -431,10 +455,8 @@
 				7E59232A2ACE0014000B96F5 /* PPePa.swift in Sources */,
 				DC3ECCBD2B2CF9A100D142B6 /* PanelViewModel.swift in Sources */,
 				7EC810DC2AD1881B00A5DDD0 /* ButtonDesign.swift in Sources */,
-				DCA12F2C2B23B438001B08C2 /* DataManagerView.swift in Sources */,
 				DC334A2A2B38D4CA00B027B8 /* UserLikedPostManager.swift in Sources */,
 				DCF671D82B24EDE00012D505 /* CreateView.swift in Sources */,
-				DCB4889D2B20FFBB0092201A /* LoginView.swift in Sources */,
 				DC14520A2B0D44F30059FE96 /* MapView.swift in Sources */,
 				7E7B49422AD1F94D006AA8B6 /* SearchBarDesign.swift in Sources */,
 				DCFC5DAD2B290E5E00AA9EB3 /* AuthView.swift in Sources */,
@@ -445,6 +467,7 @@
 				DCE5CB2C2B0E4078005E5760 /* NavigationBarDesign.swift in Sources */,
 				DC3ECCC22B2CFC8500D142B6 /* SignInViewModel.swift in Sources */,
 				DCE6084A2B1E6143007C926A /* AboutView.swift in Sources */,
+				DCF581592B3E4D4000147095 /* PostListView.swift in Sources */,
 				DC49FBCF2B339FD600770741 /* PostCellView.swift in Sources */,
 				DC3ECCBF2B2CFABD00D142B6 /* AuthViewModel.swift in Sources */,
 				DCF6ED002B34F88400BC5B11 /* LikedPostsViewModel.swift in Sources */,
@@ -596,9 +619,11 @@
 				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = NO;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_ASSET_PATHS = "\"Planet Pet Pals/Preview Content\"";
 				DEVELOPMENT_TEAM = RW4PA4UCU3;
 				ENABLE_PREVIEWS = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "Planet-Pet-Pals-Info.plist";
 				INFOPLIST_KEY_CFBundleDisplayName = PPePa;
@@ -632,6 +657,7 @@
 				DEVELOPMENT_ASSET_PATHS = "\"Planet Pet Pals/Preview Content\"";
 				DEVELOPMENT_TEAM = RW4PA4UCU3;
 				ENABLE_PREVIEWS = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "Planet-Pet-Pals-Info.plist";
 				INFOPLIST_KEY_CFBundleDisplayName = PPePa;
@@ -701,6 +727,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = DCB4889E2B212D1D0092201A /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
 			productName = FirebaseFirestoreSwift;
+		};
+		DC5BDF252B3DDDB9005F6B06 /* FirebaseCrashlytics */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = DCB4889E2B212D1D0092201A /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseCrashlytics;
 		};
 		DC9158EB2B2A44890098A968 /* GoogleSignIn */ = {
 			isa = XCSwiftPackageProductDependency;

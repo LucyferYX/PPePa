@@ -10,7 +10,6 @@ import FirebaseFirestore
 
 struct StatsView: View {
     @Binding var showStatsView: Bool
-    @EnvironmentObject var dataManager: DataManager
     @StateObject private var viewModel = StatsViewModel()
     @State private var showHStack = false
     
