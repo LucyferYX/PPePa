@@ -110,6 +110,19 @@ class PostManager {
         try await postsDocument(postId: postId).getDocument(as: Post.self)
     }
     
+    func getAllPosts() async throws -> [Post] {
+        try await getAllPostsQuery().getDocuments(as: Post.self)
+    }
+    
+    func getAllPostsBy1(startAfter: DocumentSnapshot? = nil) async throws -> ([Post], DocumentSnapshot?) {
+        var query = postsCollection.order(by: Post.CodingKeys.postId.rawValue).limit(to: 1)
+        if let lastSnapshot = startAfter {
+            query = query.start(afterDocument: lastSnapshot)
+        }
+        let (posts, lastDocument) = try await query.getDocumentsWithSnapshot(as: Post.self)
+        return (posts, lastDocument)
+    }
+    
     func savePost(post: Post) async throws {
         let encoder = Firestore.Encoder()
         let data = try encoder.encode(post)

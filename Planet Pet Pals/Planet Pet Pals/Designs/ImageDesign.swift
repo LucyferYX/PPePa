@@ -35,23 +35,35 @@ struct RoundImage: View {
     }
 }
 
-struct FadeOutImageView<Content: View>: View {
-    let content: Content
+struct FadeOutImageView: View {
+    let isLoading: Bool
+    let url: URL?
     let width: CGFloat
     let height: CGFloat
 
     var body: some View {
-        content
-            .frame(width: width, height: height)
-            .mask(
-                VStack {
-                    LinearGradient(gradient: Gradient(colors: [.clear, .black, .black, .black, .black, .black, .black, .black, .black, .clear]), startPoint: .top, endPoint: .bottom)
+        VStack {
+            if isLoading {
+                ProgressView()
+            } else if let url = url {
+                AsyncImage(url: url) { image in
+                    image.resizable()
+                         .scaledToFit()
+                         .mask(
+                             VStack {
+                                 LinearGradient(gradient: Gradient(colors: [.clear, .black, .black, .black, .black, .black, .black, .black, .black, .clear]), startPoint: .top, endPoint: .bottom)
+                             }
+                             .mask(
+                                 HStack {
+                                     LinearGradient(gradient: Gradient(colors: [.clear, .black, .black, .black, .black, .black, .black, .black, .black, .clear]), startPoint: .leading, endPoint: .trailing)
+                                 }
+                             )
+                         )
+                } placeholder: {
+                    ProgressView()
                 }
-                .mask(
-                    HStack {
-                        LinearGradient(gradient: Gradient(colors: [.clear, .black, .black, .black, .black, .black, .black, .black, .black, .clear]), startPoint: .leading, endPoint: .trailing)
-                    }
-                )
-            )
+            }
+        }
+        .frame(width: width, height: height)
     }
 }

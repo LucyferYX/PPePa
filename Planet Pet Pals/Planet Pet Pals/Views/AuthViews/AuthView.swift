@@ -47,7 +47,7 @@ struct AuthView: View {
                     Spacer()
                     
                     ZStack {
-                        // Login view
+                        // MARK: Login view
                         RoundedSquare(color: Color("Seashell")) {
                             AnyView(
                                 VStack {
@@ -73,11 +73,14 @@ struct AuthView: View {
                                     
                                     LoginButton()
                                     
-                                    GoogleButton()
+                                    Rectangle()
+                                        .fill(Color("Snow"))
+                                        .frame(height: 2)
                                         .padding(.top)
                                     
-                                    Spacer()
-                                    
+                                    GoogleButton()
+                                        .padding(.vertical)
+                                                                        
                                     LabelButton(action: {
                                         self.showResetPasswordView = true
                                     }, title: "forgot password", color: Color("Gondola"), fontSize: 18)
@@ -90,7 +93,7 @@ struct AuthView: View {
                         }
                         .opacity(flipped ? 0 : 1)
                         
-                        // Sign up view
+                        // MARK: Sign up view
                         RoundedSquare(color: Color("Seashell")) {
                             AnyView(
                                 VStack {
@@ -98,9 +101,7 @@ struct AuthView: View {
                                         AuthText(text: "Sign up")
                                         Spacer()
                                     }
-                                    
-//                                    Spacer()
-                                    
+                                                                        
                                     SignTextField(placeholder: "Email", text: $viewModel.email)
                                     
                                     Line3()
@@ -182,12 +183,7 @@ struct AuthView: View {
 }
 
 
-struct AuthPreview: PreviewProvider {
-    static var previews: some View {
-        AuthView(showSignInView: .constant(false))
-    }
-}
-
+// MARK: Enum
 enum LoginError: LocalizedError {
     case emptyEmail
     case emptyPassword
@@ -229,7 +225,7 @@ enum SignUpError: LocalizedError {
 }
 
 
-
+// MARK: Extension
 extension AuthView {
     func GoogleButton() -> some View {
         GoogleSignInButton(viewModel: GoogleSignInButtonViewModel(scheme: .light, style: .wide, state: .normal)) {

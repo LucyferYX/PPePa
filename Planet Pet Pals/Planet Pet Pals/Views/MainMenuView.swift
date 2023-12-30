@@ -6,23 +6,71 @@
 //
 
 import SwiftUI
+import FirebaseFirestore
 
-struct MainMenuView: View {    
-    @State private var searchText = ""
-    @State private var currentImage: String = ""
+class MainMenuViewModel: ObservableObject {
+    @Published var currentPost: Post?
+    @Published var isLoading: Bool = false
+    private var lastDocument: DocumentSnapshot?
+    private var randomId: String = ""
+
+    init() {
+        randomId = generateRandomId()
+        nextPost()
+    }
+
+    func nextPost() {
+        isLoading = true
+        DispatchQueue.main.async {
+            Task {
+                do {
+                    let (posts, lastDocument) = try await PostManager.shared.getAllPostsBy1(startAfter: self.lastDocument)
+                    if let post = posts.first {
+                        self.lastDocument = lastDocument
+                        if post.userId.contains(self.randomId) {
+                            self.currentPost = post
+                        } else {
+                            self.nextPost()
+                        }
+                    } else {
+                        // If no more posts, generate a new random ID and start from the beginning
+                        self.randomId = self.generateRandomId()
+                        self.lastDocument = nil
+                        self.nextPost()
+                    }
+                } catch {
+                    print("Failed to fetch post: \(error)")
+                }
+                self.isLoading = false
+            }
+        }
+    }
+    
+    func generateRandomId() -> String {
+        let characters = Array("0123456789abcdefghijklmnoprstuvzyxwq")
+        return String(characters[Int.random(in: 0..<characters.count)])
+    }
+}
+
+
+
+struct MainMenuView: View {
+    @StateObject private var postLoader = MainMenuViewModel()
     
     @Binding var showSignInView: Bool
-    @FocusState private var isTextFieldFocused: Bool
-    
     @State private var showPanelView = false
     @State private var showProfileView = false
     @State private var showCreateView = false
     @State private var showMapView = false
     @State private var showStatsView = false
+    @State private var showPostView = false
     
+    @FocusState private var isTextFieldFocused: Bool
     @State private var keyboardIsShown: Bool = false
     @State private var showButton: Bool = false
+    @State private var buttonsEnabled: Bool = true
 
+    @State private var searchText = ""
     
     var body: some View {
         return GeometryReader { geometry in
@@ -46,29 +94,30 @@ struct MainMenuView: View {
                         }
                         
                         
-                            HStack {
-                                SimpleImageView(imageName: "LogoBig", width: 250, height: 120)
-                                    .padding(.top, -10)
-                            }
+                        HStack {
+                            SimpleImageView(imageName: "LogoBig", width: 250, height: 120)
+                                .padding(.top, -10)
+                        }
                         
                         
-                        //
                         HStack {
                             SimpleButton(action: {
+                                showPostView = true
+                            }, systemImage: "chevron.left", buttonText: "Open", size: 30, color: Color("Snow"))
+                            
+                            if postLoader.isLoading {
+                                ProgressView()
+                            } else {
+                                FadeOutImageView(isLoading: postLoader.isLoading,
+                                                 url: URL(string: postLoader.currentPost?.image ?? ""),
+                                                 width: 250, height: 250)
+                            }
 
-                            }, systemImage: "chevron.left", buttonText: "", size: 30, color: Color("Snow"))
-                            
-//                            if dataManager.posts.isEmpty || currentImage.isEmpty {
-//                                ProgressView()
-//                            } else {
-//                                FadeOutImageView(content: URLImage(placeholder: Image("MainDog"), url: self.currentImage), width: 250, height: 250)
-//                            }
-                            
-                            
                             SimpleButton(action: {
-
-                            }, systemImage: "chevron.right", buttonText: "", size: 30, color: Color("Snow"))
+                                postLoader.nextPost()
+                            }, systemImage: "chevron.right", buttonText: "Next", size: 30, color: Color("Snow"))
                         }
+
                         
                         Spacer()
                         
@@ -100,17 +149,13 @@ struct MainMenuView: View {
             .onDisappear {
                 removeKeyboardNotifications()
             }
+            .sheet(isPresented: $showPostView) {
+                if let postId = postLoader.currentPost?.postId {
+                    PostView(showPostView: $showPostView, postId: postId)
+                }
+            }
         }
-//        .onAppear(perform: updateCurrentImage)
     }
-    
-//    private func updateCurrentImage() {
-//        if !dataManager.posts.isEmpty {
-//            DispatchQueue.main.async {
-//                self.currentImage = self.dataManager.posts[self.currentIndex].image
-//            }
-//        }
-//    }
     
     private func addKeyboardNotifications() {
         NotificationCenter.default.addObserver(forName: UIResponder.keyboardWillShowNotification, object: nil, queue: .main) { _ in
@@ -131,30 +176,6 @@ struct MainMenuView: View {
     }
 }
 
-struct URLImage: View {
-    @State private var uiImage: UIImage? = nil
-    let placeholder: Image
-    let url: String
-
-    var body: some View {
-        if let uiImage = uiImage {
-            Image(uiImage: uiImage)
-                .resizable()
-                .scaledToFit()
-        } else {
-            placeholder
-                .onAppear(perform: fetch)
-        }
-    }
-
-    private func fetch() {
-        if let imageData = Data(base64Encoded: url) {
-            self.uiImage = UIImage(data: imageData)
-        } else {
-            print("Failed to decode Base64 image")
-        }
-    }
-}
 
 extension MainMenuView {
     var mainButtons: some View {

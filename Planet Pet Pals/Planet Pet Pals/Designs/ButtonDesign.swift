@@ -196,3 +196,36 @@ struct PawButton: View {
         .padding(.top)
     }
 }
+
+struct CheckmarkButton: View {
+    @State private var isChecked = true
+    @State private var animate = false
+    @State private var offset: CGFloat = 0
+
+    var body: some View {
+        Button(action: {
+            isChecked.toggle()
+            if !isChecked {
+                withAnimation(Animation.easeInOut(duration: 0.077).repeatCount(3, autoreverses: true)) {
+                    offset = -5
+                    animate = true
+                }
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                    withAnimation(Animation.easeInOut(duration: 0.07)) {
+                        offset = 0
+                    }
+                }
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                    withAnimation {
+                        animate = false
+                        isChecked = true
+                    }
+                }
+            }
+        }) {
+            Image(systemName: isChecked ? "checkmark.circle.fill" : "xmark.circle.fill")
+                .font(.system(size: 20))
+                .offset(x: animate ? offset : 0)
+        }
+    }
+}

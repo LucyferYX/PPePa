@@ -56,7 +56,7 @@
 		DCE5CB2C2B0E4078005E5760 /* NavigationBarDesign.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCE5CB2B2B0E4078005E5760 /* NavigationBarDesign.swift */; };
 		DCE6084A2B1E6143007C926A /* AboutView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCE608492B1E6143007C926A /* AboutView.swift */; };
 		DCEDF5A12B3A5255000AACAB /* TextDesign.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCEDF5A02B3A5255000AACAB /* TextDesign.swift */; };
-		DCF581592B3E4D4000147095 /* PostListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCF581582B3E4D4000147095 /* PostListView.swift */; };
+		DCF581592B3E4D4000147095 /* ChartView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCF581582B3E4D4000147095 /* ChartView.swift */; };
 		DCF671D82B24EDE00012D505 /* CreateView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCF671D72B24EDE00012D505 /* CreateView.swift */; };
 		DCF6ECFE2B34F84B00BC5B11 /* StatsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCF6ECFD2B34F84B00BC5B11 /* StatsViewModel.swift */; };
 		DCF6ED002B34F88400BC5B11 /* LikedPostsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCF6ECFF2B34F88400BC5B11 /* LikedPostsViewModel.swift */; };
@@ -109,7 +109,7 @@
 		DCE5CB2B2B0E4078005E5760 /* NavigationBarDesign.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationBarDesign.swift; sourceTree = "<group>"; };
 		DCE608492B1E6143007C926A /* AboutView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AboutView.swift; sourceTree = "<group>"; };
 		DCEDF5A02B3A5255000AACAB /* TextDesign.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextDesign.swift; sourceTree = "<group>"; };
-		DCF581582B3E4D4000147095 /* PostListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostListView.swift; sourceTree = "<group>"; };
+		DCF581582B3E4D4000147095 /* ChartView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChartView.swift; sourceTree = "<group>"; };
 		DCF671D72B24EDE00012D505 /* CreateView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateView.swift; sourceTree = "<group>"; };
 		DCF6ECFD2B34F84B00BC5B11 /* StatsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatsViewModel.swift; sourceTree = "<group>"; };
 		DCF6ECFF2B34F88400BC5B11 /* LikedPostsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LikedPostsViewModel.swift; sourceTree = "<group>"; };
@@ -312,7 +312,7 @@
 				DC9FF34B2B0FD49200DFCBD7 /* StatsView.swift */,
 				DC9B47532B37763200721504 /* PostView.swift */,
 				DC49FBCE2B339FD600770741 /* PostCellView.swift */,
-				DCF581582B3E4D4000147095 /* PostListView.swift */,
+				DCF581582B3E4D4000147095 /* ChartView.swift */,
 			);
 			path = CollectionViews;
 			sourceTree = "<group>";
@@ -467,7 +467,7 @@
 				DCE5CB2C2B0E4078005E5760 /* NavigationBarDesign.swift in Sources */,
 				DC3ECCC22B2CFC8500D142B6 /* SignInViewModel.swift in Sources */,
 				DCE6084A2B1E6143007C926A /* AboutView.swift in Sources */,
-				DCF581592B3E4D4000147095 /* PostListView.swift in Sources */,
+				DCF581592B3E4D4000147095 /* ChartView.swift in Sources */,
 				DC49FBCF2B339FD600770741 /* PostCellView.swift in Sources */,
 				DC3ECCBF2B2CFABD00D142B6 /* AuthViewModel.swift in Sources */,
 				DCF6ED002B34F88400BC5B11 /* LikedPostsViewModel.swift in Sources */,

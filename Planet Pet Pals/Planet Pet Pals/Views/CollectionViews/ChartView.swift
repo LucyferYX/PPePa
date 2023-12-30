@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-class PostListViewModel: ObservableObject {
+class ChartViewModel: ObservableObject {
     @Published var userCountsPerDay: [(date: Date, count: Int)] = []
     @Published var maxY: Int = 0
     @Published var minY: Int = Int.max
@@ -59,8 +59,8 @@ class PostListViewModel: ObservableObject {
 
 
 
-struct PostListView: View {
-    @StateObject private var viewModel = PostListViewModel()
+struct ChartView: View {
+    @StateObject private var viewModel = ChartViewModel()
     @State private var percentage: CGFloat = 0
 
     var body: some View {
@@ -83,7 +83,7 @@ struct PostListView: View {
     }
 }
 
-extension PostListView {
+extension ChartView {
 //    private var chart: some View {
 //        GeometryReader { geometry in
 //            Path { path in
@@ -183,8 +183,8 @@ extension PostListView {
 }
 
 
-struct PostListView_Previews: PreviewProvider {
-    static var previews: some View {
-        PostListView()
-    }
-}
+//struct PostListView_Previews: PreviewProvider {
+//    static var previews: some View {
+//        PostListView()
+//    }
+//}
