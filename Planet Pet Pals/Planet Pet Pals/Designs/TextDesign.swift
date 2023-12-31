@@ -47,3 +47,28 @@ struct SignSecureField: View {
             .padding(.trailing)
     }
 }
+
+struct LimitedTextField: View {
+    @Binding var text: String
+    var maxLength: Int
+    var title: String
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 0) {
+            TextField(title, text: $text, axis: .vertical)
+                .font(.custom("Baloo2-Regular", size: 20))
+                .lineLimit(...10)
+                .onChange(of: text) { newValue in
+                    if text.count > maxLength {
+                        text = String(text.prefix(maxLength))
+                    }
+                }
+            if text.count >= maxLength {
+                Text("Character limit of \(maxLength) has been reached!")
+                    .font(.custom("Baloo2-Regular", size: 15))
+                    .foregroundColor(.red)
+                    .font(.caption)
+            }
+        }
+    }
+}

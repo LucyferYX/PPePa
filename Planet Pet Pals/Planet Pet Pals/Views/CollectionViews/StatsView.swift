@@ -18,7 +18,7 @@ struct StatsView: View {
             Color("Snow").ignoresSafeArea()
             VStack {
                 
-                NavigationBar()
+                NavigationBar
                 
                 showMenu()
                 
@@ -109,7 +109,7 @@ extension StatsView {
         }
     }
     
-    func NavigationBar() -> some View {
+    private var NavigationBar: some View {
         MainNavigationBar(
             title: "Stats",
             leftButton: LeftNavigationButton(

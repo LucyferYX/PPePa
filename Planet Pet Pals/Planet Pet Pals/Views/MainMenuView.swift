@@ -87,6 +87,7 @@ struct MainMenuView: View {
                             PanelButton(action: { showProfileView.toggle() },
                                         systemImage: "person.crop.circle",
                                         color: Color("Walnut"))
+                            .padding(.trailing)
                         }
                         .ignoresSafeArea(.keyboard)
                         .fullScreenCover(isPresented: $showProfileView) {

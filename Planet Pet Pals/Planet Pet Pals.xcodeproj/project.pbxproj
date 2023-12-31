@@ -65,6 +65,9 @@
 		DCFC5DA92B28EBF100AA9EB3 /* AuthManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCFC5DA82B28EBF100AA9EB3 /* AuthManager.swift */; };
 		DCFC5DAB2B28FD9B00AA9EB3 /* RootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCFC5DAA2B28FD9B00AA9EB3 /* RootView.swift */; };
 		DCFC5DAD2B290E5E00AA9EB3 /* AuthView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCFC5DAC2B290E5E00AA9EB3 /* AuthView.swift */; };
+		DCFCE8582B41CFE100EAD795 /* CreateViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCFCE8572B41CFE100EAD795 /* CreateViewModel.swift */; };
+		DCFCE85A2B41D2C400EAD795 /* MapPickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCFCE8592B41D2C400EAD795 /* MapPickerView.swift */; };
+		DCFCE85C2B41D90400EAD795 /* SectionDesign.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCFCE85B2B41D90400EAD795 /* SectionDesign.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -118,6 +121,9 @@
 		DCFC5DA82B28EBF100AA9EB3 /* AuthManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthManager.swift; sourceTree = "<group>"; };
 		DCFC5DAA2B28FD9B00AA9EB3 /* RootView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootView.swift; sourceTree = "<group>"; };
 		DCFC5DAC2B290E5E00AA9EB3 /* AuthView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthView.swift; sourceTree = "<group>"; };
+		DCFCE8572B41CFE100EAD795 /* CreateViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateViewModel.swift; sourceTree = "<group>"; };
+		DCFCE8592B41D2C400EAD795 /* MapPickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapPickerView.swift; sourceTree = "<group>"; };
+		DCFCE85B2B41D90400EAD795 /* SectionDesign.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SectionDesign.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -216,6 +222,7 @@
 				DC418C472B08F2D40070D226 /* ImageDesign.swift */,
 				DC44007E2B1D006A001F6609 /* ShapeDesign.swift */,
 				7EC810DB2AD1881B00A5DDD0 /* ButtonDesign.swift */,
+				DCFCE85B2B41D90400EAD795 /* SectionDesign.swift */,
 				7E7B49412AD1F94D006AA8B6 /* SearchBarDesign.swift */,
 				DC418C452B08F2570070D226 /* BackgroundDesign.swift */,
 				DCE5CB2B2B0E4078005E5760 /* NavigationBarDesign.swift */,
@@ -240,6 +247,7 @@
 				DCF6ECFD2B34F84B00BC5B11 /* StatsViewModel.swift */,
 				DCF6ECFF2B34F88400BC5B11 /* LikedPostsViewModel.swift */,
 				DCF6ED012B34F95800BC5B11 /* LikesViewModel.swift */,
+				DCFCE8572B41CFE100EAD795 /* CreateViewModel.swift */,
 			);
 			path = ViewModels;
 			sourceTree = "<group>";
@@ -313,6 +321,7 @@
 				DC9B47532B37763200721504 /* PostView.swift */,
 				DC49FBCE2B339FD600770741 /* PostCellView.swift */,
 				DCF581582B3E4D4000147095 /* ChartView.swift */,
+				DCFCE8592B41D2C400EAD795 /* MapPickerView.swift */,
 			);
 			path = CollectionViews;
 			sourceTree = "<group>";
@@ -435,6 +444,7 @@
 			files = (
 				DC5670B52B39EC1000807F2E /* ResetPasswordView.swift in Sources */,
 				DC9FF34C2B0FD49200DFCBD7 /* StatsView.swift in Sources */,
+				DCFCE85C2B41D90400EAD795 /* SectionDesign.swift in Sources */,
 				DC9366342B2F0C880077D2F7 /* LaunchView.swift in Sources */,
 				DCFC5DA92B28EBF100AA9EB3 /* AuthManager.swift in Sources */,
 				DCB4889B2B20EFD10092201A /* ListDesign.swift in Sources */,
@@ -454,9 +464,11 @@
 				DC3ECCC42B2CFCB200D142B6 /* ProfileView.swift in Sources */,
 				7E59232A2ACE0014000B96F5 /* PPePa.swift in Sources */,
 				DC3ECCBD2B2CF9A100D142B6 /* PanelViewModel.swift in Sources */,
+				DCFCE85A2B41D2C400EAD795 /* MapPickerView.swift in Sources */,
 				7EC810DC2AD1881B00A5DDD0 /* ButtonDesign.swift in Sources */,
 				DC334A2A2B38D4CA00B027B8 /* UserLikedPostManager.swift in Sources */,
 				DCF671D82B24EDE00012D505 /* CreateView.swift in Sources */,
+				DCFCE8582B41CFE100EAD795 /* CreateViewModel.swift in Sources */,
 				DC14520A2B0D44F30059FE96 /* MapView.swift in Sources */,
 				7E7B49422AD1F94D006AA8B6 /* SearchBarDesign.swift in Sources */,
 				DCFC5DAD2B290E5E00AA9EB3 /* AuthView.swift in Sources */,

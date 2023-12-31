@@ -6,103 +6,12 @@
 //
 
 import SwiftUI
-import FirebaseFirestore
-import FirebaseAuth
-import CoreLocation
-import MapKit
 import PhotosUI
-
-
-class CreateViewModel: ObservableObject {
-    @Published private(set) var user: DatabaseUser? = nil
-    @Published private(set) var image: UIImage? = nil
-    
-    @Published var isUploading = false
-    @Published var uploadCompleted = false
-    @Published var showUnsupportedFormatAlert = false
-    
-    func fetchUser() async {
-        do {
-            if let userId = Auth.auth().currentUser?.uid {
-                let fetchedUser = try await UserManager.shared.getUser(userId: userId)
-                DispatchQueue.main.async {
-                    self.user = fetchedUser
-                }
-            }
-        } catch {
-            print("Failed to fetch user: \(error)")
-        }
-    }
-    
-    func loadImage(item: PhotosPickerItem?) async {
-        if let item = item {
-            do {
-                if let imageData = try await item.loadTransferable(type: Data.self) {
-                    if let uiImage = UIImage(data: imageData) {
-                        DispatchQueue.main.async {
-                            self.image = uiImage
-                        }
-                    }
-                } else {
-                    print("Failed to load image data")
-                    DispatchQueue.main.async {
-                        self.showUnsupportedFormatAlert = true
-                    }
-                }
-            } catch {
-                print("Failed to load image: \(error)")
-                DispatchQueue.main.async {
-                    self.showUnsupportedFormatAlert = true
-                }
-            }
-        }
-    }
-
-    
-    func saveImage(item: PhotosPickerItem, title: String, type: String, description: String, location: CLLocationCoordinate2D) async throws {
-        guard let user = user else {
-            print("User is nil")
-            return
-        }
-        DispatchQueue.main.async {
-            self.isUploading = true
-        }
-        do {
-            guard let data = try await item.loadTransferable(type: Data.self) else {
-                print("Failed to load image data")
-                DispatchQueue.main.async {
-                    self.showUnsupportedFormatAlert = true
-                }
-                return
-            }
-            print("Image data loaded")
-            
-            let (path, name) = try await StorageManager.shared.saveImage(data: data, userId: user.userId)
-            print("Image uploaded to storage: \(path), \(name)")
-            
-            let imageUrl = try await StorageManager.shared.getDownloadUrl(userId: user.userId, path: name)
-            print("Image download URL: \(imageUrl)")
-            
-            let post = Post(postId: UUID().uuidString, userId: user.userId, title: title, type: type, description: description, geopoint: GeoPoint(latitude: location.latitude, longitude: location.longitude), image: imageUrl, likes: 0, views: 0)
-            try await PostManager.shared.savePost(post: post)
-            print("Post saved successfully")
-            DispatchQueue.main.async {
-                self.uploadCompleted = true
-            }
-            try await Task.sleep(nanoseconds: 1_000_000_000)
-        } catch {
-            print("Failed to upload post: \(error)")
-        }
-        DispatchQueue.main.async {
-            self.isUploading = false
-            self.uploadCompleted = false
-        }
-    }
-}
-
 
 struct CreateView: View {
     @StateObject private var viewModel = CreateViewModel()
+    @AppStorage("selectedRegion") var selectedRegion: String = "Europe"
+    
     @State private var title = ""
     @State private var description = ""
     @State private var type = "cat"
@@ -115,32 +24,72 @@ struct CreateView: View {
     @Binding var showButton: Bool
     @State private var showPhotosPicker: Bool = false
     
+    @State private var showMissingFieldAlert = false
+    @State private var missingField = ""
+    
     var body: some View {
         NavigationView {
             ZStack {
                 MainBackground()
-                Form {
-                    closeButton
-                    informationSection
-                    imageSection
-                    locationSection
-                    
-                    // MARK: Upload
-                    Button(action: {
-                        print("Image has these fields: \(title), \(description).")
-                        Task {
-                            await viewModel.loadImage(item: selectedItem)
-                            if let item = selectedItem, let geopoint = geopoint {
-                                do {
-                                    try await viewModel.saveImage(item: item, title: title, type: type, description: description, location: geopoint)
-                                } catch {
-                                    print("Failed to upload post: \(error)")
+                VStack {
+                    MainNavigationBar(
+                        title: "Create",
+                        leftButton: LeftNavigationButton(
+                            action: { self.showCreateView = false },
+                            imageName: "chevron.up",
+                            buttonText: "Back",
+                            imageInvisible: false,
+                            textInvisible: false
+                        ),
+                        rightButton: RightNavigationButton(
+                            action: {},
+                            imageName: "chevron.up",
+                            buttonText: "Back",
+                            imageInvisible: true,
+                            textInvisible: true
+                        )
+                    )
+                    Form {
+                        informationSection
+                        imageSection
+                        locationSection
+                        
+                        // MARK: Upload
+                        Button(action: {
+                            Task {
+                                if selectedItem == nil {
+                                    missingField = "Image"
+                                    showMissingFieldAlert = true
+                                    print("Missing image. Value: \(String(describing: selectedItem))")
+                                } else if title.isEmpty {
+                                    missingField = "Title"
+                                    showMissingFieldAlert = true
+                                    print("Missing title. Value: \(title)")
+                                } else if description.isEmpty {
+                                    missingField = "Description"
+                                    showMissingFieldAlert = true
+                                    print("Missing description. Value: \(description)")
+                                } else if geopoint == nil {
+                                    missingField = "Location"
+                                    showMissingFieldAlert = true
+                                    print("Missing location. Value: \(String(describing: geopoint))")
+                                } else {
+                                    await viewModel.loadImage(item: selectedItem)
+                                    if let item = selectedItem, let geopoint = geopoint {
+                                        do {
+                                            try await viewModel.saveImage(item: item, title: title, type: type, description: description, location: geopoint)
+                                        } catch {
+                                            print("Failed to upload post: \(error)")
+                                        }
+                                    }
                                 }
                             }
+                        }) {
+                            Text("Upload")
+                                .font(.custom("Baloo2-SemiBold", size: 20))
                         }
-                    }) {
-                        Text("Upload")
                     }
+                    .scrollContentBackground(.hidden)
                 }
             }
         }
@@ -153,6 +102,15 @@ struct CreateView: View {
                 }
             )
         }
+        .alert(isPresented: $showMissingFieldAlert) {
+            Alert(
+                title: Text("Missing Field"),
+                message: Text("Please provide a value for the following field: \(missingField)"),
+                dismissButton: .default(Text("OK")) {
+                    showMissingFieldAlert = false
+                }
+            )
+        }
         .onAppear() {
             Task {
                 await viewModel.fetchUser()
@@ -161,7 +119,7 @@ struct CreateView: View {
         .onChange(of: selectedItem) { item in
             Task {
                 await viewModel.loadImage(item: item)
-                await viewModel.fetchUser()
+//                await viewModel.fetchUser()
             }
         }
         .overlay(Group {
@@ -176,7 +134,7 @@ struct CreateView: View {
                             .progressViewStyle(CircularProgressViewStyle(tint: Color("Snow")))
                     }
                     Text(viewModel.uploadCompleted ? "Uploaded!" : "Image is being uploaded, please do not close the device.")
-                        .font(.custom("Baloo2-Regular", size: 30))
+                        .font(.custom("Baloo2-SemiBold", size: 30))
                         .foregroundColor(Color("Snow"))
                         .multilineTextAlignment(.center)
                         .padding()
@@ -193,108 +151,59 @@ struct CreateView: View {
     }
 }
 
-
-extension CreateView {
-    var closeButton: some View {
-        HStack {
-            Button("Close") {
-                showCreateView.toggle()
-                showButton.toggle()
-            }
-            .foregroundColor(Color("Walnut"))
-        }
+// MARK: Preview
+struct Preview: PreviewProvider {
+    static var previews: some View {
+        CreateView(showCreateView: .constant(true), showButton: .constant(true))
     }
+}
 
+
+// MARK: Extension
+extension CreateView {
     var informationSection: some View {
-        Section(header: Text("Information")) {
-            TextField("Title", text: $title)
-            TextField("Description", text: $description)
+        FormSection(headerText: "Information") {
+            LimitedTextField(text: $title, maxLength: 30, title: "Title")
+            LimitedTextField(text: $description, maxLength: 200, title: "Description")
             Picker("Type", selection: $type) {
                 ForEach(animals, id: \.self) {
                     Text($0)
                 }
             }
+            .font(.custom("Baloo2-Regular", size: 20))
         }
     }
     
     var imageSection: some View {
-        Section(header: Text("Image")) {
-            VStack {
+        FormSection(headerText: "Image") {
+            HStack {
                 if let image = viewModel.image {
-                    HStack {
-                        Image(uiImage: image)
-                            .resizable()
-                            .scaledToFill()
-                            .frame(width: 100, height: 100)
-                            .cornerRadius(10)
-                    }
+                    Image(uiImage: image)
+                        .resizable()
+                        .scaledToFill()
+                        .frame(width: 100, height: 100)
+                        .cornerRadius(10)
+                        .padding(.trailing)
+                    
                 }
                 PhotosPicker(selection: $selectedItem, matching: .images, photoLibrary: .shared()) {
                     Text("Select photo")
+                        .font(.custom("Baloo2-Regular", size: 20))
                 }
             }
         }
     }
 
     var locationSection: some View {
-        Section(header: Text("Location")) {
+        FormSection(headerText: "Location") {
             CustomMapView(centerCoordinate: Binding(
                 get: { self.geopoint ?? CLLocationCoordinate2D() },
                 set: { self.geopoint = $0 }
-            ))
+            ), selectedRegion: selectedRegion)
             .frame(width: 300, height: 300)
             if let coordinate = geopoint {
                 Text("Latitude: \(coordinate.latitude), Longitude: \(coordinate.longitude)")
             }
-        }
-    }
-}
-
-
-
-struct CustomMapView: UIViewRepresentable {
-    @Binding var centerCoordinate: CLLocationCoordinate2D
-
-    func makeUIView(context: Context) -> MKMapView {
-        let mapView = MKMapView()
-        mapView.delegate = context.coordinator
-        let gestureRecognizer = UITapGestureRecognizer(target: context.coordinator, action: #selector(Coordinator.handleTap(_:)))
-        mapView.addGestureRecognizer(gestureRecognizer)
-        return mapView
-    }
-
-    func updateUIView(_ uiView: MKMapView, context: Context) {
-        uiView.setCenter(centerCoordinate, animated: true)
-    }
-
-    func makeCoordinator() -> Coordinator {
-        Coordinator(self)
-    }
-
-    class Coordinator: NSObject, MKMapViewDelegate {
-        var parent: CustomMapView
-
-        init(_ parent: CustomMapView) {
-            self.parent = parent
-        }
-
-        @objc func handleTap(_ gestureRecognizer: UITapGestureRecognizer) {
-            let location = gestureRecognizer.location(in: gestureRecognizer.view)
-            let coordinate = (gestureRecognizer.view as? MKMapView)?.convert(location, toCoordinateFrom: gestureRecognizer.view)
-            
-            // Remove all existing annotations
-            let allAnnotations = (gestureRecognizer.view as? MKMapView)?.annotations
-            (gestureRecognizer.view as? MKMapView)?.removeAnnotations(allAnnotations ?? [])
-            
-            // Add a pin at the tapped location
-            let annotation = MKPointAnnotation()
-            annotation.coordinate = coordinate!
-            (gestureRecognizer.view as? MKMapView)?.addAnnotation(annotation)
-            
-            // Update the centerCoordinate
-            parent.centerCoordinate = coordinate!
-            
-            print("Tapped at latitude: \(coordinate!.latitude), longitude: \(coordinate!.longitude)")
         }
     }
 }
