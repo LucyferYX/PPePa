@@ -15,6 +15,11 @@ import PhotosUI
 
 class CreateViewModel: ObservableObject {
     @Published private(set) var user: DatabaseUser? = nil
+    @Published private(set) var image: UIImage? = nil
+    
+    @Published var isUploading = false
+    @Published var uploadCompleted = false
+    @Published var showUnsupportedFormatAlert = false
     
     func fetchUser() async {
         do {
@@ -29,15 +34,45 @@ class CreateViewModel: ObservableObject {
         }
     }
     
+    func loadImage(item: PhotosPickerItem?) async {
+        if let item = item {
+            do {
+                if let imageData = try await item.loadTransferable(type: Data.self) {
+                    if let uiImage = UIImage(data: imageData) {
+                        DispatchQueue.main.async {
+                            self.image = uiImage
+                        }
+                    }
+                } else {
+                    print("Failed to load image data")
+                    DispatchQueue.main.async {
+                        self.showUnsupportedFormatAlert = true
+                    }
+                }
+            } catch {
+                print("Failed to load image: \(error)")
+                DispatchQueue.main.async {
+                    self.showUnsupportedFormatAlert = true
+                }
+            }
+        }
+    }
+
     
     func saveImage(item: PhotosPickerItem, title: String, type: String, description: String, location: CLLocationCoordinate2D) async throws {
         guard let user = user else {
             print("User is nil")
             return
         }
+        DispatchQueue.main.async {
+            self.isUploading = true
+        }
         do {
             guard let data = try await item.loadTransferable(type: Data.self) else {
                 print("Failed to load image data")
+                DispatchQueue.main.async {
+                    self.showUnsupportedFormatAlert = true
+                }
                 return
             }
             print("Image data loaded")
@@ -51,29 +86,19 @@ class CreateViewModel: ObservableObject {
             let post = Post(postId: UUID().uuidString, userId: user.userId, title: title, type: type, description: description, geopoint: GeoPoint(latitude: location.latitude, longitude: location.longitude), image: imageUrl, likes: 0, views: 0)
             try await PostManager.shared.savePost(post: post)
             print("Post saved successfully")
+            DispatchQueue.main.async {
+                self.uploadCompleted = true
+            }
+            try await Task.sleep(nanoseconds: 1_000_000_000)
         } catch {
             print("Failed to upload post: \(error)")
         }
+        DispatchQueue.main.async {
+            self.isUploading = false
+            self.uploadCompleted = false
+        }
     }
-
 }
-
-
-
-    
-//    func saveImage(item: PhotosPickerItem, title: String, type: String, description: String, location: CLLocationCoordinate2D) throws {
-//        guard let user else { return }
-//        Task {
-//            guard let data = try await item.loadTransferable(type: Data.self) else {return}
-//            let (path, name) = try await StorageManager.shared.saveImage(data: data, userId: user.userId)
-//
-//            let imageUrl = await StorageManager.shared.getDownloadUrl(userId: user.userId, path: path)
-//
-//            let post = Post(postId: UUID().uuidString, userId: user.userId, title: title, type: type, description: description, geopoint: GeoPoint(latitude: location.latitude, longitude: location.longitude), image: imageUrl, likes: 0, views: 0)
-//            try Firestore.firestore().collection("Posts").document(post.postId).setData(from: post)
-//            print("Post image uploaded: \(path) and \(name)")
-//        }
-//    }
 
 
 struct CreateView: View {
@@ -95,62 +120,17 @@ struct CreateView: View {
             ZStack {
                 MainBackground()
                 Form {
-                    HStack {
-                        Button("Close") {
-                            showCreateView.toggle()
-                            showButton.toggle()
-                        }
-                        .foregroundColor(Color("Walnut"))
-                    }
-                    Section(header: Text("Information")) {
-                        TextField("Title", text: $title)
-                        TextField("Description", text: $description)
-                        Picker("Type", selection: $type) {
-                            ForEach(animals, id: \.self) {
-                                Text($0)
-                            }
-                        }
-                    }
-                    Section(header: Text("Image")) {
-                        VStack {
-                            if let image {
-                                HStack {
-                                    Image(uiImage: image)
-                                        .resizable()
-                                        .scaledToFill()
-                                        .frame(width: 100, height: 100)
-                                        .cornerRadius(10)
-                                    VStack {
-                                        Text("Name:")
-                                        Text("Format:")
-                                    }
-                                }
-                            }
-                            PhotosPicker(selection: $selectedItem, matching: .images, photoLibrary: .shared()) {
-                                Text("Select photo")
-                            }
-                            .onChange(of: selectedItem) { _ in
-                                loadImage()
-                            }
-                        }
-                    }
-                    Section(header: Text("Location")) {
-                        CustomMapView(centerCoordinate: Binding(
-                            get: { self.geopoint ?? CLLocationCoordinate2D() },
-                            set: { self.geopoint = $0 }
-                        ))
-                        .frame(width: 300, height: 300)
-                        if let coordinate = geopoint {
-                            Text("Latitude: \(coordinate.latitude), Longitude: \(coordinate.longitude)")
-                        }
-                    }
+                    closeButton
+                    informationSection
+                    imageSection
+                    locationSection
                     
                     // MARK: Upload
                     Button(action: {
-                        print("Image has these fields: \(title), \(description), \(type), \(String(describing: selectedItem)), \(String(describing: geopoint)).")
-                        loadImage()
-                        if let item = selectedItem, let geopoint = geopoint {
-                            Task {
+                        print("Image has these fields: \(title), \(description).")
+                        Task {
+                            await viewModel.loadImage(item: selectedItem)
+                            if let item = selectedItem, let geopoint = geopoint {
                                 do {
                                     try await viewModel.saveImage(item: item, title: title, type: type, description: description, location: geopoint)
                                 } catch {
@@ -161,36 +141,115 @@ struct CreateView: View {
                     }) {
                         Text("Upload")
                     }
-
-
-
                 }
             }
         }
-        .onAppear {
+        .alert(isPresented: $viewModel.showUnsupportedFormatAlert) {
+            Alert(
+                title: Text("Unsupported image format!"),
+                message: Text("The app supports .JPEG, .PNG, .GIF image formats. Please select a different image."),
+                dismissButton: .default(Text("OK")) {
+                    viewModel.showUnsupportedFormatAlert = false
+                }
+            )
+        }
+        .onAppear() {
             Task {
                 await viewModel.fetchUser()
             }
         }
+        .onChange(of: selectedItem) { item in
+            Task {
+                await viewModel.loadImage(item: item)
+                await viewModel.fetchUser()
+            }
+        }
+        .overlay(Group {
+            if viewModel.isUploading {
+                Color.black.opacity(0.75)
+                    .ignoresSafeArea()
+                    .onTapGesture { }
+                VStack {
+                    if !viewModel.uploadCompleted {
+                        ProgressView()
+                            .scaleEffect(2)
+                            .progressViewStyle(CircularProgressViewStyle(tint: Color("Snow")))
+                    }
+                    Text(viewModel.uploadCompleted ? "Uploaded!" : "Image is being uploaded, please do not close the device.")
+                        .font(.custom("Baloo2-Regular", size: 30))
+                        .foregroundColor(Color("Snow"))
+                        .multilineTextAlignment(.center)
+                        .padding()
+                }
+            }
+        })
+        .onChange(of: viewModel.uploadCompleted) { completed in
+            if completed {
+                DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+                    showCreateView = false
+                }
+            }
+        }
+    }
+}
+
+
+extension CreateView {
+    var closeButton: some View {
+        HStack {
+            Button("Close") {
+                showCreateView.toggle()
+                showButton.toggle()
+            }
+            .foregroundColor(Color("Walnut"))
+        }
+    }
+
+    var informationSection: some View {
+        Section(header: Text("Information")) {
+            TextField("Title", text: $title)
+            TextField("Description", text: $description)
+            Picker("Type", selection: $type) {
+                ForEach(animals, id: \.self) {
+                    Text($0)
+                }
+            }
+        }
     }
     
-    func loadImage() {
-        if let item = selectedItem {
-            Task {
-                do {
-                    if let imageData = try await item.loadTransferable(type: Data.self),
-                       let uiImage = UIImage(data: imageData) {
-                        image = uiImage
+    var imageSection: some View {
+        Section(header: Text("Image")) {
+            VStack {
+                if let image = viewModel.image {
+                    HStack {
+                        Image(uiImage: image)
+                            .resizable()
+                            .scaledToFill()
+                            .frame(width: 100, height: 100)
+                            .cornerRadius(10)
                     }
-                    print("Selected image identifier: \(item.itemIdentifier ?? "No item")")
-                } catch {
-                    print("Failed to load image: \(error)")
+                }
+                PhotosPicker(selection: $selectedItem, matching: .images, photoLibrary: .shared()) {
+                    Text("Select photo")
                 }
             }
         }
     }
 
+    var locationSection: some View {
+        Section(header: Text("Location")) {
+            CustomMapView(centerCoordinate: Binding(
+                get: { self.geopoint ?? CLLocationCoordinate2D() },
+                set: { self.geopoint = $0 }
+            ))
+            .frame(width: 300, height: 300)
+            if let coordinate = geopoint {
+                Text("Latitude: \(coordinate.latitude), Longitude: \(coordinate.longitude)")
+            }
+        }
+    }
 }
+
 
 
 struct CustomMapView: UIViewRepresentable {
@@ -239,291 +298,3 @@ struct CustomMapView: UIViewRepresentable {
         }
     }
 }
-
-
-
-
-//struct PickMapView: UIViewRepresentable {
-//    @Binding var coordinate: CLLocationCoordinate2D?
-//
-//    func makeUIView(context: Context) -> MKMapView {
-//        let mapView = MKMapView()
-//        mapView.delegate = context.coordinator
-//        return mapView
-//    }
-//
-//    func updateUIView(_ view: MKMapView, context: Context) {
-//        if let coordinate = coordinate {
-//            let region = MKCoordinateRegion(center: coordinate, latitudinalMeters: 1000, longitudinalMeters: 1000)
-//            view.setRegion(region, animated: true)
-//        }
-//    }
-//
-//    func makeCoordinator() -> Coordinator {
-//        Coordinator(self)
-//    }
-//
-//    class Coordinator: NSObject, MKMapViewDelegate {
-//        var parent: PickMapView
-//
-//        init(_ parent: PickMapView) {
-//            self.parent = parent
-//        }
-//
-//        func mapView(_ pickMapView: MKMapView, regionDidChangeAnimated animated: Bool) {
-//            parent.coordinate = pickMapView.centerCoordinate
-//        }
-//    }
-//}
-
-//struct ImagePicker: UIViewControllerRepresentable {
-//    @Environment(\.presentationMode) var presentationMode
-//    @Binding var image: UIImage?
-//
-//    func makeUIViewController(context: UIViewControllerRepresentableContext<ImagePicker>) -> UIImagePickerController {
-//        let picker = UIImagePickerController()
-//        picker.delegate = context.coordinator
-//        return picker
-//    }
-//
-//    func updateUIViewController(_ uiViewController: UIImagePickerController, context: UIViewControllerRepresentableContext<ImagePicker>) {}
-//
-//    func makeCoordinator() -> Coordinator {
-//        Coordinator(self)
-//    }
-//
-//    class Coordinator: NSObject, UINavigationControllerDelegate, UIImagePickerControllerDelegate {
-//        let parent: ImagePicker
-//
-//        init(_ parent: ImagePicker) {
-//            self.parent = parent
-//        }
-//
-//        func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
-//            if let uiImage = info[.originalImage] as? UIImage {
-//                parent.image = uiImage
-//            }
-//
-//            parent.presentationMode.wrappedValue.dismiss()
-//        }
-//    }
-//}
-
-
-
-//struct ProgressBar: View {
-//    var currentStep: Int
-//    var animation: Namespace.ID
-//
-//    var body: some View {
-//        HStack {
-//            ForEach(0..<5) { index in
-//                if index < currentStep {
-//                    Circle()
-//                        .fill(Color("Salmon"))
-//                        .frame(width: 10, height: 10)
-//                        .matchedGeometryEffect(id: "circle\(index)", in: animation)
-//                    if index != 4 {
-//                        Rectangle()
-//                            .fill(Color("Salmon"))
-//                            .frame(height: 2)
-//                            .matchedGeometryEffect(id: "line\(index)", in: animation)
-//                    }
-//                } else if index == currentStep {
-//                    Circle()
-//                        .fill(Color("Salmon"))
-//                        .frame(width: 10, height: 10)
-//                        .matchedGeometryEffect(id: "circle\(index)", in: animation)
-//                    if index != 4 {
-//                        Rectangle()
-//                            .fill(Color("Snow"))
-//                            .frame(height: 2)
-//                    }
-//                } else {
-//                    Circle()
-//                        .fill(Color("Snow"))
-//                        .frame(width: 10, height: 10)
-//                    if index != 4 {
-//                        Rectangle()
-//                            .fill(Color("Snow"))
-//                            .frame(height: 2)
-//                    }
-//                }
-//            }
-//        }
-//        .padding()
-//        .animation(.easeInOut, value: currentStep)
-//    }
-//}
-//
-//struct FormView: View {
-//    @Binding var currentStep: Int
-//    @Binding var textFields: [String]
-//
-//    var body: some View {
-//        VStack {
-//            TextField("Enter text", text: $textFields[currentStep])
-//                .textFieldStyle(RoundedBorderTextFieldStyle())
-//                .padding()
-//
-//            HStack {
-//                if currentStep > 0 {
-//                    Button(action: {
-//                        currentStep -= 1
-//                    }) {
-//                        Text("Back")
-//                            .foregroundColor(Color("Salmon"))
-//                    }
-//                }
-//
-//                Spacer()
-//
-//                Button(action: {
-//                    if !textFields[currentStep].isEmpty {
-//                        withAnimation {
-//                            currentStep += 1
-//                        }
-//                    }
-//                }) {
-//                    Text("Next")
-//                        .foregroundColor(textFields[currentStep].isEmpty ? .gray : Color("Salmon"))
-//                }
-//                .disabled(textFields[currentStep].isEmpty)
-//            }
-//            .padding()
-//        }
-//        .transition(.slide)
-//    }
-//}
-//
-//struct CreateView: View {
-//    @Binding var showCreateView: Bool
-//    @State private var currentStep: Int = 0
-//    @State private var textFields: [String] = Array(repeating: "", count: 5)
-//    @Namespace private var animation
-//
-//    var body: some View {
-//        VStack {
-//            ProgressBar(currentStep: currentStep, animation: animation)
-//
-//            if currentStep < 5 {
-//                FormView(currentStep: $currentStep, textFields: $textFields)
-//            } else {
-//                Button(action: {
-//                    showCreateView.toggle()
-//                }) {
-//                    Text("Finish")
-//                        .foregroundColor(Color("Salmon"))
-//                }
-//            }
-//        }
-//    }
-//}
-//
-
-
-//struct ContentView: View {
-//    var body: some View {
-//        CreateView(showCreateView: .constant(true))
-//    }
-//}
-//
-//struct ContentView_Previews: PreviewProvider {
-//    static var previews: some View {
-//        ContentView()
-//    }
-//}
-//
-
-
-
-//struct CreateView: View {
-//    @EnvironmentObject var dataManager: DataManager
-//    @Binding var showAddView: Bool
-//    @State var title: String = ""
-//    @State var description: String = ""
-//    @State var type: String = ""
-//    @State var image: String = ""
-//    @State var location = CLLocationCoordinate2D()
-//    @State var views: Int = 0
-//    @State var likes: Int = 0
-//    @State var showingImagePicker = false
-//    @State var inputImage: UIImage?
-//
-//    var body: some View {
-//        NavigationView {
-//            Form {
-//                TextField("Title", text: $title)
-//                TextField("Description", text: $description)
-//                TextField("Type", text: $type)
-//                TextField("Views", value: $views, formatter: NumberFormatter())
-//                TextField("Likes", value: $likes, formatter: NumberFormatter())
-//                Button(action: {
-//                    self.showingImagePicker = true
-//                }) {
-//                    Text("Upload Image")
-//                }
-//                .sheet(isPresented: $showingImagePicker, onDismiss: loadImage) {
-//                    ImagePicker(image: self.$inputImage)
-//                }
-//                Section {
-//                    SelectLocationView(selectedLocation: $location)
-//                        .frame(height: 300)
-//                        .cornerRadius(10)
-//                }
-//                Button(action: {
-//                    dataManager.newPost(title: title, description: description, type: type, image: image, location: location, views: views, likes: likes)
-//                    self.showAddView = false
-//                }) {
-//                    Text("Submit")
-//                }
-//            }
-//            .navigationBarTitle("New Post", displayMode: .inline)
-//        }
-//        .sheet(isPresented: $showingImagePicker, onDismiss: loadImage) {
-//            ImagePicker(image: self.$inputImage)
-//        }
-//    }
-//
-//    func loadImage() {
-//        guard let inputImage = inputImage else { return }
-//        image = inputImage.jpegData(compressionQuality: 0.1)?.base64EncodedString() ?? ""
-//    }
-//}
-//
-//
-//// User picks from image in their phone
-//struct ImagePicker: UIViewControllerRepresentable {
-//    @Binding var image: UIImage?
-//    @Environment(\.presentationMode) var presentationMode
-//
-//    class Coordinator: NSObject, UINavigationControllerDelegate, UIImagePickerControllerDelegate {
-//        let parent: ImagePicker
-//
-//        init(_ parent: ImagePicker) {
-//            self.parent = parent
-//        }
-//
-//        func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
-//            if let uiImage = info[.originalImage] as? UIImage {
-//                parent.image = uiImage
-//            }
-//
-//            parent.presentationMode.wrappedValue.dismiss()
-//        }
-//    }
-//
-//    func makeCoordinator() -> Coordinator {
-//        Coordinator(self)
-//    }
-//
-//    func makeUIViewController(context: UIViewControllerRepresentableContext<ImagePicker>) -> UIImagePickerController {
-//        let picker = UIImagePickerController()
-//        picker.delegate = context.coordinator
-//        return picker
-//    }
-//
-//    func updateUIViewController(_ uiViewController: UIImagePickerController, context: UIViewControllerRepresentableContext<ImagePicker>) {
-//
-//    }
-//}

@@ -103,7 +103,7 @@ struct MainMenuView: View {
                         HStack {
                             SimpleButton(action: {
                                 showPostView = true
-                            }, systemImage: "chevron.left", buttonText: "Open", size: 30, color: Color("Snow"))
+                            }, systemImage: "chevron.left", buttonText: "", size: 30, color: Color("Snow"))
                             
                             if postLoader.isLoading {
                                 ProgressView()
@@ -115,7 +115,7 @@ struct MainMenuView: View {
 
                             SimpleButton(action: {
                                 postLoader.nextPost()
-                            }, systemImage: "chevron.right", buttonText: "Next", size: 30, color: Color("Snow"))
+                            }, systemImage: "chevron.right", buttonText: "", size: 30, color: Color("Snow"))
                         }
 
                         

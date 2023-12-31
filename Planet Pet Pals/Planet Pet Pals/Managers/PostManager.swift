@@ -9,10 +9,10 @@ import SwiftUI
 import Firebase
 import MapKit
 
-struct PostArray: Codable {
-    let posts: [Post]
-    let total: Int
-}
+//struct PostArray: Codable {
+//    let posts: [Post]
+//    let total: Int
+//}
 
 struct Post: Codable, Identifiable, Equatable {
     var id: String { postId }
@@ -21,12 +21,12 @@ struct Post: Codable, Identifiable, Equatable {
     let title: String
     let type: String
     let description: String
-    
+    let geopoint: GeoPoint
     let image: String
     var likes: Int?
     var views: Int?
-    
-    let geopoint: GeoPoint
+    let dateCreated: Date?
+
     var location: CLLocationCoordinate2D {
         CLLocationCoordinate2D(latitude: geopoint.latitude, longitude: geopoint.longitude)
     }
@@ -40,7 +40,8 @@ struct Post: Codable, Identifiable, Equatable {
         geopoint: GeoPoint,
         image: String,
         likes: Int,
-        views: Int
+        views: Int,
+        dateCreated: Date? = nil
     ) {
         self.postId = postId
         self.userId = userId
@@ -51,6 +52,7 @@ struct Post: Codable, Identifiable, Equatable {
         self.image = image
         self.likes = 0
         self.views = 0
+        self.dateCreated = dateCreated
     }
 
     enum CodingKeys: String, CodingKey {
@@ -63,13 +65,14 @@ struct Post: Codable, Identifiable, Equatable {
         case image = "image"
         case likes = "likes"
         case views = "views"
+        case dateCreated = "date_created"
     }
-    
+
     // For comparing 2 posts
     static func == (lhs: Post, rhs: Post) -> Bool {
         return lhs.id == rhs.id
     }
-    
+
     init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         postId = try container.decode(String.self, forKey: .postId)
@@ -81,6 +84,7 @@ struct Post: Codable, Identifiable, Equatable {
         image = try container.decode(String.self, forKey: .image)
         likes = try container.decodeIfPresent(Int.self, forKey: .likes)
         views = try container.decodeIfPresent(Int.self, forKey: .views)
+        dateCreated = try container.decodeIfPresent(Date.self, forKey: .dateCreated)
     }
 
     func encode(to encoder: Encoder) throws {
@@ -94,8 +98,10 @@ struct Post: Codable, Identifiable, Equatable {
         try container.encode(image, forKey: .image)
         try container.encode(likes, forKey: .likes)
         try container.encode(views, forKey: .views)
+        try container.encode(dateCreated, forKey: .dateCreated)
     }
 }
+
 
 class PostManager {
     static let shared = PostManager()
@@ -138,18 +144,6 @@ class PostManager {
             }
         }
     }
-
-//    func savePost(post: Post) async throws {
-//        try postsDocument(postId: post.postId).setData(from: post)
-//    }
-    
-    // MARK: Collection images
-//    func uploadPostImage(postId: String, path: String) async throws {
-//        let data: [String: Any] = [
-//            Post.CodingKeys.postImagePath.rawValue : path
-//        ]
-//        try await postsDocument(postId: postId).updateData(data)
-//    }
     
     private func getAllPostsQuery() -> Query {
         postsCollection
