@@ -142,7 +142,7 @@ struct PostCellView: View {
 
 
 struct PostCellViewBuilder: View {
-    @StateObject private var viewModel = StatsViewModel()
+    @StateObject private var viewModel = PostListViewModel()
     @State private var post: Post? = nil
     let postId: String
     let showLikeButton: Bool

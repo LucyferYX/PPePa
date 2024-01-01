@@ -19,7 +19,7 @@ struct AboutView: View {
                         PawButton(action: {
                             presentationMode.wrappedValue.dismiss()
                         }, color: Color("Salmon"))
-                        .padding(.bottom)
+                        .padding(.bottom, 30)
                     }
                     
                     ScrollView {

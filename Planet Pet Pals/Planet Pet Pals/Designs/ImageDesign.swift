@@ -38,32 +38,34 @@ struct RoundImage: View {
 struct FadeOutImageView: View {
     let isLoading: Bool
     let url: URL?
-    let width: CGFloat
-    let height: CGFloat
 
     var body: some View {
-        VStack {
-            if isLoading {
-                ProgressView()
-            } else if let url = url {
-                AsyncImage(url: url) { image in
-                    image.resizable()
-                         .scaledToFit()
-                         .mask(
-                             VStack {
-                                 LinearGradient(gradient: Gradient(colors: [.clear, .black, .black, .black, .black, .black, .black, .black, .black, .clear]), startPoint: .top, endPoint: .bottom)
-                             }
-                             .mask(
-                                 HStack {
-                                     LinearGradient(gradient: Gradient(colors: [.clear, .black, .black, .black, .black, .black, .black, .black, .black, .clear]), startPoint: .leading, endPoint: .trailing)
-                                 }
-                             )
-                         )
-                } placeholder: {
+        GeometryReader { geometry in
+            HStack {
+                if isLoading {
                     ProgressView()
+                } else if let url = url {
+                    Color.clear.overlay(
+                        AsyncImage(url: url) { image in
+                            image.resizable()
+                                 .scaledToFill()
+                                 .frame(width: 250, height: 250)
+                                 .mask(
+                                     VStack {
+                                         LinearGradient(gradient: Gradient(colors: [.clear, .black, .black, .black, .black, .black, .black, .black, .black, .clear]), startPoint: .top, endPoint: .bottom)
+                                     }
+                                     .mask(
+                                         HStack {
+                                             LinearGradient(gradient: Gradient(colors: [.clear, .black, .black, .black, .black, .black, .black, .black, .black, .clear]), startPoint: .leading, endPoint: .trailing)
+                                         }
+                                     )
+                                 )
+                        } placeholder: {
+                            ProgressView()
+                        }
+                    )
                 }
             }
         }
-        .frame(width: width, height: height)
     }
 }

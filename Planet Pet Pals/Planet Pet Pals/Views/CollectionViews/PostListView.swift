@@ -8,9 +8,9 @@
 import SwiftUI
 import FirebaseFirestore
 
-struct StatsView: View {
-    @Binding var showStatsView: Bool
-    @StateObject private var viewModel = StatsViewModel()
+struct PostListView: View {
+    @Binding var showPostListView: Bool
+    @StateObject private var viewModel = PostListViewModel()
     @State private var showHStack = false
     
     var body: some View {
@@ -58,13 +58,13 @@ struct StatsView: View {
 }
 
 
-extension StatsView {
+extension PostListView {
     @ViewBuilder
     func showMenu() -> some View {
         if showHStack {
             HStack(spacing: 0) {
                 Menu {
-                    ForEach(StatsViewModel.FilterOption.allCases, id: \.self) { filterOption in
+                    ForEach(PostListViewModel.FilterOption.allCases, id: \.self) { filterOption in
                         Button(filterOption.rawValue) {
                             Task {
                                 try? await viewModel.filterSelected(option: filterOption)
@@ -84,7 +84,7 @@ extension StatsView {
                 Spacer()
                 
                 Menu {
-                    ForEach(StatsViewModel.TypeOption.allCases, id: \.self) { typeOption in
+                    ForEach(PostListViewModel.TypeOption.allCases, id: \.self) { typeOption in
                         Button(typeOption.rawValue) {
                             Task {
                                 try? await viewModel.typeSelected(option: typeOption)
@@ -113,7 +113,7 @@ extension StatsView {
         MainNavigationBar(
             title: "Stats",
             leftButton: LeftNavigationButton(
-                action: { self.showStatsView = false },
+                action: { self.showPostListView = false },
                 imageName: "chevron.left",
                 buttonText: "Back",
                 imageInvisible: false,

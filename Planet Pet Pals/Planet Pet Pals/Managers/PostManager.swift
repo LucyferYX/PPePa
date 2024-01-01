@@ -25,7 +25,7 @@ struct Post: Codable, Identifiable, Equatable {
     let image: String
     var likes: Int?
     var views: Int?
-    let dateCreated: Date?
+    let dateCreated: Date
 
     var location: CLLocationCoordinate2D {
         CLLocationCoordinate2D(latitude: geopoint.latitude, longitude: geopoint.longitude)
@@ -41,7 +41,7 @@ struct Post: Codable, Identifiable, Equatable {
         image: String,
         likes: Int,
         views: Int,
-        dateCreated: Date? = nil
+        dateCreated: Date
     ) {
         self.postId = postId
         self.userId = userId
@@ -84,7 +84,7 @@ struct Post: Codable, Identifiable, Equatable {
         image = try container.decode(String.self, forKey: .image)
         likes = try container.decodeIfPresent(Int.self, forKey: .likes)
         views = try container.decodeIfPresent(Int.self, forKey: .views)
-        dateCreated = try container.decodeIfPresent(Date.self, forKey: .dateCreated)
+        dateCreated = try container.decode(Date.self, forKey: .dateCreated)
     }
 
     func encode(to encoder: Encoder) throws {
@@ -121,7 +121,7 @@ class PostManager {
     }
     
     func getAllPostsBy1(startAfter: DocumentSnapshot? = nil) async throws -> ([Post], DocumentSnapshot?) {
-        var query = postsCollection.order(by: Post.CodingKeys.postId.rawValue).limit(to: 1)
+        var query = postsCollection.order(by: Post.CodingKeys.dateCreated.rawValue, descending: true).limit(to: 1)
         if let lastSnapshot = startAfter {
             query = query.start(afterDocument: lastSnapshot)
         }
