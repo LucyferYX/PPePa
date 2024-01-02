@@ -197,6 +197,23 @@ struct PawButton: View {
     }
 }
 
+struct PasswordButton: View {
+    @Binding var isPasswordShown: Bool
+    let action: () -> Void
+    
+    var body: some View {
+        Button(action: {
+            action()
+        }) {
+            HStack {
+                Image(systemName: isPasswordShown ? "eye.slash.fill" : "eye.fill")
+                Text(isPasswordShown ? "Hide Password" : "Show Password")
+                    .font(.custom("Baloo2-Regular", size: 15))
+            }
+        }
+    }
+}
+
 struct CheckmarkButton: View {
     @State private var isChecked = true
     @State private var animate = false

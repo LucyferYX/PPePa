@@ -34,12 +34,14 @@ struct Line3: View {
 
 struct RoundedSquare: View {
     var color: Color
+    var width: CGFloat
+    var height: CGFloat
     var overlayContent: () -> AnyView
 
     var body: some View {
         RoundedRectangle(cornerRadius: 25)
             .fill(LinearGradient(gradient: Gradient(colors: [Color("Snow"), color]), startPoint: .top, endPoint: .bottom))
-            .frame(width: 300, height: 550)
+            .frame(width: width, height: height)
             .overlay(overlayContent())
     }
 }

@@ -31,7 +31,7 @@ struct PostView: View {
                     Text("Type: \(post.type)")
                     Text("Description: \(post.description)")
                     Text("Likes: \(post.likes ?? 0)")
-                    Text("Views: \(post.views ?? 0)")
+                    Text("Report: \(String(post.isReported))")
                 }
             }
         }

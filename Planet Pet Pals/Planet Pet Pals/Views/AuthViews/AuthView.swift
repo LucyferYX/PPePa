@@ -48,7 +48,7 @@ struct AuthView: View {
                     
                     ZStack {
                         // MARK: Login view
-                        RoundedSquare(color: Color("Seashell")) {
+                        RoundedSquare(color: Color("Seashell"), width: 300, height: 550) {
                             AnyView(
                                 VStack {
                                     HStack {
@@ -94,7 +94,7 @@ struct AuthView: View {
                         .opacity(flipped ? 0 : 1)
                         
                         // MARK: Sign up view
-                        RoundedSquare(color: Color("Seashell")) {
+                        RoundedSquare(color: Color("Seashell"), width: 300, height: 550) {
                             AnyView(
                                 VStack {
                                     HStack {
@@ -183,48 +183,6 @@ struct AuthView: View {
 }
 
 
-// MARK: Enum
-enum LoginError: LocalizedError {
-    case emptyEmail
-    case emptyPassword
-    case invalidEmail
-    case emailNotFound
-    case wrongPassword
-    
-    var errorDescription: String? {
-        switch self {
-        case .emptyEmail:
-            return "Please enter an email."
-        case .emptyPassword:
-            return "Please enter a password."
-        case .invalidEmail:
-            return "Please input a valid email."
-        case .emailNotFound:
-            return "No such email address found."
-        case .wrongPassword:
-            return "Incorrect password."
-        }
-    }
-}
-
-enum SignUpError: LocalizedError {
-    case emptyEmail
-    case emptyPassword
-    case invalidEmail
-    
-    var errorDescription: String? {
-        switch self {
-        case .emptyEmail:
-            return "Please enter an email."
-        case .emptyPassword:
-            return "Please enter a password."
-        case .invalidEmail:
-            return "Please input a valid email."
-        }
-    }
-}
-
-
 // MARK: Extension
 extension AuthView {
     func GoogleButton() -> some View {
@@ -298,8 +256,18 @@ extension AuthView {
                     guard !viewModel.password.isEmpty else {
                         throw SignUpError.emptyPassword
                     }
-                    guard viewModel.email.contains("@") else {
+                    guard email.contains("@"),
+                          let domain = email.split(separator: "@").last,
+                          domain.contains("."),
+                          domain.split(separator: ".").count > 1 else {
                         throw SignUpError.invalidEmail
+                    }
+                    guard password.count >= 6 else {
+                        throw SignUpError.passwordTooShort
+                    }
+                    let methods = try await Auth.auth().fetchSignInMethods(forEmail: email)
+                    guard methods.isEmpty else {
+                        throw SignUpError.emailAlreadyExists
                     }
                     try await viewModel.signUp()
                     print("Signed up succesfully.")
@@ -331,15 +299,9 @@ extension AuthView {
     }
     
     func ShowPasswordButton() -> some View {
-        Button(action: {
+        PasswordButton(isPasswordShown: $showPassword, action: {
             showPassword.toggle()
-        }) {
-            HStack {
-                Image(systemName: showPassword ? "eye.slash.fill" : "eye.fill")
-                Text(showPassword ? "Hide Password" : "Show Password")
-                    .font(.custom("Baloo2-Regular", size: 15))
-            }
-        }
+        })
     }
     
     func FlipTextButton() -> some View {
@@ -369,3 +331,50 @@ extension AuthView {
     }
 }
 
+
+// MARK: Enum
+enum LoginError: LocalizedError {
+    case emptyEmail
+    case emptyPassword
+    case invalidEmail
+    case emailNotFound
+    case wrongPassword
+    
+    var errorDescription: String? {
+        switch self {
+        case .emptyEmail:
+            return "Please enter an email."
+        case .emptyPassword:
+            return "Please enter a password."
+        case .invalidEmail:
+            return "Please input a valid email."
+        case .emailNotFound:
+            return "No such email address found."
+        case .wrongPassword:
+            return "Incorrect password."
+        }
+    }
+}
+
+enum SignUpError: LocalizedError {
+    case emptyEmail
+    case emptyPassword
+    case invalidEmail
+    case passwordTooShort
+    case emailAlreadyExists
+        
+    var errorDescription: String? {
+        switch self {
+        case .emptyEmail:
+            return "Please enter an email."
+        case .emptyPassword:
+            return "Please enter a password."
+        case .invalidEmail:
+            return "Please input a valid email."
+        case .passwordTooShort:
+            return "Password must be at least 6 characters long."
+        case .emailAlreadyExists:
+            return "An account with this email already exists."
+        }
+    }
+}

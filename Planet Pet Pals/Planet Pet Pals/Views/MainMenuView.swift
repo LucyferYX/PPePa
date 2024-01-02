@@ -8,6 +8,7 @@
 import SwiftUI
 import FirebaseFirestore
 
+@MainActor
 class MainMenuViewModel: ObservableObject {
     @Published var currentPost: Post?
     @Published var isLoading: Bool = false
@@ -40,14 +41,28 @@ class MainMenuViewModel: ObservableObject {
         }
     }
     
+    // Publishing changes from within view updates is not allowed, this will cause undefined behavior.
     func addKeyboardNotifications() {
         NotificationCenter.default.addObserver(forName: UIResponder.keyboardWillShowNotification, object: nil, queue: .main) { _ in
-            self.keyboardIsShown = true
+            DispatchQueue.main.async {
+                self.keyboardIsShown = true
+            }
         }
         NotificationCenter.default.addObserver(forName: UIResponder.keyboardWillHideNotification, object: nil, queue: .main) { _ in
-            self.keyboardIsShown = false
+            DispatchQueue.main.async {
+                self.keyboardIsShown = false
+            }
         }
     }
+
+//    func addKeyboardNotifications() {
+//        NotificationCenter.default.addObserver(forName: UIResponder.keyboardWillShowNotification, object: nil, queue: .main) { _ in
+//            self.keyboardIsShown = true
+//        }
+//        NotificationCenter.default.addObserver(forName: UIResponder.keyboardWillHideNotification, object: nil, queue: .main) { _ in
+//            self.keyboardIsShown = false
+//        }
+//    }
 
     func removeKeyboardNotifications() {
         NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillShowNotification, object: nil)
@@ -99,7 +114,7 @@ struct MainMenuView: View {
                             mainButtons
                         }
                     }
-                    PanelView(showSignInView: $showSignInView, width: geometry.size.width*0.7, showPanelView: self.showPanelView, closePanelView: { self.showPanelView = false })
+                    PanelView(showSignInView: $showSignInView, width: geometry.size.width*0.8, showPanelView: self.showPanelView, closePanelView: { self.showPanelView = false })
                         .offset(x: self.showPanelView ? 0 : -geometry.size.width)
                         .transition(.move(edge: .leading))
                 }

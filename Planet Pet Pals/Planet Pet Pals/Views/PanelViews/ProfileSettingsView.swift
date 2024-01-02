@@ -13,6 +13,10 @@ import FirebaseAuth
 class ProfileSettingsViewModel: ObservableObject {
     @Published var authProviders: [AuthProviderOption] = []
     @Published var authUser: AuthDataResultModel? = nil
+    @Published var errorMessage: String? = nil
+    
+    @Published var email: String = ""
+    @Published var password: String = ""
     
     func loadAuthProviders() {
         if let providers = try? AuthManager.shared.getProviders() {
@@ -50,8 +54,6 @@ class ProfileSettingsViewModel: ObservableObject {
         try await AuthManager.shared.updatePassword(password: password)
     }
     
-    @Published var errorMessage: String? = nil
-
     func linkGoogleAccount() async throws {
         let helper = SignInGoogleHelper()
         do {
@@ -67,10 +69,28 @@ class ProfileSettingsViewModel: ObservableObject {
             self.errorMessage = "An error occurred: \(error.localizedDescription)"
         }
     }
+    
     func linkEmailAccount() async throws {
-        let email = "hello123@gmail.com"
-        let password = "hello123"
-        self.authUser = try await AuthManager.shared.linkEmail(email: email, password: password)
+        guard !email.isEmpty else {
+            throw LinkEmailError.emptyEmail
+        }
+        guard !password.isEmpty else {
+            throw LinkEmailError.emptyPassword
+        }
+        guard email.contains("@"),
+              let domain = email.split(separator: "@").last,
+              domain.contains("."),
+              domain.split(separator: ".").count > 1 else {
+            throw LinkEmailError.invalidEmail
+        }
+        guard password.count >= 6 else {
+            throw LinkEmailError.passwordTooShort
+        }
+        let methods = try await Auth.auth().fetchSignInMethods(forEmail: email)
+        guard methods.isEmpty else {
+            throw LinkEmailError.emailAlreadyExists
+        }
+        self.authUser = try await AuthManager.shared.linkEmail(email: self.email, password: self.password)
         try await UserManager.shared.updateUserAnonymousStatusAndEmail(userId: authUser!.uid, isAnonymous: authUser!.isAnonymous, email: authUser!.email)
     }
 }
@@ -81,7 +101,10 @@ struct ProfileSettingsView: View {
     @StateObject private var viewModel = ProfileSettingsViewModel()
     @Binding var showSignInView: Bool
     
+    @State private var isButtonClickedOnce: Bool = true
     @State private var showDeleteAlert = false
+    @State private var showPassword = false
+
     @State private var showEmailAlert = false
     @State private var emailAlertMessage = ""
     
@@ -100,7 +123,7 @@ struct ProfileSettingsView: View {
                         // MARK: Registered accounts
                         if viewModel.authProviders.contains(.email) {
                             // create section, name it emailsection
-                            
+
                             Button("Reset password") {
                                 Task {
                                     do {
@@ -111,7 +134,7 @@ struct ProfileSettingsView: View {
                                     }
                                 }
                             }
-                            
+
                             Button("Update email") {
                                 Task {
                                     do {
@@ -124,7 +147,7 @@ struct ProfileSettingsView: View {
                                     }
                                 }
                             }
-                            
+
                             Button("Update password") {
                                 Task {
                                     do {
@@ -138,11 +161,45 @@ struct ProfileSettingsView: View {
                                 }
                             }
                         }
-                        
+
                         // MARK: Create account
-                        // perhaps dont have the if, just output errors if user tries to link account to google if account already exists
                         if viewModel.authUser?.isAnonymous == true {
-                            Button("Create Google account") {
+                            Text("Link your account")
+                                .font(.custom("Baloo2-SemiBold", size: 25))
+                                .foregroundColor(Color("Gondola"))
+                                .padding()
+
+                            RoundedSquare(color: Color("Seashell"), width: 300, height: 300) {
+                                AnyView(
+                                    VStack {
+
+                                        SignTextField(placeholder: "Email", text: $viewModel.email)
+                                        
+                                        Line3()
+
+                                        if showPassword {
+                                            SignTextField(placeholder: "Password", text: $viewModel.password)
+                                        } else {
+                                            SignSecureField(placeholder: "Password", text: $viewModel.password)
+                                        }
+                                        
+                                        Line3()
+
+                                        ShowPasswordButton()
+
+                                        LinkEmailButton(showEmailAlert: $showEmailAlert, emailAlertMessage: $emailAlertMessage)
+
+                                    }
+                                )
+                            }
+
+                            Spacer()
+                            
+                            Text("or")
+                                .foregroundColor(Color("Gondola"))
+                                .font(.custom("Baloo2-Regular", size: 20))
+
+                            Button(action: {
                                 Task {
                                     do {
                                         try await viewModel.linkGoogleAccount()
@@ -150,55 +207,31 @@ struct ProfileSettingsView: View {
                                         print("Error: \(error)")
                                     }
                                 }
-                            }
-                            
-                            Button("Create e-mail account") {
-                                Task {
-                                    do {
-                                        try await viewModel.linkEmailAccount()
-                                        print("E-mail linked")
-                                    } catch {
-                                        print("Error: \(error)")
-                                    }
+                            }) {
+                                HStack {
+                                    Image(systemName: "g.circle.fill")
+                                        .resizable()
+                                        .foregroundColor(.blue)
+                                        .frame(width: 20, height: 20)
+                                    Text("Link Google account")
+                                        .font(.custom("Baloo2-Regular", size: 20))
+                                        .foregroundColor(Color("Gondola"))
                                 }
+                                .padding(.horizontal, 15)
+                                .padding(.vertical, 7)
+                                .background(Color("Snow"))
+                                .cornerRadius(10)
                             }
                         }
+                        
+                        Line()
+                            .padding()
                         
                         
                         // MARK: All accounts
-                        Button("Sign out") {
-                            Task {
-                                do {
-                                    try viewModel.signOut()
-                                    showSignInView = true
-                                } catch {
-                                    print("Error: \(error)")
-                                }
-                            }
-                        }
+                        signOutButton
                         
-                        Button(role: .destructive) {
-                            showDeleteAlert = true
-                        } label: {
-                            Text("Delete Account")
-                        }
-                        .alert(isPresented: $showDeleteAlert) {
-                            Alert(title: Text("Delete Account"),
-                                  message: Text("Would you like to delete account? This action cannot be undone."),
-                                  primaryButton: .destructive(Text("Delete").foregroundColor(.red)) {
-                                    Task {
-                                        do {
-                                            let userId = Auth.auth().currentUser?.uid
-                                            try await UserManager.shared.deleteUser(userId: userId!)
-                                            try await viewModel.deleteAccount()
-                                            showSignInView = true
-                                        } catch {
-                                            print("Error: \(error)")
-                                        }
-                                    }
-                                },
-                                secondaryButton: .cancel())
-                        }
+                        deleteAccountButton
                     }
                 }
             }
@@ -206,9 +239,126 @@ struct ProfileSettingsView: View {
                 viewModel.loadAuthProviders()
                 viewModel.loadAuthUser()
             }
-            .alert(isPresented: $showEmailAlert) {
-                Alert(title: Text("Error"), message: Text(emailAlertMessage), dismissButton: .default(Text("OK")))
+        }
+    }
+}
+
+
+struct ProfileSettingsPreviews: PreviewProvider {
+    static var previews: some View {
+        ProfileSettingsView(showSignInView: .constant(false))
+    }
+}
+
+
+extension ProfileSettingsView {
+    func LinkEmailButton(showEmailAlert: Binding<Bool>, emailAlertMessage: Binding<String>) -> some View {
+        Button(action: {
+            Task {
+                do {
+                    try await viewModel.linkEmailAccount()
+                    print("E-mail linked")
+                } catch let error as LinkEmailError {
+                    print("Failed to link email: \(error)")
+                    emailAlertMessage.wrappedValue = error.localizedDescription
+                    showEmailAlert.wrappedValue = true
+                } catch {
+                    print("Unexpected error: \(error)")
+                    emailAlertMessage.wrappedValue = "An unexpected error occurred."
+                    showEmailAlert.wrappedValue = true
+                }
             }
+        }) {
+            Text("Link e-mail account")
+                .font(.custom("Baloo2-SemiBold", size: 20))
+                .font(.headline)
+                .frame(width: 220, height: 50)
+                .background(
+                    RoundedRectangle(cornerRadius: 10)
+                        .fill(.linearGradient(colors: [Color("Orchid"), Color("Salmon")], startPoint: .leading, endPoint: .trailing))
+                )
+                .foregroundColor(Color("Gondola"))
+        }
+        .alert(isPresented: $showEmailAlert) {
+            Alert(title: Text("Error"), message: Text(emailAlertMessage.wrappedValue), dismissButton: .default(Text("OK")))
+        }
+    }
+    
+    func ShowPasswordButton() -> some View {
+        PasswordButton(isPasswordShown: $showPassword, action: {
+            showPassword.toggle()
+        })
+        .padding(.bottom)
+    }
+    
+    private var signOutButton: some View {
+        Button(action: {
+            Task {
+                do {
+                    try viewModel.signOut()
+                    showSignInView = true
+                } catch {
+                    print("Error: \(error)")
+                }
+            }
+        } ) {
+            Text("Sign out")
+                .font(.custom("Baloo2-Regular", size: 20))
+                .foregroundColor(Color("Gondola"))
+        }
+    }
+    
+    private var deleteAccountButton: some View {
+        Button(role: .destructive) {
+            if isButtonClickedOnce {
+                isButtonClickedOnce = false
+            } else {
+                isButtonClickedOnce = true
+                showDeleteAlert = true
+            }
+        } label: {
+            Text(isButtonClickedOnce ? "Delete account" : "Confirm account deletion")
+                .font(.custom("Baloo2-Regular", size: 20))
+        }
+        .alert(isPresented: $showDeleteAlert) {
+            return Alert(title: Text("Delete account"),
+                  message: Text("Would you like to delete account? This action cannot be undone."),
+                  primaryButton: .destructive(Text("Delete").foregroundColor(.red)) {
+                    Task {
+                        do {
+                            let userId = Auth.auth().currentUser?.uid
+                            try await UserManager.shared.deleteUser(userId: userId!)
+                            try await viewModel.deleteAccount()
+                            showSignInView = true
+                        } catch {
+                            print("Error: \(error)")
+                        }
+                    }
+                  },
+                  secondaryButton: .cancel())
+        }
+    }
+}
+
+enum LinkEmailError: LocalizedError {
+    case emptyEmail
+    case emptyPassword
+    case invalidEmail
+    case emailAlreadyExists
+    case passwordTooShort
+    
+    var errorDescription: String? {
+        switch self {
+        case .emptyEmail:
+            return "Please enter an email."
+        case .emptyPassword:
+            return "Please enter a password."
+        case .invalidEmail:
+            return "Please input a valid email."
+        case .emailAlreadyExists:
+            return "An account with this email already exists."
+        case .passwordTooShort:
+            return "Password must be at least 6 characters long."
         }
     }
 }

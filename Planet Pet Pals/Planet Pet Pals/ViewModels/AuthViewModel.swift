@@ -11,6 +11,7 @@ import GoogleSignInSwift
 
 @MainActor
 class AuthViewModel: ObservableObject {
+    @Published var authUser: AuthDataResultModel? = nil
     @Published var email: String = ""
     @Published var password: String = ""
     

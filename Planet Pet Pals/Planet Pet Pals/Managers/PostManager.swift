@@ -6,13 +6,8 @@
 //
 
 import SwiftUI
-import Firebase
+import FirebaseFirestore
 import MapKit
-
-//struct PostArray: Codable {
-//    let posts: [Post]
-//    let total: Int
-//}
 
 struct Post: Codable, Identifiable, Equatable {
     var id: String { postId }
@@ -24,7 +19,7 @@ struct Post: Codable, Identifiable, Equatable {
     let geopoint: GeoPoint
     let image: String
     var likes: Int?
-    var views: Int?
+    var isReported: Bool
     let dateCreated: Date
 
     var location: CLLocationCoordinate2D {
@@ -40,7 +35,7 @@ struct Post: Codable, Identifiable, Equatable {
         geopoint: GeoPoint,
         image: String,
         likes: Int,
-        views: Int,
+        isReported: Bool,
         dateCreated: Date
     ) {
         self.postId = postId
@@ -51,7 +46,7 @@ struct Post: Codable, Identifiable, Equatable {
         self.geopoint = geopoint
         self.image = image
         self.likes = 0
-        self.views = 0
+        self.isReported = false
         self.dateCreated = dateCreated
     }
 
@@ -64,7 +59,7 @@ struct Post: Codable, Identifiable, Equatable {
         case geopoint = "geopoint"
         case image = "image"
         case likes = "likes"
-        case views = "views"
+        case isReported = "is_reported"
         case dateCreated = "date_created"
     }
 
@@ -83,7 +78,7 @@ struct Post: Codable, Identifiable, Equatable {
         geopoint = try container.decode(GeoPoint.self, forKey: .geopoint)
         image = try container.decode(String.self, forKey: .image)
         likes = try container.decodeIfPresent(Int.self, forKey: .likes)
-        views = try container.decodeIfPresent(Int.self, forKey: .views)
+        isReported = try container.decode(Bool.self, forKey: .isReported)
         dateCreated = try container.decode(Date.self, forKey: .dateCreated)
     }
 
@@ -97,7 +92,7 @@ struct Post: Codable, Identifiable, Equatable {
         try container.encode(geopoint, forKey: .geopoint)
         try container.encode(image, forKey: .image)
         try container.encode(likes, forKey: .likes)
-        try container.encode(views, forKey: .views)
+        try container.encode(isReported, forKey: .isReported)
         try container.encode(dateCreated, forKey: .dateCreated)
     }
 }
@@ -145,6 +140,21 @@ class PostManager {
         }
     }
     
+    func reportPost(postId: String) async throws {
+        let data: [String: Any] = [
+            Post.CodingKeys.isReported.rawValue : true
+        ]
+        try await postsDocument(postId: postId).updateData(data)
+    }
+    
+    func updatePostReportStatus(postId: String, isReported: Bool) async throws {
+        let data: [String: Any] = [
+            Post.CodingKeys.isReported.rawValue : isReported
+        ]
+        try await postsDocument(postId: postId).updateData(data)
+    }
+
+    
     private func getAllPostsQuery() -> Query {
         postsCollection
     }
@@ -182,16 +192,16 @@ class PostManager {
             .getDocumentsWithSnapshot(as: Post.self)
     }
     
-    func getPostsByViews(count: Int, lastDocument: DocumentSnapshot?) async throws -> (posts: [Post], lastDocument: DocumentSnapshot?) {
-        if let lastDocument {
+    func getPostsByDate(count: Int, lastDocument: DocumentSnapshot?) async throws -> (posts: [Post], lastDocument: DocumentSnapshot?) {
+        if let lastDocument = lastDocument {
             return try await postsCollection
-                .order(by: Post.CodingKeys.views.rawValue, descending: true)
+                .order(by: Post.CodingKeys.dateCreated.rawValue, descending: true)
                 .limit(to: count)
                 .start(afterDocument: lastDocument)
                 .getDocumentsWithSnapshot(as: Post.self)
         } else {
             return try await postsCollection
-                .order(by: Post.CodingKeys.views.rawValue, descending: true)
+                .order(by: Post.CodingKeys.dateCreated.rawValue, descending: true)
                 .limit(to: count)
                 .getDocumentsWithSnapshot(as: Post.self)
         }
@@ -239,6 +249,27 @@ class PostManager {
             }
             return nil
         }
+    }
+    
+    //MARK: Listener
+    private var reportedPostsListener: ListenerRegistration? = nil
+
+    func addListenerForReportedPosts(completion: @escaping (_ posts: [Post]) -> Void) {
+        self.reportedPostsListener = postsCollection
+            .whereField(Post.CodingKeys.isReported.rawValue, isEqualTo: true)
+            .addSnapshotListener { querySnapshot, error in
+                guard let documents = querySnapshot?.documents else {
+                    print("No documents for reported posts found")
+                    return
+                }
+
+                let posts: [Post] = documents.compactMap({try? $0.data(as: Post.self)})
+                completion(posts)
+            }
+    }
+
+    func removeListenerForReportedPosts() {
+        self.reportedPostsListener?.remove()
     }
 }
 

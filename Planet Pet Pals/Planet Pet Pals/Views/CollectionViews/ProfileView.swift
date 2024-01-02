@@ -56,7 +56,7 @@ struct ProfileView: View {
                     Button {
                         viewModel.togglePremiumStatus()
                     } label: {
-                        Text("User is premium: \((user.isPremium ?? false).description.capitalized)")
+                        Text("User is premium: \((user.isAdmin ?? false).description.capitalized)")
                     }
                     
                     VStack {

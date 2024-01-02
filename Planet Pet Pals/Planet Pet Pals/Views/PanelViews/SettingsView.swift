@@ -44,18 +44,6 @@ struct SettingsView: View {
                             
                             Line()
                             
-                            Button(action: {
-                                presentationMode.wrappedValue.dismiss()
-                                DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-                                    showProfileSettingsView = true
-                                }
-                            }) {
-                                Text("Open Profile Settings")
-                            }
-                            .sheet(isPresented: $showProfileSettingsView) {
-                                ProfileSettingsView(showSignInView: $showSignInView)
-                            }
-                            
                             Button("Press to fatal crash!") {
                                 fatalError("This was fatal crash")
                             }

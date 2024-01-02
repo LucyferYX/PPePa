@@ -12,6 +12,25 @@ import FirebaseAuth
 class PanelViewModel: ObservableObject {
     @Published var authProviders: [AuthProviderOption] = []
     @Published var authUser: AuthDataResultModel? = nil
+    @Published var isAdmin = false
+    @Published private(set) var user: DatabaseUser? = nil
+
+    func loadCurrentUser() async throws {
+        let authDataResult = try AuthManager.shared.getAuthenticatedUser()
+        self.user = try await UserManager.shared.getUser(userId: authDataResult.uid)
+    }
+
+    func checkIfUserIsAdmin() {
+        Task {
+            do {
+                try await loadCurrentUser()
+                isAdmin = user?.isAdmin ?? false
+            } catch {
+                print("Failed to load current user: \(error)")
+            }
+        }
+    }
+
     
     func loadAuthProviders() {
         if let providers = try? AuthManager.shared.getProviders() {
@@ -66,30 +85,6 @@ class PanelViewModel: ObservableObject {
             self.errorMessage = "An error occurred: \(error.localizedDescription)"
         }
     }
-
-
-    
-//    func linkGoogleAccount() async {
-//        let helper = SignInGoogleHelper()
-//        do {
-//            let tokens = try await helper.signIn()
-//            if let authUser = try? await AuthManager.shared.linkGoogle(tokens: tokens) {
-//                self.authUser = authUser
-//                try await UserManager.shared.updateUserAnonymousStatusAndEmail(userId: authUser.uid, isAnonymous: authUser.isAnonymous, email: authUser.email)
-//            } else {
-//                self.errorMessage = "Failed to link Google account."
-//            }
-//        } catch {
-//            self.errorMessage = "An error occurred: \(error.localizedDescription)"
-//        }
-//    }
-    
-//    func linkGoogleAccount() async throws {
-//        let helper = SignInGoogleHelper()
-//        let tokens = try await helper.signIn()
-//        self.authUser = try await AuthManager.shared.linkGoogle(tokens: tokens)
-//        try await UserManager.shared.updateUserAnonymousStatusAndEmail(userId: authUser!.uid, isAnonymous: authUser!.isAnonymous, email: authUser!.email)
-//    }
     
     func linkEmailAccount() async throws {
         let email = "hello123@gmail.com"

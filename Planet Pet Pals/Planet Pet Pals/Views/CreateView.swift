@@ -119,7 +119,6 @@ struct CreateView: View {
         .onChange(of: selectedItem) { item in
             Task {
                 await viewModel.loadImage(item: item)
-//                await viewModel.fetchUser()
             }
         }
         .overlay(Group {

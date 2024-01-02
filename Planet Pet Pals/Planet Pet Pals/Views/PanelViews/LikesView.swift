@@ -13,8 +13,6 @@ struct LikesView: View {
     
     @State private var deletionAllowed = true
     @State private var showAlert = false
-    
-    @State private var didAppear = false
     @State private var postCount: Int = 0
     
     init() {
@@ -38,9 +36,8 @@ struct LikesView: View {
                         .foregroundColor(.secondary)
                     List {
                         ForEach(likedPostsViewModel.userLikedPosts, id: \.id.self) { post in
-                            PostCellViewBuilder(postId: post.postId, showLikeButton: false, showLikes: true)
-                                .listRowBackground(Color("Linen"))
-                                .buttonStyle(.borderless)
+                            PostCellViewBuilder(postId: post.postId, showLikeButton: false, showLikes: true, showContext: true)
+                                .listRowBackground(Color("Walnut"))
                         }
                         .onDelete(perform: delete)
                     }
@@ -62,11 +59,10 @@ struct LikesView: View {
             }
         }
         .onAppear {
-            if !didAppear {
-                viewModel.addListenerForLikes()
-                postCount = likedPostsViewModel.userLikedPosts.count
-                didAppear = true
-            }
+            viewModel.addListenerForLikes()
+            postCount = likedPostsViewModel.userLikedPosts.count
+            print("Likes listener is turned on")
+            
         }
         .onReceive(likedPostsViewModel.$userLikedPosts) { posts in
             postCount = posts.count

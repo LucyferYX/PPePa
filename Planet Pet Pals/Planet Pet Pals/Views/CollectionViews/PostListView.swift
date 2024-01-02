@@ -9,8 +9,10 @@ import SwiftUI
 import FirebaseFirestore
 
 struct PostListView: View {
-    @Binding var showPostListView: Bool
+    @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
     @StateObject private var viewModel = PostListViewModel()
+
+    @Binding var showPostListView: Bool
     @State private var showHStack = false
     
     var body: some View {
@@ -27,9 +29,10 @@ struct PostListView: View {
                         MainBackground()
                         List {
                             ForEach(viewModel.posts) { post in
-                                PostCellView(post: post, showLikeButton: true, showLikes: false)
-                                    .listRowBackground(Color("Linen"))
-                                    .buttonStyle(.borderless)
+//                                PostCellView(post: post, showLikeButton: true, showLikes: false)
+//                                    .listRowBackground(Color("Linen"))
+//                                    .buttonStyle(.borderless)
+                                PostCellViewBuilder(postId: post.postId, showLikeButton: true, showLikes: false, showContext: true)
                                 
                                 if post == viewModel.posts.last {
                                     ProgressView()
@@ -113,7 +116,7 @@ extension PostListView {
         MainNavigationBar(
             title: "Stats",
             leftButton: LeftNavigationButton(
-                action: { self.showPostListView = false },
+                action: { self.presentationMode.wrappedValue.dismiss() },
                 imageName: "chevron.left",
                 buttonText: "Back",
                 imageInvisible: false,

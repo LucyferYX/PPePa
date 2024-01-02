@@ -15,7 +15,7 @@ struct DatabaseUser: Codable {
     let email: String?
     let photoUrl: String?
     let dateCreated: Date?
-    let isPremium: Bool?
+    let isAdmin: Bool?
     let favorites: [String]?
     
     init(auth: AuthDataResultModel) {
@@ -24,7 +24,7 @@ struct DatabaseUser: Codable {
         self.email = auth.email
         self.photoUrl = auth.photoUrl
         self.dateCreated = Date()
-        self.isPremium = false
+        self.isAdmin = false
         self.favorites = nil
     }
     
@@ -34,7 +34,7 @@ struct DatabaseUser: Codable {
         email: String? = nil,
         photoUrl: String? = nil,
         dateCreated: Date? = nil,
-        isPremium: Bool? = nil,
+        isAdmin: Bool? = nil,
         favorites: [String]? = nil
     ) {
         self.userId = userId
@@ -42,7 +42,7 @@ struct DatabaseUser: Codable {
         self.email = email
         self.photoUrl = photoUrl
         self.dateCreated = dateCreated
-        self.isPremium = isPremium
+        self.isAdmin = false
         self.favorites = favorites
     }
     
@@ -52,7 +52,7 @@ struct DatabaseUser: Codable {
         case email = "email"
         case photoUrl = "photo_url"
         case dateCreated = "date_created"
-        case isPremium = "is_premium"
+        case isAdmin = "is_admin"
         case favorites = "favorites"
     }
 
@@ -63,7 +63,7 @@ struct DatabaseUser: Codable {
         email = try container.decodeIfPresent(String.self, forKey: .email)
         photoUrl = try container.decodeIfPresent(String.self, forKey: .photoUrl)
         dateCreated = try container.decodeIfPresent(Date.self, forKey: .dateCreated)
-        isPremium = try container.decodeIfPresent(Bool.self, forKey: .isPremium)
+        isAdmin = try container.decodeIfPresent(Bool.self, forKey: .isAdmin)
         favorites = try container.decodeIfPresent([String].self, forKey: .favorites)
     }
 
@@ -75,7 +75,7 @@ struct DatabaseUser: Codable {
         try container.encode(self.email, forKey: .email)
         try container.encode(self.photoUrl, forKey: .photoUrl)
         try container.encode(self.dateCreated, forKey: .dateCreated)
-        try container.encode(self.isPremium, forKey: .isPremium)
+        try container.encode(self.isAdmin, forKey: .isAdmin)
         try container.encode(self.favorites, forKey: .favorites)
     }
 }
@@ -115,9 +115,9 @@ class UserManager {
         try await usersDocument(userId: userId).delete()
     }
     
-    func updateUserPremiumStatus(userId: String, isPremium: Bool) async throws {
+    func updateUserPremiumStatus(userId: String, isAdmin: Bool) async throws {
         let data: [String: Any] = [
-            DatabaseUser.CodingKeys.isPremium.rawValue : isPremium
+            DatabaseUser.CodingKeys.isAdmin.rawValue : isAdmin
         ]
         try await usersDocument(userId: userId).updateData(data)
     }

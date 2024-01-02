@@ -81,7 +81,7 @@ class CreateViewModel: ObservableObject {
             let imageUrl = try await StorageManager.shared.getDownloadUrl(userId: user.userId, path: name)
             print("Image download URL: \(imageUrl)")
             
-            let post = Post(postId: UUID().uuidString, userId: user.userId, title: title, type: type, description: description, geopoint: GeoPoint(latitude: location.latitude, longitude: location.longitude), image: imageUrl, likes: 0, views: 0, dateCreated: Date())
+            let post = Post(postId: UUID().uuidString, userId: user.userId, title: title, type: type, description: description, geopoint: GeoPoint(latitude: location.latitude, longitude: location.longitude), image: imageUrl, likes: 0, isReported: false, dateCreated: Date())
             try await PostManager.shared.savePost(post: post)
             print("Post saved successfully")
             DispatchQueue.main.async {

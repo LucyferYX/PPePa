@@ -144,15 +144,34 @@ struct PostCellView: View {
 struct PostCellViewBuilder: View {
     @StateObject private var viewModel = PostListViewModel()
     @State private var post: Post? = nil
+    @State private var isReported = false
+
     let postId: String
     let showLikeButton: Bool
     let showLikes: Bool
+    let showContext: Bool
     
     var body: some View {
         ZStack {
             if let post {
                 PostCellView(post: post, showLikeButton: showLikeButton, showLikes: showLikes)
-                    .listRowBackground(Color("Walnut"))
+                    .buttonStyle(.borderless)
+                    .contextMenu{
+                        if showContext {
+                            if isReported {
+                                Text("Post is reported!")
+                            } else {
+                                Button(action: {
+                                    Task {
+                                        try await PostManager.shared.reportPost(postId: post.postId)
+                                        isReported = true
+                                    }
+                                }) {
+                                    Label("Report post?", systemImage: "flag")
+                                }
+                            }
+                        }
+                    }
             }
         }
         .task {

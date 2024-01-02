@@ -12,6 +12,8 @@ struct PanelContent: View {
     @StateObject private var viewModel = PanelViewModel()
     @Binding var showSignInView: Bool
     
+    @State private var showReportedPostView = false
+    @State private var showProfileSettingsView = false
     @State private var showSettingsView = false
     @State private var showLikesView = false
     @State private var showAboutView = false
@@ -166,16 +168,29 @@ struct PanelContent: View {
                 .padding(.top)
                 
                 Line()
-                
+                if viewModel.isAdmin {
+                    SimpleButton(action: {
+                        showReportedPostView = true
+                    }, systemImage: "gearshape", buttonText: "Reported posts", size: 30, color: Color("Linen"))
+                }
+                SimpleButton(action: {
+                    showProfileSettingsView = true
+                }, systemImage: "gearshape", buttonText: "Profile Settings", size: 30, color: Color("Linen"))
                 SimpleButton(action: {
                     showSettingsView = true
-                }, systemImage: "gearshape", buttonText: "Settings", size: 30, color: Color("Linen"))
+                }, systemImage: "gearshape", buttonText: "App Settings", size: 30, color: Color("Linen"))
                 SimpleButton(action: {
                     showLikesView = true
                 }, systemImage: "heart", buttonText: "Likes", size: 30, color: Color("Linen"))
                 SimpleButton(action: {
                     showAboutView = true
                 }, systemImage: "info.circle", buttonText: "About", size: 30, color: Color("Linen"))
+                .sheet(isPresented: $showReportedPostView) {
+                    ReportedPostView()
+                }
+                .sheet(isPresented: $showProfileSettingsView) {
+                    ProfileSettingsView(showSignInView: $showSignInView)
+                }
                 .sheet(isPresented: $showSettingsView) {
                     SettingsView()
                 }
@@ -188,6 +203,9 @@ struct PanelContent: View {
                 
             }
             .frame(height: geometry.size.height)
+            .onAppear() {
+                viewModel.checkIfUserIsAdmin()
+            }
             .alert(isPresented: $showEmailAlert) {
                 Alert(title: Text("Error"), message: Text(emailAlertMessage), dismissButton: .default(Text("OK")))
             }
