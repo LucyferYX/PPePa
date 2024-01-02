@@ -32,23 +32,7 @@ struct CreateView: View {
             ZStack {
                 MainBackground()
                 VStack {
-                    MainNavigationBar(
-                        title: "Create",
-                        leftButton: LeftNavigationButton(
-                            action: { self.showCreateView = false },
-                            imageName: "chevron.up",
-                            buttonText: "Back",
-                            imageInvisible: false,
-                            textInvisible: false
-                        ),
-                        rightButton: RightNavigationButton(
-                            action: {},
-                            imageName: "chevron.up",
-                            buttonText: "Back",
-                            imageInvisible: true,
-                            textInvisible: true
-                        )
-                    )
+                    NavigationBar
                     Form {
                         informationSection
                         imageSection
@@ -88,28 +72,19 @@ struct CreateView: View {
                             Text("Upload")
                                 .font(.custom("Baloo2-SemiBold", size: 20))
                         }
+                        .alert(isPresented: $showMissingFieldAlert) {
+                            Alert(
+                                title: Text("Missing Field"),
+                                message: Text("Please provide a value for the following field: \(missingField)"),
+                                dismissButton: .default(Text("OK")) {
+                                    showMissingFieldAlert = false
+                                }
+                            )
+                        }
                     }
                     .scrollContentBackground(.hidden)
                 }
             }
-        }
-        .alert(isPresented: $viewModel.showUnsupportedFormatAlert) {
-            Alert(
-                title: Text("Unsupported image format!"),
-                message: Text("The app supports .JPEG, .PNG, .GIF image formats. Please select a different image."),
-                dismissButton: .default(Text("OK")) {
-                    viewModel.showUnsupportedFormatAlert = false
-                }
-            )
-        }
-        .alert(isPresented: $showMissingFieldAlert) {
-            Alert(
-                title: Text("Missing Field"),
-                message: Text("Please provide a value for the following field: \(missingField)"),
-                dismissButton: .default(Text("OK")) {
-                    showMissingFieldAlert = false
-                }
-            )
         }
         .onAppear() {
             Task {
@@ -151,16 +126,16 @@ struct CreateView: View {
 }
 
 // MARK: Preview
-struct Preview: PreviewProvider {
-    static var previews: some View {
-        CreateView(showCreateView: .constant(true), showButton: .constant(true))
-    }
-}
+//struct Preview: PreviewProvider {
+//    static var previews: some View {
+//        CreateView(showCreateView: .constant(true), showButton: .constant(true))
+//    }
+//}
 
 
 // MARK: Extension
 extension CreateView {
-    var informationSection: some View {
+    private var informationSection: some View {
         FormSection(headerText: "Information") {
             LimitedTextField(text: $title, maxLength: 30, title: "Title")
             LimitedTextField(text: $description, maxLength: 200, title: "Description")
@@ -173,7 +148,7 @@ extension CreateView {
         }
     }
     
-    var imageSection: some View {
+    private var imageSection: some View {
         FormSection(headerText: "Image") {
             HStack {
                 if let image = viewModel.image {
@@ -191,9 +166,18 @@ extension CreateView {
                 }
             }
         }
+        .alert(isPresented: $viewModel.showUnsupportedFormatAlert) {
+            Alert(
+                title: Text("Unsupported image format"),
+                message: Text("The app supports .JPEG, .PNG, .GIF image formats. Please select a different image."),
+                dismissButton: .default(Text("OK")) {
+                    viewModel.showUnsupportedFormatAlert = false
+                }
+            )
+        }
     }
 
-    var locationSection: some View {
+    private var locationSection: some View {
         FormSection(headerText: "Location") {
             CustomMapView(centerCoordinate: Binding(
                 get: { self.geopoint ?? CLLocationCoordinate2D() },
@@ -204,5 +188,25 @@ extension CreateView {
                 Text("Latitude: \(coordinate.latitude), Longitude: \(coordinate.longitude)")
             }
         }
+    }
+    
+    private var NavigationBar: some View {
+        MainNavigationBar(
+            title: "Create",
+            leftButton: LeftNavigationButton(
+                action: { self.showCreateView = false },
+                imageName: "chevron.up",
+                buttonText: "Back",
+                imageInvisible: false,
+                textInvisible: false
+            ),
+            rightButton: RightNavigationButton(
+                action: {},
+                imageName: "chevron.up",
+                buttonText: "Back",
+                imageInvisible: true,
+                textInvisible: true
+            )
+        )
     }
 }

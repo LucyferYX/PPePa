@@ -46,6 +46,17 @@ struct RoundedSquare: View {
     }
 }
 
+struct PostCircle: View {
+    var overlayContent: () -> AnyView
+
+    var body: some View {
+        Circle()
+            .fill(LinearGradient(gradient: Gradient(colors: [Color("Walnut"), Color("Gondola")]), startPoint: .top, endPoint: .trailing))
+            .frame(width: 150, height: 150)
+            .overlay(overlayContent())
+    }
+}
+
 struct AuthBackground: View {
     var color1: Color
     var color2: Color

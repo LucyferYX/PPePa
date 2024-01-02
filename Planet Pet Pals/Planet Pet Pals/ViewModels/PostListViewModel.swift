@@ -1,5 +1,5 @@
 //
-//  StatsViewModel.swift
+//  PostListViewModel.swift
 //  Planet Pet Pals
 //
 //  Created by Liene on 22/12/2023.

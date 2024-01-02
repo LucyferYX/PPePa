@@ -153,7 +153,12 @@ class PostManager {
         ]
         try await postsDocument(postId: postId).updateData(data)
     }
-
+    
+    func getMostLikedPost() async throws -> Post? {
+        let query = getAllPostsSortedByLikesQuery(descending: true).limit(to: 1)
+        let posts = try await query.getDocuments(as: Post.self)
+        return posts.first
+    }
     
     private func getAllPostsQuery() -> Query {
         postsCollection

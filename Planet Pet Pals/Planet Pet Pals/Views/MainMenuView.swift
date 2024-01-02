@@ -80,7 +80,7 @@ struct MainMenuView: View {
     @State private var showProfileView = false
     @State private var showCreateView = false
     @State private var showMapView = false
-    @State private var showPostListView = false
+    @State private var showStatsView = false
     @State private var showPostView = false
     
     @FocusState private var isTextFieldFocused: Bool
@@ -215,15 +215,15 @@ extension MainMenuView {
                        buttonColor: Color("Snow"))
             .padding()
             
-            MainButton(action: { self.showPostListView = true },
+            MainButton(action: { self.showStatsView = true },
                        imageName: "chart.bar.fill",
                        buttonText: "Stats",
                        imageColor: Color("Salmon"),
                        buttonColor: Color("Snow"))
             .padding()
-            NavigationLink(destination: PostListView(showPostListView: $showPostListView).navigationBarHidden(true), isActive: $showPostListView) {
-                 EmptyView()
-             }
+            NavigationLink(destination: StatsView(showStatsView: $showStatsView).navigationBarHidden(true), isActive: $showStatsView) {
+                    EmptyView()
+            }
         }
         .fullScreenCover(isPresented: $showMapView) {
             MapView(showMapView: $showMapView)

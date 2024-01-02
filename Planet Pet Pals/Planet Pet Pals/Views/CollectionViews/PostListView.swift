@@ -1,5 +1,5 @@
 //
-//  StatsView.swift
+//  PostListView.swift
 //  Planet Pet Pals
 //
 //  Created by Liene on 23/11/2023.
@@ -9,7 +9,7 @@ import SwiftUI
 import FirebaseFirestore
 
 struct PostListView: View {
-    @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
+//    @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
     @StateObject private var viewModel = PostListViewModel()
 
     @Binding var showPostListView: Bool
@@ -29,11 +29,9 @@ struct PostListView: View {
                         MainBackground()
                         List {
                             ForEach(viewModel.posts) { post in
-//                                PostCellView(post: post, showLikeButton: true, showLikes: false)
-//                                    .listRowBackground(Color("Linen"))
-//                                    .buttonStyle(.borderless)
-                                PostCellViewBuilder(postId: post.postId, showLikeButton: true, showLikes: false, showContext: true)
-                                
+                                PostCellView(post: post, showLikeButton: true, showLikes: false)
+                                    .listRowBackground(Color("Linen"))
+                                    .buttonStyle(.borderless)
                                 if post == viewModel.posts.last {
                                     ProgressView()
                                         .onAppear {
@@ -114,9 +112,9 @@ extension PostListView {
     
     private var NavigationBar: some View {
         MainNavigationBar(
-            title: "Stats",
+            title: "Posts",
             leftButton: LeftNavigationButton(
-                action: { self.presentationMode.wrappedValue.dismiss() },
+                action: { self.showPostListView = false },
                 imageName: "chevron.left",
                 buttonText: "Back",
                 imageInvisible: false,

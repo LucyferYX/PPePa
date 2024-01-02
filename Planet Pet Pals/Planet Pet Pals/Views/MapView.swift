@@ -24,23 +24,7 @@ struct MapView: View {
     var body: some View {
         NavigationView {
             VStack {
-                MainNavigationBar(
-                    title: "Map",
-                    leftButton: LeftNavigationButton(
-                        action: { self.showMapView = false },
-                        imageName: "chevron.up",
-                        buttonText: "Back",
-                        imageInvisible: false,
-                        textInvisible: false
-                    ),
-                    rightButton: RightNavigationButton(
-                        action: {},
-                        imageName: "slider.horizontal.3",
-                        buttonText: "Back",
-                        imageInvisible: false,
-                        textInvisible: true
-                    )
-                )
+                NavigationBar
                 ZStack {
                     MainBackground()
                     Map(coordinateRegion: .constant(region), annotationItems: posts) { post in
@@ -64,6 +48,28 @@ struct MapView: View {
 //            }
         }
         .transition(.move(edge: .bottom))
+    }
+}
+
+extension MapView {
+    private var NavigationBar: some View {
+        MainNavigationBar(
+            title: "Map",
+            leftButton: LeftNavigationButton(
+                action: { self.showMapView = false },
+                imageName: "chevron.up",
+                buttonText: "Back",
+                imageInvisible: false,
+                textInvisible: false
+            ),
+            rightButton: RightNavigationButton(
+                action: {},
+                imageName: "slider.horizontal.3",
+                buttonText: "Back",
+                imageInvisible: false,
+                textInvisible: true
+            )
+        )
     }
 }
 

@@ -84,29 +84,6 @@ struct ChartView: View {
 }
 
 extension ChartView {
-//    private var chart: some View {
-//        GeometryReader { geometry in
-//            Path { path in
-//                for index in viewModel.userCountsPerDay.indices {
-//                    let xPosition = geometry.size.width / CGFloat(viewModel.userCountsPerDay.count) * CGFloat(index)
-//                    let yAxis = CGFloat(viewModel.userCountsPerDay.max(by: { $0.count < $1.count })?.count ?? 0)
-//                    let yPosition = (1 - CGFloat(viewModel.userCountsPerDay[index].count) / yAxis) * geometry.size.height
-//                    if index == 0 {
-//                        path.move(to: CGPoint(x: xPosition, y: yPosition))
-//                    } else {
-//                        path.addLine(to: CGPoint(x: xPosition, y: yPosition))
-//                    }
-//                }
-//            }
-//            .interpolation(.curve)
-//            .trim(from: 0, to: percentage)
-//            .stroke(Color("Orchid"), style: StrokeStyle(lineWidth: 2, lineCap: .round, lineJoin: .round))
-//            .shadow(color: Color("Orchid"), radius: 10, x: 0.0, y: 10)
-//            .shadow(color: Color("Orchid").opacity(0.5), radius: 10, x: 0.0, y: 20)
-//            .shadow(color: Color("Orchid").opacity(0.2), radius: 10, x: 0.0, y: 30)
-//        }
-//    }
-    
     private var chart: some View {
         GeometryReader { geometry in
             Path { path in
