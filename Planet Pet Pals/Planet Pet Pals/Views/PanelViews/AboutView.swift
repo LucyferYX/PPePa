@@ -68,6 +68,8 @@ struct AboutView: View {
                                             .underline()
                                     }
                                 }
+                                //mouse
+                                //<a href="https://www.flaticon.com/free-icons/mouse" title="mouse icons">Mouse icons created by Freepik - Flaticon</a>
                             }
                             
                             Line()

@@ -175,10 +175,10 @@ struct PanelContent: View {
                 }
                 SimpleButton(action: {
                     showProfileSettingsView = true
-                }, systemImage: "gearshape", buttonText: "Profile Settings", size: 30, color: Color("Linen"))
+                }, systemImage: "person.2.badge.gearshape.fill", buttonText: "Profile settings", size: 30, color: Color("Linen"))
                 SimpleButton(action: {
                     showSettingsView = true
-                }, systemImage: "gearshape", buttonText: "App Settings", size: 30, color: Color("Linen"))
+                }, systemImage: "gear", buttonText: "App settings", size: 30, color: Color("Linen"))
                 SimpleButton(action: {
                     showLikesView = true
                 }, systemImage: "heart", buttonText: "Likes", size: 30, color: Color("Linen"))

@@ -81,7 +81,7 @@ struct MainMenuView: View {
     @State private var showCreateView = false
     @State private var showMapView = false
     @State private var showStatsView = false
-    @State private var showPostView = false
+    @State var showPostView = false
     
     @FocusState private var isTextFieldFocused: Bool
     @State private var keyboardIsShown: Bool = false
@@ -136,11 +136,11 @@ struct MainMenuView: View {
 }
 
 
-struct MainMenuView_Previews: PreviewProvider {
-    static var previews: some View {
-        MainMenuView(showSignInView: .constant(false))
-    }
-}
+//struct MainMenuView_Previews: PreviewProvider {
+//    static var previews: some View {
+//        MainMenuView(showSignInView: .constant(false))
+//    }
+//}
 
 
 
