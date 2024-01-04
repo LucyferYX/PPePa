@@ -1,5 +1,5 @@
 //
-//  SettingsView.swift
+//  AppSettingsView.swift
 //  Planet Pet Pals
 //
 //  Created by Liene on 20/12/2023.
@@ -7,13 +7,13 @@
 
 import SwiftUI
 
-struct SettingsView: View {
+struct AppSettingsView: View {
     @Environment(\.presentationMode) var presentationMode
     @AppStorage("appTheme") private var appTheme: AppTheme = .light
     @AppStorage("selectedRegion") var selectedRegion: String = "Europe"
     @AppStorage("selectedLanguage") var selectedLanguage: String = "en"
     
-    @State private var showProfileSettingsView: Bool = false
+    @State private var showAccountSettingsView: Bool = false
     @State private var showSignInView = false
 
     var body: some View {
@@ -55,6 +55,9 @@ struct SettingsView: View {
                 .environment(\.locale, .init(identifier: selectedLanguage))
             }
         }
+        .onAppear() {
+            CrashlyticsManager.shared.setValue(value: "AppSettingsView", key: "currentView")
+        }
         .onChange(of: appTheme) { newValue in
             applyTheme(appTheme: newValue)
         }
@@ -64,12 +67,12 @@ struct SettingsView: View {
 
 struct SettingsPreview: PreviewProvider {
     static var previews: some View {
-        SettingsView()
+        AppSettingsView()
     }
 }
 
 
-extension SettingsView {
+extension AppSettingsView {
     private var themeToggle: some View {
         VStack(spacing: 0) {
             Text(appTheme == .dark ? "Dark mode" : "Light mode")

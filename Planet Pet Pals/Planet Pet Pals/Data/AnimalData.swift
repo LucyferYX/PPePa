@@ -16,5 +16,5 @@ let animals = [
     "ant",
     "ladybug",
     "snake",
-    "other" //pawprint
+    "other"
 ]

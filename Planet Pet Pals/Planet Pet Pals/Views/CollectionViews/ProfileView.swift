@@ -6,15 +6,16 @@
 //
 
 import SwiftUI
-import PhotosUI
+//import PhotosUI
 
 struct ProfileView: View {
     @StateObject private var viewModel = ProfileViewModel()
     @Binding var showProfileView: Bool
-//    @State private var selectedItem: PhotosPickerItem? = nil
     @State private var profileImages: [String] = []
     
-    let postOptions: [String] = ["cat", "dog", "mouse"]
+    let columns = Array(repeating: GridItem(.flexible(), spacing: 10), count: 3)
+    var postOptions: [String] = animals
+    
     private func postSelected(text: String) -> Bool {
         viewModel.user?.favorites?.contains(text) == true
     }
@@ -49,37 +50,32 @@ struct ProfileView: View {
                     // MARK: User ID
                     Text("User id: \(user.userId)")
                     
+                    Text("Username: \(user.username ?? "User")")
+                    
                     if let isAnonymous = user.isAnonymous {
                         Text("Is anonymous: \(isAnonymous.description.capitalized)")
                     }
                     
-                    Button {
-                        viewModel.togglePremiumStatus()
-                    } label: {
-                        Text("User is premium: \((user.isAdmin ?? false).description.capitalized)")
-                    }
+                    Text("User is admin: \((user.isAdmin ?? false).description.capitalized)")
                     
-                    VStack {
-                        HStack {
-                            ForEach(postOptions, id: \.self) { string in
-                                Button(string) {
-                                    if postSelected(text: string) {
-                                        viewModel.removeUserFavorites(text: string)
-                                    } else {
-                                        viewModel.addUserFavorites(text: string)
-                                    }
-                                }
-                                .font(.headline)
-                                .buttonStyle(.borderedProminent)
-                                .tint(postSelected(text: string) ? .green : .red)
-                            }
-                        }
+                    FlexibleView(
+                        availableWidth: UIScreen.main.bounds.width,
+                        data: animals,
+                        spacing: 15,
+                        alignment: .leading
+                    ) { item in
+                        Text(item)
+                            .padding(8)
+                            .background(
+                                RoundedRectangle(cornerRadius: 8)
+                                    .fill(Color.gray.opacity(0.2))
+                            )
                     }
+                    .padding(.horizontal, 10)
+                    .frame(maxWidth: .infinity)
+
                     Text("User favorites: \((user.favorites ?? []).joined(separator: ", "))")
                     
-//                    PhotosPicker(selection: $selectedItem, matching: .images, photoLibrary: .shared()) {
-//                        Text("Select a photo")
-//                    }
                     ForEach(profileImages, id: \.self) { imageName in
                         Button(action: {
                             Task {
@@ -102,11 +98,6 @@ struct ProfileView: View {
                     print("Failed to load user: \(error)")
                 }
             }
-//            .onChange(of: selectedItem, perform: { newValue in
-//                if let newValue {
-//                    viewModel.saveProfileImage(item: newValue)
-//                }
-//            })
             .task {
                 do {
                     try await viewModel.loadCurrentUser()

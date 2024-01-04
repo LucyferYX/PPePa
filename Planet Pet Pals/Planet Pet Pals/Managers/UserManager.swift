@@ -11,6 +11,7 @@ import FirebaseFirestoreSwift
 
 struct DatabaseUser: Codable {
     let userId: String
+    var username: String?
     let isAnonymous: Bool?
     let email: String?
     let photoUrl: String?
@@ -20,6 +21,7 @@ struct DatabaseUser: Codable {
     
     init(auth: AuthDataResultModel) {
         self.userId = auth.uid
+        self.username = "User"
         self.isAnonymous = auth.isAnonymous
         self.email = auth.email
         self.photoUrl = auth.photoUrl
@@ -30,6 +32,7 @@ struct DatabaseUser: Codable {
     
     init(
         userId: String,
+        username: String? = "User",
         isAnonymous: Bool? = nil,
         email: String? = nil,
         photoUrl: String? = nil,
@@ -38,6 +41,7 @@ struct DatabaseUser: Codable {
         favorites: [String]? = nil
     ) {
         self.userId = userId
+        self.username = username
         self.isAnonymous = isAnonymous
         self.email = email
         self.photoUrl = photoUrl
@@ -48,6 +52,7 @@ struct DatabaseUser: Codable {
     
     enum CodingKeys: String, CodingKey {
         case userId = "user_id"
+        case username = "username"
         case isAnonymous = "is_anonymous"
         case email = "email"
         case photoUrl = "photo_url"
@@ -59,6 +64,7 @@ struct DatabaseUser: Codable {
     init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         userId = try container.decode(String.self, forKey: .userId)
+        username = try container.decodeIfPresent(String.self, forKey: .username)
         isAnonymous = try container.decodeIfPresent(Bool.self, forKey: .isAnonymous)
         email = try container.decodeIfPresent(String.self, forKey: .email)
         photoUrl = try container.decodeIfPresent(String.self, forKey: .photoUrl)
@@ -67,10 +73,10 @@ struct DatabaseUser: Codable {
         favorites = try container.decodeIfPresent([String].self, forKey: .favorites)
     }
 
-    
     func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encode(self.userId, forKey: .userId)
+        try container.encode(self.username, forKey: .username)
         try container.encode(self.isAnonymous, forKey: .isAnonymous)
         try container.encode(self.email, forKey: .email)
         try container.encode(self.photoUrl, forKey: .photoUrl)
@@ -80,8 +86,8 @@ struct DatabaseUser: Codable {
     }
 }
 
-// better not to use singletons, check alternatives
-class UserManager {
+
+final class UserManager {
     static let shared = UserManager()
     private init() {}
 
@@ -173,7 +179,12 @@ class UserManager {
         try await usersDocument(userId: userId).updateData(data)
     }
     
-    // MARK: Listener
+    func updateUsername(userId: String, newUsername: String) async throws {
+        let userDocument = usersDocument(userId: userId)
+        try await userDocument.updateData([DatabaseUser.CodingKeys.username.rawValue: newUsername])
+    }
+    
+    // MARK: Listener for likes
     private var userLikedPostsListener: ListenerRegistration? = nil
     
     func addListenerForPostsLiked(userId: String, completion: @escaping (_ posts: [UserLikedPost]) -> Void) {
@@ -192,15 +203,25 @@ class UserManager {
         self.userLikedPostsListener?.remove()
     }
     
-//    func addListenerForPostsLiked(userId: String, completion: @escaping (_ posts: [UserLikedPost]) -> Void) {
-//        userLikesCollection(userId: userId).addSnapshotListener { querySnapshot, error in
-//            guard let documents = querySnapshot?.documents else {
-//                print("No documents")
-//                return
-//            }
-//
-//            let posts: [UserLikedPost] = documents.compactMap({try? $0.data(as: UserLikedPost.self)})
-//            completion(posts)
-//        }
-//    }
+    // MARK: Listener for profile
+    private var userProfileListener: ListenerRegistration? = nil
+
+    func addListenerForUserProfile(userId: String, completion: @escaping (_ user: DatabaseUser) -> Void) {
+        self.userProfileListener = usersDocument(userId: userId).addSnapshotListener { documentSnapshot, error in
+            guard let document = documentSnapshot else {
+                print("Error fetching user: \(error!)")
+                return
+            }
+            guard let user = try? document.data(as: DatabaseUser.self) else {
+                print("Error decoding user")
+                return
+            }
+            completion(user)
+        }
+    }
+
+    func removeListenerForUserProfile() {
+        self.userProfileListener?.remove()
+    }
+
 }

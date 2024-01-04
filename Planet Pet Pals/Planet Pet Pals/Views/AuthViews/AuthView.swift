@@ -256,16 +256,13 @@ extension AuthView {
                     guard !viewModel.password.isEmpty else {
                         throw SignUpError.emptyPassword
                     }
-                    guard email.contains("@"),
-                          let domain = email.split(separator: "@").last,
-                          domain.contains("."),
-                          domain.split(separator: ".").count > 1 else {
+                    guard viewModel.email.contains("@") else {
                         throw SignUpError.invalidEmail
                     }
-                    guard password.count >= 6 else {
+                    guard viewModel.password.count >= 6 else {
                         throw SignUpError.passwordTooShort
                     }
-                    let methods = try await Auth.auth().fetchSignInMethods(forEmail: email)
+                    let methods = try await Auth.auth().fetchSignInMethods(forEmail: viewModel.email)
                     guard methods.isEmpty else {
                         throw SignUpError.emailAlreadyExists
                     }
@@ -349,9 +346,9 @@ enum LoginError: LocalizedError {
         case .invalidEmail:
             return "Please input a valid email."
         case .emailNotFound:
-            return "No such email address found."
+            return "No such account found."
         case .wrongPassword:
-            return "Incorrect password."
+            return "Email or password do not match."
         }
     }
 }

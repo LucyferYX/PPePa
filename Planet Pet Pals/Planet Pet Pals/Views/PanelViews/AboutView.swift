@@ -68,8 +68,21 @@ struct AboutView: View {
                                             .underline()
                                     }
                                 }
-                                //mouse
-                                //<a href="https://www.flaticon.com/free-icons/mouse" title="mouse icons">Mouse icons created by Freepik - Flaticon</a>
+                                
+                                HStack {
+                                    Text("Profile images:")
+                                        .font(.custom("Baloo2-SemiBold", size: 20))
+                                    Button(action: {
+                                        if let url = URL(string: "https://www.freepik.com/free-vector/people-avatars-cartoon-style_7149994.htm?query=round%20pet%20profile#from_view=detail_alsolike") {
+                                            UIApplication.shared.open(url)
+                                        }
+                                    }) {
+                                        Text("Freepik")
+                                            .font(.custom("Baloo2-Regular", size: 20))
+                                            .foregroundColor(Color("Gondola"))
+                                            .underline()
+                                    }
+                                }
                             }
                             
                             Line()

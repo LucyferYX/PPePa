@@ -10,27 +10,23 @@ import FirebaseFirestore
 import CoreLocation
 
 @MainActor
-class PostViewModel: ObservableObject {
+final class PostViewModel: ObservableObject {
     @Published private(set) var post: Post? = nil
+    @Published private(set) var user: DatabaseUser? = nil
     @Published var isLoading = false
-
-//    init(post: Post? = nil) {
-//        self.post = post
-//        if let postId = post?.postId {
-//            Task {
-//                do {
-//                    try await loadPost(postId: postId)
-//                } catch {
-//                    print("Failed to load post: \(error)")
-//                }
-//            }
-//        }
-//    }
 
     func loadPost(postId: String) async throws {
         isLoading = true
         defer { isLoading = false }
         self.post = try await PostManager.shared.getPost(postId: postId)
+        if let userId = post?.userId {
+            do {
+                self.user = try await UserManager.shared.getUser(userId: userId)
+                print("Gotten user: \(user?.username ?? "Unknown name")")
+            } catch {
+                print("Failed to load user: \(error)")
+            }
+        }
     }
 }
 
@@ -39,7 +35,6 @@ struct PostView: View {
     @StateObject private var viewModel = PostViewModel()
     @Binding var showPostView: Bool
     let postId: String
-//    @StateObject var viewModel: PostViewModel
     @State private var showMap = false
     
     var formattedDate: String {
@@ -143,7 +138,16 @@ struct PostView: View {
                                 }
                             }
                             
-                            VStack {
+                            VStack(spacing: 0) {
+                                HStack(spacing: 0) {
+                                    Text("Post created by: ")
+                                        .font(.custom("Baloo2-Regular", size: 20))
+                                    Text("\(viewModel.user != nil ? (viewModel.user?.username ?? "Unknown name") : "Deleted user")")
+                                        .font(.custom("Baloo2-SemiBold", size: 20))
+                                }
+                                .foregroundColor(Color("Gondola"))
+                                .padding(.trailing, 10)
+
                                 Text("Post created: \(formattedDate)")
                                     .font(.custom("Baloo2-Regular", size: 20))
                                     .foregroundColor(Color("Gondola"))
@@ -167,6 +171,7 @@ struct PostView: View {
         .task {
             do {
                 try await viewModel.loadPost(postId: postId)
+                print("User is: \(viewModel.user?.userId ?? "Unknown")")
             } catch {
                 print("Failed to load post: \(error)")
             }

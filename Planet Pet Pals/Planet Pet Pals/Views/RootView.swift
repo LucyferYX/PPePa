@@ -6,7 +6,7 @@
 //
 
 import SwiftUI
-import FirebaseFirestore
+//import FirebaseFirestore
 
 struct RootView: View {
     @State private var showLaunchView: Bool = true
@@ -22,13 +22,18 @@ struct RootView: View {
                     if !showSignInView {
                         NavigationStack {
                             MainMenuView(showSignInView: $showSignInView)
-//                            PostListView()
                         }
                     }
                 }
                 .onAppear {
                     let authUser = try? AuthManager.shared.getAuthenticatedUser()
                     self.showSignInView = authUser == nil
+                    if let user = authUser {
+                        CrashlyticsManager.shared.setUserId(userId: user.uid)
+                        CrashlyticsManager.shared.setValue(value: user.email ?? "User has no email", key: "email")
+                    } else {
+                        CrashlyticsManager.shared.setUserId(userId: "User not authenticated")
+                    }
                 }
                 .fullScreenCover(isPresented: $showSignInView) {
                     NavigationStack {
@@ -79,19 +84,19 @@ class RootViewModel: ObservableObject {
     }
 }
 
-class MaintenanceManager {
-    static let shared = MaintenanceManager()
-    private init() {}
-    private let maintenanceCollection = Firestore.firestore().collection("Maintenance")
-    
-    private func maintenanceDocument(docId: String) -> DocumentReference {
-        maintenanceCollection.document(docId)
-    }
-    
-    func getMaintenanceFlag(docId: String) async throws -> Bool {
-        let document = try await maintenanceDocument(docId: docId).getDocument(source: .server)
-        let flag = document.get("flag") as? Bool ?? false
-        return flag
-    }
-}
-
+//final class MaintenanceManager {
+//    static let shared = MaintenanceManager()
+//    private init() {}
+//    private let maintenanceCollection = Firestore.firestore().collection("Maintenance")
+//
+//    private func maintenanceDocument(docId: String) -> DocumentReference {
+//        maintenanceCollection.document(docId)
+//    }
+//
+//    func getMaintenanceFlag(docId: String) async throws -> Bool {
+//        let document = try await maintenanceDocument(docId: docId).getDocument(source: .server)
+//        let flag = document.get("flag") as? Bool ?? false
+//        return flag
+//    }
+//}
+//
