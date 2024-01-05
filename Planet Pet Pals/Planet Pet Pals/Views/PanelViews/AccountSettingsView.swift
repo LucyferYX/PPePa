@@ -17,7 +17,6 @@ class AccountSettingsViewModel: ObservableObject {
     
     @Published var currentAlert: AlertType? = nil
     
-    @Published var username: String = ""
     @Published var email: String = ""
     @Published var password: String = ""
     
@@ -37,6 +36,8 @@ class AccountSettingsViewModel: ObservableObject {
     
     func deleteAccount() async throws {
         do {
+            let userId = Auth.auth().currentUser?.uid
+            try await PostManager.shared.updatePostsForDeletedUser(userId: userId)
             try await AuthManager.shared.delete()
         } catch {
             print("Error: \(error)")
@@ -52,16 +53,7 @@ class AccountSettingsViewModel: ObservableObject {
         }
         try await AuthManager.shared.resetPassword(email: email)
     }
-    
-    func changeUsername() async {
-        guard let userId = authUser?.uid else { return }
-        do {
-            try await UserManager.shared.updateUsername(userId: userId, newUsername: username)
-        } catch {
-            print("Failed to update username: \(error)")
-        }
-    }
-    
+
     func updateEmail() async throws {
         try await AuthManager.shared.updateEmail(email: self.email)
     }
@@ -143,48 +135,6 @@ struct AccountSettingsView: View {
                 }
                 ScrollView() {
                     VStack(spacing: 0) {
-                        
-                        VStack {
-                            Text("Change username")
-                                .font(.custom("Baloo2-SemiBold", size: 25))
-                                .foregroundColor(Color("Gondola"))
-                            
-                            LimitedTextField(text: $viewModel.username, maxLength: 20, title: "Username")
-                                .padding(.horizontal, 30)
-                            
-                            Line3()
-                            
-                            Button(action: {
-                                Task {
-                                    await viewModel.changeUsername()
-                                    print("Changed username to: \(viewModel.username)")
-                                    presentationMode.wrappedValue.dismiss()
-                                }
-                            }) {
-                                Text("Set new username")
-                                    .font(.custom("Baloo2-SemiBold", size: 20))
-                                    .foregroundColor(Color("Gondola"))
-                            }
-                        }
-                        
-                        Line()
-                            .padding()
-                        
-                        VStack(spacing: 0) {
-                            Spacer()
-                            if viewModel.authProviders.contains(.google) {
-                                Text("You are signed in with Google!")
-                            } else if viewModel.authProviders.contains(.email) {
-                                Text("You are signed in with email!")
-                            } else {
-                                Text("You are signed in anonymously!")
-                            }
-                        }
-                        .font(.custom("Baloo2-SemiBold", size: 15))
-                        .foregroundColor(Color("Gondola"))
-                        .lineLimit(2)
-                        .padding(.horizontal)
-                        .multilineTextAlignment(.center)
                         
                         if viewModel.authProviders.contains(.email) {
                             RoundedSquare(color: Color("Seashell"), width: 300, height: 300) {
@@ -303,8 +253,16 @@ struct AccountSettingsView: View {
                 }
             }
             .onAppear {
+                CrashlyticsManager.shared.setValue(value: "AccountSettingsView", key: "currentView")
                 viewModel.loadAuthProviders()
                 viewModel.loadAuthUser()
+                if viewModel.authProviders.contains(.google) {
+                    print("User is signed in with Google.")
+                } else if viewModel.authProviders.contains(.email) {
+                    print("User is signed in with email.")
+                } else {
+                    print("User is signed in anonymously.")
+                }
             }
         }
     }
@@ -438,6 +396,7 @@ extension AccountSettingsView {
             Text(isButtonClickedOnce ? "Delete account" : "Confirm account deletion")
                 .font(.custom("Baloo2-Regular", size: 20))
         }
+        .padding(.bottom)
         .alert(item: $viewModel.currentAlert) { alertType in
             switch alertType {
             case .deleteAccount:

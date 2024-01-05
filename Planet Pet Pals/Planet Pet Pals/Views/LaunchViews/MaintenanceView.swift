@@ -26,5 +26,8 @@ struct MaintenanceView: View {
                     .opacity(0.6)
             }
         }
+        .onAppear {
+            CrashlyticsManager.shared.setValue(value: "MaintenanceView", key: "currentView")
+        }
     }
 }

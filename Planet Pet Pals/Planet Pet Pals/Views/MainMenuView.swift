@@ -120,6 +120,7 @@ struct MainMenuView: View {
                 }
             }
             .onAppear {
+                CrashlyticsManager.shared.setValue(value: "MainMenuView", key: "currentView")
                 viewModel.addKeyboardNotifications()
                 self.showButton = false
             }

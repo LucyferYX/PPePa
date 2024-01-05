@@ -48,6 +48,10 @@ struct MapView: View {
 //            }
         }
         .transition(.move(edge: .bottom))
+        .onAppear() {
+            CrashlyticsManager.shared.setValue(value: "MapView", key: "currentView")
+
+        }
     }
 }
 

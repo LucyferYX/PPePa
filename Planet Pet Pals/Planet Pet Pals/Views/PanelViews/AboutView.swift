@@ -136,6 +136,9 @@ struct AboutView: View {
                 }
             }
         }
+        .onAppear() {
+            CrashlyticsManager.shared.setValue(value: "AboutView", key: "currentView")
+        }
     }
     
     func getAppVersion() -> String {

@@ -6,30 +6,7 @@
 //
 
 import SwiftUI
-import FirebaseFirestore
 import CoreLocation
-
-@MainActor
-final class PostViewModel: ObservableObject {
-    @Published private(set) var post: Post? = nil
-    @Published private(set) var user: DatabaseUser? = nil
-    @Published var isLoading = false
-
-    func loadPost(postId: String) async throws {
-        isLoading = true
-        defer { isLoading = false }
-        self.post = try await PostManager.shared.getPost(postId: postId)
-        if let userId = post?.userId {
-            do {
-                self.user = try await UserManager.shared.getUser(userId: userId)
-                print("Gotten user: \(user?.username ?? "Unknown name")")
-            } catch {
-                print("Failed to load user: \(error)")
-            }
-        }
-    }
-}
-
 
 struct PostView: View {
     @StateObject private var viewModel = PostViewModel()
@@ -168,6 +145,15 @@ struct PostView: View {
                 .ignoresSafeArea()
             }
         }
+        .onAppear {
+            CrashlyticsManager.shared.setValue(value: "PostView", key: "currentView")
+            viewModel.addListenerForPost(postId: postId)
+            print("Post listener is turned on")
+        }
+        .onDisappear {
+            viewModel.removeListenerForPost()
+            print("Post listener is turned off")
+        }
         .task {
             do {
                 try await viewModel.loadPost(postId: postId)
@@ -199,38 +185,6 @@ struct PostView: View {
 //    }
 //}
 
-
-
-
-struct DynamicImageView: View {
-    let isLoading: Bool
-    let url: URL?
-
-    var body: some View {
-        GeometryReader { geometry in
-            let offsetY = geometry.frame(in: .global).minY
-            Spacer()
-                .frame(height: max(400, 400 + offsetY))
-                .background {
-                    if isLoading {
-                        ProgressView()
-                    } else if let url = url {
-                        AsyncImage(url: url) { image in
-                            image.resizable()
-                                 .scaledToFill()
-                                 .offset(y: -offsetY)
-                                 .scaleEffect(offsetY / 3000 + 1)
-                                 .overlay(LinearGradient(gradient: Gradient(colors: [Color.clear, Color.black.opacity(0.5)]), startPoint: .center, endPoint: .bottom))
-                            } placeholder: {
-                                ProgressView()
-                            }
-                        
-                    }
-                }
-        }
-        .frame(height: 400)
-    }
-}
 
 
 extension PostView {

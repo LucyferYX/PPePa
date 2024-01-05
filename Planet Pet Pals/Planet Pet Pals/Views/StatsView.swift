@@ -90,6 +90,7 @@ struct StatsView: View {
             await viewModel.fetchMostLikedPost()
         }
         .onAppear {
+            CrashlyticsManager.shared.setValue(value: "StatsView", key: "currentView")
             flipped = false
         }
     }

@@ -15,10 +15,15 @@ class PanelViewModel: ObservableObject {
     @Published private(set) var user: DatabaseUser? = nil
     @Published var isAdmin = false
     
-    @Published var showReportedPostView = false
+    @Published var showReportedPostsView = false
+    @Published var showDeletedUserPostsView = false
+    
+    @Published var showMyPostsView = false
+    @Published var showLikesView = false
+    
+    @Published var showProfileSettingsView = false
     @Published var showAccountSettingsView = false
     @Published var showSettingsView = false
-    @Published var showLikesView = false
     @Published var showAboutView = false
 
     func loadCurrentUser() async throws {

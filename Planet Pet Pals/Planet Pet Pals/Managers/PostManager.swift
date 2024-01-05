@@ -21,6 +21,7 @@ struct Post: Codable, Identifiable, Equatable {
     var likes: Int?
     var isReported: Bool
     let dateCreated: Date
+    var isUserDeleted: Bool?
 
     var location: CLLocationCoordinate2D {
         CLLocationCoordinate2D(latitude: geopoint.latitude, longitude: geopoint.longitude)
@@ -61,6 +62,7 @@ struct Post: Codable, Identifiable, Equatable {
         case likes = "likes"
         case isReported = "is_reported"
         case dateCreated = "date_created"
+        case isUserDeleted = "is_user_deleted"
     }
 
     // For comparing 2 posts
@@ -80,6 +82,7 @@ struct Post: Codable, Identifiable, Equatable {
         likes = try container.decodeIfPresent(Int.self, forKey: .likes)
         isReported = try container.decode(Bool.self, forKey: .isReported)
         dateCreated = try container.decode(Date.self, forKey: .dateCreated)
+        isUserDeleted = try container.decodeIfPresent(Bool.self, forKey: .isUserDeleted)
     }
 
     func encode(to encoder: Encoder) throws {
@@ -94,6 +97,7 @@ struct Post: Codable, Identifiable, Equatable {
         try container.encode(likes, forKey: .likes)
         try container.encode(isReported, forKey: .isReported)
         try container.encode(dateCreated, forKey: .dateCreated)
+        try container.encode(isUserDeleted, forKey: .isUserDeleted)
     }
 }
 
@@ -124,6 +128,24 @@ class PostManager {
         return (posts, lastDocument)
     }
     
+//    func getAllPostsBy1(startAfter: DocumentSnapshot? = nil) async throws -> ([Post], DocumentSnapshot?) {
+//        var query = postsCollection.order(by: Post.CodingKeys.dateCreated.rawValue, descending: true).limit(to: 1)
+//        if let lastSnapshot = startAfter {
+//            query = query.start(afterDocument: lastSnapshot)
+//        }
+//        let (posts, lastDocument) = try await query.getDocumentsWithSnapshot(as: Post.self)
+//        return (posts, lastDocument)
+//    }
+//
+//    func getAllPostsBy10(startAfter: DocumentSnapshot? = nil) async throws -> ([Post], DocumentSnapshot?) {
+//        var query = postsCollection.order(by: Post.CodingKeys.dateCreated.rawValue, descending: true).limit(to: 10)
+//        if let lastSnapshot = startAfter {
+//            query = query.start(afterDocument: lastSnapshot)
+//        }
+//        let (posts, lastDocument) = try await query.getDocumentsWithSnapshot(as: Post.self)
+//        return (posts, lastDocument)
+//    }
+    
     func savePost(post: Post) async throws {
         let encoder = Firestore.Encoder()
         let data = try encoder.encode(post)
@@ -138,6 +160,25 @@ class PostManager {
                 }
             }
         }
+    }
+    
+    func deletePost(postId: String) async throws {
+        try await postsCollection.document(postId).delete()
+    }
+    
+    func updatePostsForDeletedUser(userId: String?) async throws {
+        guard let userId = userId else { return }
+
+        let postsByUser = postsCollection.whereField(Post.CodingKeys.userId.rawValue, isEqualTo: userId)
+        let snapshot = try await postsByUser.getDocuments()
+        let batch = Firestore.firestore().batch()
+
+        snapshot.documents.forEach { document in
+            let postRef = postsCollection.document(document.documentID)
+            batch.updateData([Post.CodingKeys.isUserDeleted.rawValue: true], forDocument: postRef)
+        }
+
+        try await batch.commit()
     }
     
     func reportPost(postId: String) async throws {
@@ -192,10 +233,38 @@ class PostManager {
             query = getAllPostsForTypesQuery(type: type)
         }
         
-        return try await query
+        let (newPosts, lastDocument) = try await query
             .startOptional(afterDocument: lastDocument)
+            .limit(to: count)
             .getDocumentsWithSnapshot(as: Post.self)
+        
+        var posts: [Post] = []
+        for post in newPosts {
+            if !posts.contains(where: { $0.id == post.id }) {
+                posts.append(post)
+            }
+        }
+        
+        return (posts, lastDocument)
     }
+
+    
+//    func getAllPosts(likesDescending descending: Bool?, forType type: String?, count: Int, lastDocument: DocumentSnapshot?)
+//    async throws -> (posts: [Post], lastDocument: DocumentSnapshot?) {
+//        var query: Query = getAllPostsQuery()
+//
+//        if let descending, let type {
+//            query = getAllPostsSortedByLikesAndTypeQuery(descending: descending, type: type)
+//        } else if let descending {
+//            query = getAllPostsSortedByLikesQuery(descending: descending)
+//        } else if let type {
+//            query = getAllPostsForTypesQuery(type: type)
+//        }
+//
+//        return try await query
+//            .startOptional(afterDocument: lastDocument)
+//            .getDocumentsWithSnapshot(as: Post.self)
+//    }
     
     func getPostsByDate(count: Int, lastDocument: DocumentSnapshot?) async throws -> (posts: [Post], lastDocument: DocumentSnapshot?) {
         if let lastDocument = lastDocument {
@@ -256,7 +325,51 @@ class PostManager {
         }
     }
     
-    //MARK: Listener
+    //MARK: Listener for user own posts
+    private var myPostsListener: ListenerRegistration? = nil
+
+    func addListenerForMyPosts(userId: String, completion: @escaping (_ posts: [Post]) -> Void) {
+        self.myPostsListener = postsCollection
+            .whereField(Post.CodingKeys.userId.rawValue, isEqualTo: userId)
+            .addSnapshotListener { querySnapshot, error in
+                guard let documents = querySnapshot?.documents else {
+                    print("No documents for my posts found")
+                    return
+                }
+
+                let posts: [Post] = documents.compactMap({try? $0.data(as: Post.self)})
+                completion(posts)
+            }
+    }
+
+    func removeListenerForMyPosts() {
+        self.myPostsListener?.remove()
+    }
+
+    
+    //MARK: Listener for deleted posts
+    private var deletedUsersPostsListener: ListenerRegistration? = nil
+
+    func addListenerForDeletedUsersPosts(completion: @escaping (_ posts: [Post]) -> Void) {
+        self.deletedUsersPostsListener = postsCollection
+            .whereField(Post.CodingKeys.isUserDeleted.rawValue, isEqualTo: true)
+            .addSnapshotListener { querySnapshot, error in
+                guard let documents = querySnapshot?.documents else {
+                    print("No documents for deleted users posts found")
+                    return
+                }
+
+                let posts: [Post] = documents.compactMap({try? $0.data(as: Post.self)})
+                completion(posts)
+            }
+    }
+
+    func removeListenerForDeletedUsersPosts() {
+        self.deletedUsersPostsListener?.remove()
+    }
+
+    
+    //MARK: Listener for reports
     private var reportedPostsListener: ListenerRegistration? = nil
 
     func addListenerForReportedPosts(completion: @escaping (_ posts: [Post]) -> Void) {
@@ -276,6 +389,28 @@ class PostManager {
     func removeListenerForReportedPosts() {
         self.reportedPostsListener?.remove()
     }
+    
+    
+    // MARK: Listener for post
+    private var postListener: ListenerRegistration? = nil
+
+    func addListenerForPost(postId: String, completion: @escaping (_ post: Post?) -> Void) {
+        self.postListener = postsDocument(postId: postId)
+            .addSnapshotListener { documentSnapshot, error in
+                guard let document = documentSnapshot else {
+                    print("No document for post found")
+                    return
+                }
+
+                let post = try? document.data(as: Post.self)
+                completion(post)
+            }
+    }
+
+    func removeListenerForPost() {
+        self.postListener?.remove()
+    }
+
 }
 
 extension Query {

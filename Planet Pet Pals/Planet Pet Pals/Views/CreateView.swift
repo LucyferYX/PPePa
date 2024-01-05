@@ -87,6 +87,7 @@ struct CreateView: View {
             }
         }
         .onAppear() {
+            CrashlyticsManager.shared.setValue(value: "CreateView", key: "currentView")
             Task {
                 await viewModel.fetchUser()
             }
@@ -179,7 +180,7 @@ extension CreateView {
 
     private var locationSection: some View {
         FormSection(headerText: "Location") {
-            CustomMapView(centerCoordinate: Binding(
+            MapPickerView(centerCoordinate: Binding(
                 get: { self.geopoint ?? CLLocationCoordinate2D() },
                 set: { self.geopoint = $0 }
             ), selectedRegion: selectedRegion)

@@ -70,3 +70,32 @@ struct FadeOutImageView: View {
     }
 }
 
+struct DynamicImageView: View {
+    let isLoading: Bool
+    let url: URL?
+
+    var body: some View {
+        GeometryReader { geometry in
+            let offsetY = geometry.frame(in: .global).minY
+            Spacer()
+                .frame(height: max(400, 400 + offsetY))
+                .background {
+                    if isLoading {
+                        ProgressView()
+                    } else if let url = url {
+                        AsyncImage(url: url) { image in
+                            image.resizable()
+                                 .scaledToFill()
+                                 .offset(y: -offsetY)
+                                 .scaleEffect(offsetY / 3000 + 1)
+                                 .overlay(LinearGradient(gradient: Gradient(colors: [Color.clear, Color.black.opacity(0.5)]), startPoint: .center, endPoint: .bottom))
+                            } placeholder: {
+                                ProgressView()
+                            }
+                        
+                    }
+                }
+        }
+        .frame(height: 400)
+    }
+}

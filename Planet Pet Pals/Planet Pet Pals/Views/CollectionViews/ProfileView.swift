@@ -6,7 +6,6 @@
 //
 
 import SwiftUI
-//import PhotosUI
 
 struct ProfileView: View {
     @StateObject private var viewModel = ProfileViewModel()
@@ -27,7 +26,6 @@ struct ProfileView: View {
             List {
                 if let user = viewModel.user {
                     
-                    
                     if let photoUrl = user.photoUrl, let url = URL(string: photoUrl) {
                         AsyncImage(url: url) { image in
                             image
@@ -44,7 +42,6 @@ struct ProfileView: View {
                                 Label("Copy URL", systemImage: "doc.on.doc")
                             }
                         }
-                        Text(photoUrl)
                     }
                     
                     // MARK: User ID
@@ -57,38 +54,9 @@ struct ProfileView: View {
                     }
                     
                     Text("User is admin: \((user.isAdmin ?? false).description.capitalized)")
-                    
-                    FlexibleView(
-                        availableWidth: UIScreen.main.bounds.width,
-                        data: animals,
-                        spacing: 15,
-                        alignment: .leading
-                    ) { item in
-                        Text(item)
-                            .padding(8)
-                            .background(
-                                RoundedRectangle(cornerRadius: 8)
-                                    .fill(Color.gray.opacity(0.2))
-                            )
-                    }
-                    .padding(.horizontal, 10)
-                    .frame(maxWidth: .infinity)
 
                     Text("User favorites: \((user.favorites ?? []).joined(separator: ", "))")
                     
-                    ForEach(profileImages, id: \.self) { imageName in
-                        Button(action: {
-                            Task {
-                                do {
-                                    try await viewModel.updateProfileImage(imageName: imageName)
-                                } catch {
-                                    print("Failed to update profile image: \(error)")
-                                }
-                            }
-                        }) {
-                            Text(imageName)
-                        }
-                    }
                 }
             }
             .task {
@@ -106,6 +74,9 @@ struct ProfileView: View {
                     print("Failed to load user or profile images: \(error)")
                 }
             }
+        }
+        .onAppear() {
+            CrashlyticsManager.shared.setValue(value: "ProfileView", key: "currentView")
         }
     }
 }

@@ -6,7 +6,7 @@
 //
 
 import SwiftUI
-import Firebase
+import FirebaseAuth
 
 struct AuthDataResultModel {
     let uid: String
@@ -144,12 +144,4 @@ extension AuthManager {
             throw error
         }
     }
-    
-//    private func linkCredential(credential: AuthCredential) async throws -> AuthDataResultModel {
-//        guard let user = Auth.auth().currentUser else {
-//            throw URLError(.badURL)
-//        }
-//        let authDataResult = try await user.link(with: credential)
-//        return AuthDataResultModel(user: authDataResult.user)
-//    }
 }

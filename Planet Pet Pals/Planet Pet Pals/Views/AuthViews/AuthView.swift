@@ -27,157 +27,162 @@ struct AuthView: View {
     @State private var password: String = ""
     
     var body: some View {
-        ZStack {
-            AuthBackground(color1: Color("Orchid"), color2: Color("Salmon"))
-
-            VStack(alignment: .leading) {
-                VStack(alignment: .leading, spacing: -5) {
-                    Text("welcome")
-                        .foregroundColor(Color("Snow"))
-                        .font(.custom("Baloo2-SemiBold", size: 40))
-                        
-                    Text("sign in continue")
-                        .foregroundColor(Color("Linen"))
-                        .font(.custom("Baloo2-SemiBold", size: 25))
-                }
-                .padding(.bottom)
+        ScrollView {
+            ZStack {
+                AuthBackground(color1: Color("Orchid"), color2: Color("Salmon"))
                 
-                
-                VStack {
-                    Spacer()
-                    
-                    ZStack {
-                        // MARK: Login view
-                        RoundedSquare(color: Color("Seashell"), width: 300, height: 550) {
-                            AnyView(
-                                VStack {
-                                    HStack {
-                                        AuthText(text: "Login")
-                                        Spacer()
-                                    }
-                                    
-                                    SignTextField(placeholder: "Email", text: $viewModel.email)
-                                    
-                                    Line3()
-                                        .padding(.bottom)
-                                    
-                                    if showPassword {
-                                        SignTextField(placeholder: "Password", text: $viewModel.password)
-                                    } else {
-                                        SignSecureField(placeholder: "Password", text: $viewModel.password)
-                                    }
-                                    
-                                    Line3()
-                                    
-                                    ShowPasswordButton()
-                                    
-                                    LoginButton()
-                                    
-                                    Rectangle()
-                                        .fill(Color("Snow"))
-                                        .frame(height: 2)
-                                        .padding(.top)
-                                    
-                                    GoogleButton()
-                                        .padding(.vertical)
-                                                                        
-                                    LabelButton(action: {
-                                        self.showResetPasswordView = true
-                                    }, title: "forgot password", color: Color("Gondola"), fontSize: 18)
-                                    .sheet(isPresented: $showResetPasswordView) {
-                                        ResetPasswordView(authManager: authManager, email: $email)
-                                    }
-                                    .padding(.bottom, 20)
-                                }
-                            )
-                        }
-                        .opacity(flipped ? 0 : 1)
+                VStack(alignment: .leading) {
+                    VStack(alignment: .leading, spacing: -5) {
+                        Text("welcome")
+                            .foregroundColor(Color("Snow"))
+                            .font(.custom("Baloo2-SemiBold", size: 40))
                         
-                        // MARK: Sign up view
-                        RoundedSquare(color: Color("Seashell"), width: 300, height: 550) {
-                            AnyView(
-                                VStack {
-                                    HStack {
-                                        AuthText(text: "Sign up")
-                                        Spacer()
-                                    }
-                                                                        
-                                    SignTextField(placeholder: "Email", text: $viewModel.email)
-                                    
-                                    Line3()
-                                        .padding(.bottom)
-                                    
-                                    if showPassword {
-                                        SignTextField(placeholder: "Password", text: $viewModel.password)
-                                    } else {
-                                        SignSecureField(placeholder: "Password", text: $viewModel.password)
-                                    }
-                                    
-                                    Line3()
-                                    
-                                    ShowPasswordButton()
-                                    
-                                    SignUpButton()
-
-                                    Rectangle()
-                                        .fill(Color("Snow"))
-                                        .frame(height: 2)
-                                        .padding(.vertical)
-                                    
-                                    GoogleButton()
-                                    
-                                    Button(action: {
-                                        Task {
-                                            do {
-                                                try await viewModel.signInAnonymous()
-                                                showSignInView = false
-                                            } catch {
-                                                print(error)
-                                            }
-                                        }
-                                    }, label: {
-                                        VStack(spacing: 0) {
-                                            Text("Continue as guest?")
-                                                .font(.custom("Baloo2-SemiBold", size: 18))
-                                                .font(.headline)
-                                                .foregroundColor(Color("Gondola"))
-                                            Text("Account can be binded later")
-                                                .font(.custom("Baloo2-Regular", size: 15))
-                                                .lineSpacing(0)
-                                                .opacity(0.6)
-                                        }
-                                        .padding(.leading)
-                                        .padding(.trailing)
-                                        .background(
-                                            RoundedRectangle(cornerRadius: 10)
-                                                .fill(.linearGradient(colors: [Color("Salmon")], startPoint: .leading, endPoint: .trailing))
-                                                .opacity(0.3)
-                                        )
-                                        .fixedSize(horizontal: false, vertical: true)
-                                        .padding(.leading)
-                                        .padding(.trailing)
-                                    })
-                                    .padding(.bottom, 30)
-                                    .padding(.top, 20)
-                                }
-                                .scaleEffect(x: -1, y: 1)
-                            )
-                        }
-                        .opacity(flipped ? 1 : 0)
+                        Text("sign in continue")
+                            .foregroundColor(Color("Linen"))
+                            .font(.custom("Baloo2-SemiBold", size: 25))
                     }
-                    .rotation3DEffect(
-                        .degrees(flipped ? 180 : 0),
-                        axis: (x: 0.0, y: 1.0, z: 0.0)
-                    )
+                    .padding(.bottom)
                     
-                    FlipTextButton()
-                        .padding(.top)
+                    
+                    VStack {
+                        Spacer()
+                        
+                        ZStack {
+                            // MARK: Login view
+                            RoundedSquare(color: Color("Seashell"), width: 300, height: 550) {
+                                AnyView(
+                                    VStack {
+                                        HStack {
+                                            AuthText(text: "Login")
+                                            Spacer()
+                                        }
+                                        
+                                        SignTextField(placeholder: "Email", text: $viewModel.email)
+                                        
+                                        Line3()
+                                            .padding(.bottom)
+                                        
+                                        if showPassword {
+                                            SignTextField(placeholder: "Password", text: $viewModel.password)
+                                        } else {
+                                            SignSecureField(placeholder: "Password", text: $viewModel.password)
+                                        }
+                                        
+                                        Line3()
+                                        
+                                        ShowPasswordButton()
+                                        
+                                        LoginButton()
+                                        
+                                        Rectangle()
+                                            .fill(Color("Snow"))
+                                            .frame(height: 2)
+                                            .padding(.top)
+                                        
+                                        GoogleButton()
+                                            .padding(.vertical)
+                                        
+                                        LabelButton(action: {
+                                            self.showResetPasswordView = true
+                                        }, title: "forgot password", color: Color("Gondola"), fontSize: 18)
+                                        .sheet(isPresented: $showResetPasswordView) {
+                                            ResetPasswordView(authManager: authManager, email: $email)
+                                        }
+                                        .padding(.bottom, 20)
+                                    }
+                                )
+                            }
+                            .opacity(flipped ? 0 : 1)
+                            
+                            // MARK: Sign up view
+                            RoundedSquare(color: Color("Seashell"), width: 300, height: 550) {
+                                AnyView(
+                                    VStack {
+                                        HStack {
+                                            AuthText(text: "Sign up")
+                                            Spacer()
+                                        }
+                                        
+                                        SignTextField(placeholder: "Email", text: $viewModel.email)
+                                        
+                                        Line3()
+                                            .padding(.bottom)
+                                        
+                                        if showPassword {
+                                            SignTextField(placeholder: "Password", text: $viewModel.password)
+                                        } else {
+                                            SignSecureField(placeholder: "Password", text: $viewModel.password)
+                                        }
+                                        
+                                        Line3()
+                                        
+                                        ShowPasswordButton()
+                                        
+                                        SignUpButton()
+                                        
+                                        Rectangle()
+                                            .fill(Color("Snow"))
+                                            .frame(height: 2)
+                                            .padding(.vertical)
+                                        
+                                        GoogleButton()
+                                        
+                                        Button(action: {
+                                            Task {
+                                                do {
+                                                    try await viewModel.signInAnonymous()
+                                                    showSignInView = false
+                                                } catch {
+                                                    print(error)
+                                                }
+                                            }
+                                        }, label: {
+                                            VStack(spacing: 0) {
+                                                Text("Continue as guest?")
+                                                    .font(.custom("Baloo2-SemiBold", size: 18))
+                                                    .font(.headline)
+                                                    .foregroundColor(Color("Gondola"))
+                                                Text("Account can be binded later")
+                                                    .font(.custom("Baloo2-Regular", size: 15))
+                                                    .lineSpacing(0)
+                                                    .opacity(0.6)
+                                            }
+                                            .padding(.leading)
+                                            .padding(.trailing)
+                                            .background(
+                                                RoundedRectangle(cornerRadius: 10)
+                                                    .fill(.linearGradient(colors: [Color("Salmon")], startPoint: .leading, endPoint: .trailing))
+                                                    .opacity(0.3)
+                                            )
+                                            .fixedSize(horizontal: false, vertical: true)
+                                            .padding(.leading)
+                                            .padding(.trailing)
+                                        })
+                                        .padding(.bottom, 30)
+                                        .padding(.top, 20)
+                                    }
+                                        .scaleEffect(x: -1, y: 1)
+                                )
+                            }
+                            .opacity(flipped ? 1 : 0)
+                        }
+                        .rotation3DEffect(
+                            .degrees(flipped ? 180 : 0),
+                            axis: (x: 0.0, y: 1.0, z: 0.0)
+                        )
+                        
+                        FlipTextButton()
+                            .padding(.top)
+                    }
+                    .padding(.bottom)
+                    
+                    Spacer()
                 }
-                .padding(.bottom)
-                
-                Spacer()
+                .padding()
             }
-            .padding()
+        }
+        .onAppear() {
+            CrashlyticsManager.shared.setValue(value: "AuthView", key: "currentView")
         }
     }
 }
@@ -242,7 +247,7 @@ extension AuthView {
                 .foregroundColor(Color("Gondola"))
         }
         .alert(isPresented: $showAlert) {
-            Alert(title: Text("Error"), message: Text(alertMessage), dismissButton: .default(Text("OK")))
+            Alert(title: Text("Error logging in"), message: Text(alertMessage), dismissButton: .default(Text("OK")))
         }
     }
     
@@ -269,7 +274,7 @@ extension AuthView {
                     try await viewModel.signUp()
                     print("Signed up succesfully.")
                     showSignInView = false
-                } catch let error as LoginError {
+                } catch let error as SignUpError {
                     print("Failed to sign up: \(error)")
                     alertMessage = error.localizedDescription
                     showAlert = true
@@ -291,7 +296,7 @@ extension AuthView {
                 .foregroundColor(Color("Gondola"))
         }
         .alert(isPresented: $showAlert) {
-            Alert(title: Text("Error"), message: Text(alertMessage), dismissButton: .default(Text("OK")))
+            Alert(title: Text("Error signing up"), message: Text(alertMessage), dismissButton: .default(Text("OK")))
         }
     }
     

@@ -73,6 +73,7 @@ struct ChartView: View {
             dateLabels
         }
         .onAppear {
+            CrashlyticsManager.shared.setValue(value: "ChartView", key: "currentView")
             viewModel.fetchUserCountsPerDay()
             DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
                 withAnimation(.linear(duration: 3.0)) {

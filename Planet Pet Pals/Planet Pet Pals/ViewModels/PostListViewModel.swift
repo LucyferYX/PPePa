@@ -19,12 +19,18 @@ class PostListViewModel: ObservableObject {
     
     func getPosts() {
         Task {
-            let (newPosts, lastDocument) = try await PostManager.shared.getAllPosts(likesDescending: selectedFilter?.likesDescending, forType: selectedType?.typeValue, count: 1, lastDocument: lastDocument)
-            self.posts.append(contentsOf: newPosts)
+            let (newPosts, lastDocument) = try await PostManager.shared.getAllPosts(likesDescending: selectedFilter?.likesDescending, forType: selectedType?.typeValue, count: 10, lastDocument: lastDocument)
+            if newPosts.isEmpty {
+                print("All posts have been fetched.")
+            }
+            for post in newPosts {
+                if !self.posts.contains(where: { $0.id == post.id }) {
+                    self.posts.append(post)
+                }
+            }
             if let lastDocument {
                 self.lastDocument = lastDocument
             }
-            self.lastDocument = lastDocument
         }
     }
     
@@ -97,14 +103,6 @@ class PostListViewModel: ObservableObject {
             let likes = try await UserManager.shared.getAllUserLikes(userId: authDataResult.uid)
             self.likedPostsViewModel.updateUserLikedPosts(with: likes)
 
-        }
-    }
-    
-    func removeFromLikes(likedPostId: String) {
-        Task {
-            let authDataResult = try AuthManager.shared.getAuthenticatedUser()
-            try await UserManager.shared.removeUserLikedPost(userId: authDataResult.uid, likedPostId: likedPostId)
-            getLikes()
         }
     }
 }

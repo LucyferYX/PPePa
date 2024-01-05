@@ -9,7 +9,6 @@ import SwiftUI
 import FirebaseFirestore
 
 struct PostListView: View {
-//    @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
     @StateObject private var viewModel = PostListViewModel()
 
     @Binding var showPostListView: Bool
@@ -17,7 +16,7 @@ struct PostListView: View {
     
     var body: some View {
         ZStack {
-            Color("Snow").ignoresSafeArea()
+            Color("Salmon").ignoresSafeArea()
             VStack {
                 
                 NavigationBar
@@ -29,25 +28,27 @@ struct PostListView: View {
                         MainBackground()
                         List {
                             ForEach(viewModel.posts) { post in
-                                PostCellView(post: post, showLikeButton: true, showLikes: false)
+                                PostCellViewBuilder(postId: post.postId, showLikeButton: true, showLikes: false, showContext: true)
                                     .listRowBackground(Color("Linen"))
-                                    .buttonStyle(.borderless)
+                                    .listRowInsets(EdgeInsets(top: 5, leading: 5, bottom: 5, trailing: 5))
                                 if post == viewModel.posts.last {
                                     ProgressView()
                                         .onAppear {
                                             print("Posts are being fetched.")
                                             viewModel.getPosts()
                                         }
+                                        .listRowBackground(Color("Salmon"))
                                 }
                             }
                         }
-                        .background(Color("Snow"))
+                        .background(Color("Salmon"))
                         .scrollContentBackground(.hidden)
                     }
                 }
                 
             }
             .onAppear {
+                CrashlyticsManager.shared.setValue(value: "PostListView", key: "currentView")
                 viewModel.getPosts()
                 viewModel.getLikes()
                 viewModel.getPostCount()

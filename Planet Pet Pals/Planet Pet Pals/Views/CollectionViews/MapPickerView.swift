@@ -8,7 +8,7 @@
 import SwiftUI
 import MapKit
 
-struct CustomMapView: UIViewRepresentable {
+struct MapPickerView: UIViewRepresentable {
     @Binding var centerCoordinate: CLLocationCoordinate2D
     var selectedRegion: String
     
@@ -40,9 +40,9 @@ struct CustomMapView: UIViewRepresentable {
     }
 
     class Coordinator: NSObject, MKMapViewDelegate {
-        var parent: CustomMapView
+        var parent: MapPickerView
 
-        init(_ parent: CustomMapView) {
+        init(_ parent: MapPickerView) {
             self.parent = parent
         }
 
@@ -50,48 +50,16 @@ struct CustomMapView: UIViewRepresentable {
             let location = gestureRecognizer.location(in: gestureRecognizer.view)
             let coordinate = (gestureRecognizer.view as? MKMapView)?.convert(location, toCoordinateFrom: gestureRecognizer.view)
             
-            // Remove all existing annotations
             let allAnnotations = (gestureRecognizer.view as? MKMapView)?.annotations
             (gestureRecognizer.view as? MKMapView)?.removeAnnotations(allAnnotations ?? [])
             
-            // Add a pin at the tapped location
             let annotation = MKPointAnnotation()
             annotation.coordinate = coordinate!
             (gestureRecognizer.view as? MKMapView)?.addAnnotation(annotation)
             
-            // Update the centerCoordinate
             parent.centerCoordinate = coordinate!
             
             print("Tapped at latitude: \(coordinate!.latitude), longitude: \(coordinate!.longitude)")
         }
-    }
-}
-
-
-// MARK: Posts
-struct IdentifiablePoint: Identifiable {
-    let id = UUID()
-    let coordinate: CLLocationCoordinate2D
-}
-
-struct PostMapView: View {
-    @State private var region: MKCoordinateRegion
-    private var point: IdentifiablePoint
-
-    init(geopoint: CLLocationCoordinate2D) {
-        _region = State(initialValue: MKCoordinateRegion(center: geopoint, span: MKCoordinateSpan(latitudeDelta: 0.5, longitudeDelta: 0.5)))
-        point = IdentifiablePoint(coordinate: geopoint)
-    }
-
-    var body: some View {
-        Map(coordinateRegion: $region, annotationItems: [point]) { point in
-            MapMarker(coordinate: point.coordinate, tint: .red)
-        }
-        .gesture(MagnificationGesture()
-            .onChanged { value in
-                let delta = 0.5 / value.magnitude
-                region.span = MKCoordinateSpan(latitudeDelta: delta, longitudeDelta: delta)
-            }
-        )
     }
 }

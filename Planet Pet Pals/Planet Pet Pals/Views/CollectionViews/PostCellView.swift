@@ -14,7 +14,6 @@ struct PostCellView: View {
     @State private var isLiked: Bool = false
     @State private var likedPostId: String? = nil
     @State private var showLikeAnimation: Bool = false
-    @State private var showMessage: Bool = false
 
     let post: Post
     let showLikeButton: Bool
@@ -42,23 +41,29 @@ struct PostCellView: View {
                 .frame(width: 70, height: 70)
                 .shadow(color: Color("Walnut").opacity(0.3), radius: 4, x: 0, y: 2)
                 .padding(.trailing)
+                .padding(.leading, showLikes ? 10 : 0)
+                .padding(5)
                 
                 VStack(alignment: .leading, spacing: 4) {
                     if showLikes {
                         Text("Post")
-                            .font(.custom("Baloo2-Regular", size: 12))
+                            .font(.custom("Baloo2-Regular", size: 15))
                             .opacity(0)
                     }
-                    Text(post.title)
-                        .font(.headline)
-                        .foregroundColor(.primary)
-                        .font(.custom("Baloo2-SemiBold", size: 20))
+                    HStack {
+                        Text(post.title)
+                            .font(.headline)
+                            .foregroundColor(.primary)
+                            .font(.custom("Baloo2-SemiBold", size: 20))
+                        Spacer()
+                    }
                     if showLikes {
                         Text("Likes: \(post.likes ?? 0)")
-                            .font(.custom("Baloo2-Regular", size: 12))
+                            .font(.custom("Baloo2-Regular", size: 15))
                             .foregroundColor(.secondary)
                     }
                 }
+                .frame(width: 150)
                 .foregroundColor(.secondary)
                 
                 //Spacer does not respond to tap gestures
@@ -81,12 +86,6 @@ struct PostCellView: View {
                                 isLiked = true
                                 withAnimation(.easeInOut(duration: 0.5)) {
                                     showLikeAnimation = true
-                                }
-                                showMessage = true
-                                DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-                                    withAnimation(.easeInOut(duration: 0.5)) {
-                                        showMessage = false
-                                    }
                                 }
                                 print("Liked post with ID: \(post.postId)")
                             }
@@ -113,18 +112,11 @@ struct PostCellView: View {
                     
                     HStack {
                         Image(systemName: "chevron.left")
-                        Text("Delete")
+                        Text("")
                             .font(.headline)
                             .foregroundColor(.primary)
                             .font(.custom("Baloo2-SemiBold", size: 20))
                     }
-                }
-                
-                if showMessage {
-                    Text("Post liked!")
-                        .transition(.move(edge: .bottom))
-                        .font(.custom("Baloo2-Regular", size: 18))
-                        .lineSpacing(-7)
                 }
 
             }
@@ -136,6 +128,9 @@ struct PostCellView: View {
             }
             .cornerRadius(10)
             .background(Color("Linen"))
+        }
+        .onAppear() {
+            CrashlyticsManager.shared.setValue(value: "PostCellView", key: "currentView")
         }
     }
 }
@@ -156,6 +151,7 @@ struct PostCellViewBuilder: View {
             if let post {
                 PostCellView(post: post, showLikeButton: showLikeButton, showLikes: showLikes)
                     .buttonStyle(.borderless)
+                    .cornerRadius(10)
                     .contextMenu{
                         if showContext {
                             if isReported {

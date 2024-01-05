@@ -22,13 +22,12 @@ struct ResetPasswordView: View {
             VStack(spacing: 2) {
                 PawButton(action: {
                     presentationMode.wrappedValue.dismiss()
-//                    showResetPassword = false
                 }, color: Color("Salmon"))
 
                 
                 Spacer()
                 
-                Text("Input your email address linked to your account and we will send you passowrd reset email.")
+                Text("Input your email address linked to your account and we will send you password reset email.")
                     .font(.custom("Baloo2-Regular", size: 20))
                     .foregroundColor(Color("Gondola"))
                     .multilineTextAlignment(.center)
@@ -66,7 +65,6 @@ struct ResetPasswordView: View {
                                 throw EmailError.emailNotFound
                             }
                             try await authManager.resetPassword(email: email)
-//                            showResetPassword = false
                             presentationMode.wrappedValue.dismiss()
                             alertMessage = "Reset email sent!"
                             print("Password reset for email: \(email)")
@@ -98,6 +96,9 @@ struct ResetPasswordView: View {
                 Spacer()
             }
             .padding()
+        }
+        .onAppear() {
+            CrashlyticsManager.shared.setValue(value: "ResetPasswordView", key: "currentView")
         }
     }
 }

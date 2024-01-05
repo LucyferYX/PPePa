@@ -32,13 +32,17 @@ final class LikesViewModel: ObservableObject {
     
     func removeFromLikes(likedPostId: String) {
         Task {
-            let authDataResult = try AuthManager.shared.getAuthenticatedUser()
-            let postId = likedPostsViewModel.userLikedPosts.first(where: { $0.id == likedPostId })?.postId
-            try await UserManager.shared.removeUserLikedPost(userId: authDataResult.uid, likedPostId: likedPostId)
-            if let postId = postId {
-                try? await PostManager.shared.decrementLikes(postId: postId)
+            do {
+                let authDataResult = try AuthManager.shared.getAuthenticatedUser()
+                let postId = likedPostsViewModel.userLikedPosts.first(where: { $0.id == likedPostId })?.postId
+                try await UserManager.shared.removeUserLikedPost(userId: authDataResult.uid, likedPostId: likedPostId)
+                if let postId = postId {
+                    try await PostManager.shared.decrementLikes(postId: postId)
+                }
+                getLikes()
+            } catch {
+                print("Failed to remove like: \(error)")
             }
-            getLikes()
         }
     }
     

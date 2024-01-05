@@ -11,88 +11,86 @@ import FirebaseAuth
 struct PanelContent: View {
     @StateObject private var viewModel = PanelViewModel()
     @Binding var showSignInView: Bool
-    
-//    @State private var showReportedPostView = false
-//    @State private var showAccountSettingsView = false
-//    @State private var showSettingsView = false
-//    @State private var showLikesView = false
-//    @State private var showAboutView = false
     @State private var showProfileView = false
     
     @State private var showDeleteAlert = false
     @State private var showEmailAlert = false
     @State private var emailAlertMessage = ""
     
-//    Text("LN3569")
-//        .font(.custom("Baloo2-SemiBold", size: 20))
-//        .foregroundColor(Color("Linen"))
-    
     var body: some View {
         GeometryReader { geometry in
             VStack(alignment: .leading) {
-
                 Text("Hi, \(viewModel.user?.username ?? "User")!")
                     .foregroundColor(Color("Linen"))
                     .font(.custom("Baloo2-SemiBold", size: 30))
                     .padding(.leading)
                     .padding(.top, 30)
-                
-                HStack {
-                    profileImage(for: viewModel)
-                    
-                    VStack(alignment: .leading) {
-                        Button(action: {
-                            showProfileView = true
-                        }) {
-                            HStack {
-                                Text("Open profile")
-                                    .font(.custom("Baloo2-SemiBold", size: 25))
-                                    .foregroundColor(Color("Linen"))
-                                Image(systemName: "chevron.right")
-                                    .frame(width: 30, height: 30)
-                                    .foregroundColor(Color("Linen"))
-                            }
-                        }
-                        .fullScreenCover(isPresented: $showProfileView) {
-                            ProfileView(showProfileView: $showProfileView)
-                        }
-
-                        Spacer()
-                        
-                        Button(action: {
-                            Task {
-                                do {
-                                    try viewModel.signOut()
-                                    showSignInView = true
-                                } catch {
-                                    print("Error: \(error)")
+                ZStack {
+                    Color("Salmon")
+                        .opacity(0.25)
+                        .cornerRadius(10)
+                    VStack {
+                        HStack {
+                            profileImage(for: viewModel)
+                            
+                            VStack(alignment: .leading) {
+                                Button(action: {
+                                    showProfileView = true
+                                }) {
+                                    HStack {
+                                        Text("Open profile")
+                                            .font(.custom("Baloo2-SemiBold", size: 20))
+                                            .foregroundColor(Color("Linen"))
+                                        Image(systemName: "chevron.right")
+                                            .frame(width: 30, height: 30)
+                                            .foregroundColor(Color("Linen"))
+                                    }
+                                }
+                                .fullScreenCover(isPresented: $showProfileView) {
+                                    ProfileView(showProfileView: $showProfileView)
+                                }
+                                
+                                Button(action: {
+                                    Task {
+                                        do {
+                                            try viewModel.signOut()
+                                            showSignInView = true
+                                        } catch {
+                                            print("Error: \(error)")
+                                        }
+                                    }
+                                }) {
+                                    Label("Sign out", systemImage: "arrowshape.turn.up.left")
+                                        .font(.custom("Baloo2-Regular", size: 20))
+                                        .foregroundColor(Color("Linen"))
                                 }
                             }
-                        }) {
-                            Label("Sign out", systemImage: "arrowshape.turn.up.left")
-                                .font(.custom("Baloo2-Regular", size: 20))
-                                .foregroundColor(Color("Linen"))
+                            .padding(.leading, 20)
                         }
                     }
-                    .padding(.leading, 20)
+                    .onAppear {
+                        viewModel.loadAuthProviders()
+                        viewModel.loadAuthUser()
+                    }
                 }
-                .padding(.leading, 35)
-                .onAppear {
-                    viewModel.loadAuthProviders()
-                    viewModel.loadAuthUser()
-                }
+                .frame(height: 100)
+                .padding(.horizontal)
+                
+                Spacer()
+                
+                adminPanelButtons(viewModel: viewModel, showSignInView: $showSignInView)
                 
                 Line()
                 
-                scroll
+                userPanelButtons(viewModel: viewModel, showSignInView: $showSignInView)
                 
                 Line()
                 
-                panelButtons(viewModel: viewModel, showSignInView: $showSignInView)
-                    .padding(.bottom)
+                settingsPanelButtons(viewModel: viewModel, showSignInView: $showSignInView)
             }
             .frame(height: geometry.size.height)
             .onAppear() {
+                CrashlyticsManager.shared.setValue(value: "PanelView", key: "currentView")
                 viewModel.checkIfUserIsAdmin()
                 viewModel.addListenerForUser()
                 print("User listener is turned on")
@@ -159,43 +157,75 @@ extension PanelContent {
                     ProgressView()
                 }
                 .clipShape(Circle())
-                .frame(width: 60, height: 60)
-                .overlay(Circle().stroke(Color.white, lineWidth: 4))
+                .frame(width: 80, height: 80)
                 .shadow(radius: 10)
             } else {
                 Image(systemName: "person.circle")
                     .resizable()
                     .clipShape(Circle())
-                    .frame(width: 100, height: 100)
+                    .frame(width: 80, height: 80)
                     .foregroundColor(Color("Linen"))
-                    .overlay(Circle().stroke(Color("Salmon"), lineWidth: 4))
                     .shadow(radius: 10)
             }
         }
     }
     
-    func panelButtons(viewModel: PanelViewModel, showSignInView: Binding<Bool>) -> some View {
+    func adminPanelButtons(viewModel: PanelViewModel, showSignInView: Binding<Bool>) -> some View {
         VStack(alignment: .leading) {
             if viewModel.isAdmin {
                 SimpleButton(action: {
-                    viewModel.showReportedPostView = true
-                }, systemImage: "gearshape", buttonText: "Reported posts", size: 30, color: Color("Linen"))
+                    viewModel.showReportedPostsView = true
+                }, systemImage: "folder.fill.badge.questionmark", buttonText: "Reported posts", size: 25, color: Color("Linen"))
+                SimpleButton(action: {
+                    viewModel.showDeletedUserPostsView = true
+                }, systemImage: "folder.fill.badge.person.crop", buttonText: "Deleted user posts", size: 25, color: Color("Linen"))
             }
+        }
+        .padding(.bottom)
+        .sheet(isPresented: $viewModel.showReportedPostsView) {
+            ReportedPostView()
+        }
+        .sheet(isPresented: $viewModel.showDeletedUserPostsView) {
+            DeletedUserPostsView()
+        }
+    }
+    
+    func userPanelButtons(viewModel: PanelViewModel, showSignInView: Binding<Bool>) -> some View {
+        VStack(alignment: .leading) {
             SimpleButton(action: {
-                viewModel.showAccountSettingsView = true
-            }, systemImage: "person.2.badge.gearshape.fill", buttonText: "Profile settings", size: 30, color: Color("Linen"))
-            SimpleButton(action: {
-                viewModel.showSettingsView = true
-            }, systemImage: "gear", buttonText: "App settings", size: 30, color: Color("Linen"))
+                viewModel.showMyPostsView = true
+            }, systemImage: "photo.artframe", buttonText: "My posts", size: 25, color: Color("Linen"))
             SimpleButton(action: {
                 viewModel.showLikesView = true
-            }, systemImage: "heart", buttonText: "Likes", size: 30, color: Color("Linen"))
+            }, systemImage: "heart", buttonText: "Liked posts", size: 25, color: Color("Linen"))
+        }
+        .padding(.bottom)
+        .sheet(isPresented: $viewModel.showMyPostsView) {
+            MyPostsView()
+        }
+        .sheet(isPresented: $viewModel.showLikesView) {
+            LikesView()
+        }
+    }
+    
+    func settingsPanelButtons(viewModel: PanelViewModel, showSignInView: Binding<Bool>) -> some View {
+        VStack(alignment: .leading) {
+            SimpleButton(action: {
+                viewModel.showProfileSettingsView = true
+            }, systemImage: "person.crop.circle.badge.moon.fill", buttonText: "Profile settings", size: 25, color: Color("Linen"))
+            SimpleButton(action: {
+                viewModel.showAccountSettingsView = true
+            }, systemImage: "person.badge.key", buttonText: "Account settings", size: 25, color: Color("Linen"))
+            SimpleButton(action: {
+                viewModel.showSettingsView = true
+            }, systemImage: "gearshape.2.fill", buttonText: "App settings", size: 25, color: Color("Linen"))
             SimpleButton(action: {
                 viewModel.showAboutView = true
-            }, systemImage: "info.circle", buttonText: "About", size: 30, color: Color("Linen"))
+            }, systemImage: "info.circle", buttonText: "About", size: 25, color: Color("Linen"))
         }
-        .sheet(isPresented: $viewModel.showReportedPostView) {
-            ReportedPostView()
+        .padding(.bottom)
+        .sheet(isPresented: $viewModel.showProfileSettingsView) {
+            ProfileSettingsView()
         }
         .sheet(isPresented: $viewModel.showAccountSettingsView) {
             AccountSettingsView(showSignInView: showSignInView)
@@ -203,29 +233,8 @@ extension PanelContent {
         .sheet(isPresented: $viewModel.showSettingsView) {
             AppSettingsView()
         }
-        .sheet(isPresented: $viewModel.showLikesView) {
-            LikesView()
-        }
         .sheet(isPresented: $viewModel.showAboutView) {
             AboutView()
         }
-    }
-    
-    private var scroll: some View {
-        ScrollView {
-            VStack {
-                ForEach(0..<10) { _ in
-                    NavigationLink(destination: Text("Detail View")) {
-                        CellView()
-                    }
-                    .buttonStyle(PlainButtonStyle())
-                }
-            }
-            .padding(.horizontal)
-        }
-        .background(Color.clear)
-        .frame(height: 200)
-        .padding(.bottom)
-        .padding(.top)
     }
 }

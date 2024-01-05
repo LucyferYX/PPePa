@@ -1,5 +1,5 @@
 //
-//  ReportedPostView.swift
+//  ReportedPostsView.swift
 //  Planet Pet Pals
 //
 //  Created by Liene on 02/01/2024.
@@ -10,6 +10,10 @@ import SwiftUI
 @MainActor
 final class ReportedPostsViewModel: ObservableObject {
     @Published var reportedPosts: [Post] = []
+    
+    func deletePost(postId: String) async throws {
+        try await PostManager.shared.deletePost(postId: postId)
+    }
 
     func addListenerForReportedPosts() {
         PostManager.shared.addListenerForReportedPosts { [weak self] posts in
@@ -47,6 +51,10 @@ struct ReportedPostView: View {
                         .font(.custom("Baloo2-SemiBold", size: 30))
                         .foregroundColor(Color("Linen"))
                         .padding(.top)
+                    Text("Swipe left to delete. Hold to remove report")
+                        .font(.custom("Baloo2-SemiBold", size: 25))
+                        .foregroundColor(Color("Linen"))
+                        .foregroundColor(.secondary)
                     List {
                         ForEach(viewModel.reportedPosts, id: \.id.self) { post in
                             PostCellViewBuilder(postId: post.postId, showLikeButton: false, showLikes: true, showContext: false)
@@ -62,11 +70,18 @@ struct ReportedPostView: View {
                                     }
                                 }
                         }
+                        .onDelete(perform: delete)
                     }
                 }
+            } else {
+                Text("No reported posts yet.")
+                    .font(.custom("Baloo2-SemiBold", size: 30))
+                    .foregroundColor(Color("Linen"))
+                    .padding(.top)
             }
         }
         .onAppear {
+            CrashlyticsManager.shared.setValue(value: "ReportedPostView", key: "currentView")
             viewModel.addListenerForReportedPosts()
             print("Report listener is turned on")
         }
@@ -76,6 +91,20 @@ struct ReportedPostView: View {
         .onDisappear {
             viewModel.removeListenerForReportedPosts()
             print("Report listener is turned off")
+        }
+    }
+    
+    func delete(at offsets: IndexSet) {
+        for index in offsets {
+            let postId = viewModel.reportedPosts[index].postId
+            Task {
+                do {
+                    try await viewModel.deletePost(postId: postId)
+                    print("Deleted post with ID: \(postId)")
+                } catch {
+                    print("Failed to delete post: \(error)")
+                }
+            }
         }
     }
 }

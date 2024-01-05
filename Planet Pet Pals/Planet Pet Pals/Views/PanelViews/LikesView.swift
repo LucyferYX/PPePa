@@ -11,7 +11,6 @@ struct LikesView: View {
     @StateObject private var viewModel = LikesViewModel()
     @StateObject var likedPostsViewModel = LikedPostsViewModel.shared
     
-    @State private var deletionAllowed = true
     @State private var showAlert = false
     @State private var postCount: Int = 0
     
@@ -25,7 +24,7 @@ struct LikesView: View {
         ZStack {
             Color("Walnut").ignoresSafeArea()
             if postCount > 0 {
-                VStack {
+                VStack(spacing: 0) {
                     Text("Your liked post count: \(postCount)")
                         .font(.custom("Baloo2-SemiBold", size: 30))
                         .foregroundColor(Color("Linen"))
@@ -38,6 +37,7 @@ struct LikesView: View {
                         ForEach(likedPostsViewModel.userLikedPosts, id: \.id.self) { post in
                             PostCellViewBuilder(postId: post.postId, showLikeButton: false, showLikes: true, showContext: true)
                                 .listRowBackground(Color("Walnut"))
+                                .listRowInsets(EdgeInsets(top: 0, leading: 5, bottom: 5, trailing: 0))
                         }
                         .onDelete(perform: delete)
                     }
@@ -59,6 +59,7 @@ struct LikesView: View {
             }
         }
         .onAppear {
+            CrashlyticsManager.shared.setValue(value: "LikesView", key: "currentView")
             viewModel.addListenerForLikes()
             postCount = likedPostsViewModel.userLikedPosts.count
             print("Likes listener is turned on")
@@ -72,21 +73,14 @@ struct LikesView: View {
             print("Likes listener is turned off")
         }
     }
-
+    
     func delete(at offsets: IndexSet) {
-        if deletionAllowed {
-            for index in offsets {
-                let postId = likedPostsViewModel.userLikedPosts[index].id
-                print("Deleted post with ID: \(postId)")
+        for index in offsets {
+            let postId = likedPostsViewModel.userLikedPosts[index].id
+            Task {
                 viewModel.removeFromLikes(likedPostId: postId)
+                print("Deleted post with ID: \(postId)")
             }
-            deletionAllowed = false
-            DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-                deletionAllowed = true
-            }
-        } else {
-            showAlert = true
-            print("Deleting post is happening too quick.")
         }
     }
 }
