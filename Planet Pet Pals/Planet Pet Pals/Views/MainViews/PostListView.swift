@@ -16,7 +16,7 @@ struct PostListView: View {
     
     var body: some View {
         ZStack {
-            Color("Salmon").ignoresSafeArea()
+            MainBackground()
             VStack {
                 
                 NavigationBar
@@ -27,21 +27,26 @@ struct PostListView: View {
                     ZStack {
                         MainBackground()
                         List {
-                            ForEach(viewModel.posts) { post in
-                                PostCellViewBuilder(postId: post.postId, showLikeButton: true, showLikes: false, showContext: true)
-                                    .listRowBackground(Color("Linen"))
-                                    .listRowInsets(EdgeInsets(top: 5, leading: 5, bottom: 5, trailing: 5))
-                                if post == viewModel.posts.last {
-                                    ProgressView()
-                                        .onAppear {
-                                            print("Posts are being fetched.")
-                                            viewModel.getPosts()
-                                        }
-                                        .listRowBackground(Color("Salmon"))
+                            if !viewModel.posts.isEmpty {
+                                ForEach(viewModel.posts) { post in
+                                    PostCellViewBuilder(postId: post.postId, showLikeButton: true, showLikes: false, showContext: true)
+                                        .listRowBackground(Color("Linen"))
+                                        .listRowInsets(EdgeInsets(top: 5, leading: 5, bottom: 5, trailing: 5))
+                                    if post == viewModel.posts.last {
+                                        ProgressView()
+                                            .onAppear {
+                                                print("Posts are being fetched.")
+                                                viewModel.getPosts()
+                                            }
+                                            .listRowBackground(MainBackground())
+                                    }
                                 }
+                            } else {
+                                ProgressView()
+                                    .listRowBackground(MainBackground())
                             }
                         }
-                        .background(Color("Salmon"))
+                        .background(Color.clear)
                         .scrollContentBackground(.hidden)
                     }
                 }
@@ -76,10 +81,14 @@ extension PostListView {
                 } label: {
                     if viewModel.selectedFilter != nil {
                         Text("\(viewModel.selectedFilter!.rawValue)")
-                            .font(Font.custom("Baloo2-SemiBold", size: 20))
+                            .font(.custom("Baloo2-SemiBold", size: 20))
+                            .frame(width: 200)
+                        
                     } else {
                         Text("Select filter")
-                            .font(Font.custom("Baloo2-SemiBold", size: 20))
+                            .font(.custom("Baloo2-SemiBold", size: 20))
+                            .frame(width: 200)
+                        
                     }
                 }
                 
@@ -94,17 +103,17 @@ extension PostListView {
                         }
                     }
                 } label: {
-                    if viewModel.selectedFilter != nil {
-                        Text("\(viewModel.selectedFilter!.rawValue)")
+                    if viewModel.selectedType != nil {
+                        Text("\(viewModel.selectedType!.rawValue)")
                             .font(Font.custom("Baloo2-SemiBold", size: 20))
+                            .frame(width: 200)
                     } else {
                         Text("Select type")
                             .font(Font.custom("Baloo2-SemiBold", size: 20))
+                            .frame(width: 200)
                     }
                 }
             }
-            .padding(.leading)
-            .padding(.trailing)
             .transition(.move(edge: .top))
         } else {
             EmptyView()

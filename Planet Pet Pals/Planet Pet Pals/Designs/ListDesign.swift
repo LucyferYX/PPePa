@@ -15,7 +15,7 @@ struct CellView: View {
                 .aspectRatio(contentMode: .fit)
                 .frame(width: 40, height: 40)
                 .foregroundColor(Color("Walnut"))
-            Text("Placeholder")
+            Text("...")
                 .font(.custom("Baloo2-SemiBold", size: 20))
                 .foregroundColor(Color("Walnut"))
             Spacer()

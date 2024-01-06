@@ -21,7 +21,7 @@ struct AuthText: View {
 }
 
 struct SignTextField: View {
-    var placeholder: String
+    var placeholder: LocalizedStringKey
     @Binding var text: String
 
     var body: some View {
@@ -36,7 +36,7 @@ struct SignTextField: View {
 }
 
 struct SignSecureField: View {
-    var placeholder: String
+    var placeholder: LocalizedStringKey
     @Binding var text: String
 
     var body: some View {
@@ -52,7 +52,7 @@ struct SignSecureField: View {
 struct LimitedTextField: View {
     @Binding var text: String
     var maxLength: Int
-    var title: String
+    var title: LocalizedStringKey
 
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {

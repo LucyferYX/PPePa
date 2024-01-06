@@ -11,7 +11,7 @@ import GoogleSignInSwift
 struct MainButton: View {
     let action: () -> Void
     let imageName: String
-    let buttonText: String
+    let buttonText: LocalizedStringKey
     let imageColor: Color
     let buttonColor: Color
     
@@ -43,7 +43,7 @@ struct MainButton: View {
 struct SimpleButton: View {
     let action: () -> Void
     let systemImage: String?
-    let buttonText: String
+    let buttonText: LocalizedStringKey
     let size: CGFloat
     let color: Color
 
@@ -69,7 +69,7 @@ struct SimpleButton: View {
 
 struct ColorButton: View {
     let action: () -> Void
-    let buttonText: String
+    let buttonText: LocalizedStringKey
     let color: Color
 
     let width: CGFloat = 150
@@ -92,7 +92,7 @@ struct ColorButton: View {
 struct LeftNavigationButton: View {
     let action: () -> Void
     let imageName: String
-    let buttonText: String
+    let buttonText: LocalizedStringKey
     let imageInvisible: Bool
     let textInvisible: Bool
     
@@ -106,11 +106,9 @@ struct LeftNavigationButton: View {
                     .aspectRatio(contentMode: .fit)
                     .frame(width: buttonSize, height: buttonSize)
                     .foregroundColor(imageInvisible ? Color.clear : Color("Snow"))
-                if !buttonText.isEmpty {
-                    Text(buttonText)
-                        .font(.custom("Baloo2-SemiBold", size: 20))
-                        .foregroundColor(textInvisible ? Color.clear : Color("Snow"))
-                }
+                Text(buttonText)
+                    .font(.custom("Baloo2-SemiBold", size: 20))
+                    .foregroundColor(textInvisible ? Color.clear : Color("Snow"))
             }
         }
     }
@@ -119,7 +117,7 @@ struct LeftNavigationButton: View {
 struct RightNavigationButton: View {
     let action: () -> Void
     let imageName: String
-    let buttonText: String
+    let buttonText: LocalizedStringKey
     let imageInvisible: Bool
     let textInvisible: Bool
     
@@ -128,11 +126,10 @@ struct RightNavigationButton: View {
     var body: some View {
         Button(action: action) {
             HStack {
-                if !buttonText.isEmpty {
-                    Text(buttonText)
-                        .font(.custom("Baloo2-SemiBold", size: 20))
-                        .foregroundColor(textInvisible ? Color.clear : Color("Snow"))
-                }
+                Text(buttonText)
+                    .font(.custom("Baloo2-SemiBold", size: 20))
+                    .foregroundColor(textInvisible ? Color.clear : Color("Snow"))
+                
                 Image(systemName: imageName)
                     .resizable()
                     .aspectRatio(contentMode: .fit)

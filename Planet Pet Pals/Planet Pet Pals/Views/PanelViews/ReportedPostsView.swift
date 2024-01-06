@@ -23,10 +23,13 @@ struct ReportedPostView: View {
             Color("Walnut").ignoresSafeArea()
             if postCount > 0 {
                 VStack {
-                    Text("Reported post count: \(postCount)")
-                        .font(.custom("Baloo2-SemiBold", size: 30))
-                        .foregroundColor(Color("Linen"))
-                        .padding(.top)
+                    HStack {
+                        Text("Reported post count: ")
+                        Text("\(postCount)")
+                    }
+                    .font(.custom("Baloo2-SemiBold", size: 30))
+                    .foregroundColor(Color("Linen"))
+                    .padding(.top)
                     Text("Swipe left to delete. Hold to remove report")
                         .font(.custom("Baloo2-SemiBold", size: 25))
                         .foregroundColor(Color("Linen"))

@@ -16,6 +16,7 @@
 		7E9C2F9A2AD34B860042F562 /* PanelView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E9C2F992AD34B860042F562 /* PanelView.swift */; };
 		7EC372632ADDFEBF001876AD /* Baloo2.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 7EC372622ADDFEBF001876AD /* Baloo2.ttf */; };
 		7EC810DC2AD1881B00A5DDD0 /* ButtonDesign.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EC810DB2AD1881B00A5DDD0 /* ButtonDesign.swift */; };
+		DC0145222B493C0800D96A8B /* MainMenuViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC0145212B493C0800D96A8B /* MainMenuViewModel.swift */; };
 		DC01C5102B3A455D00486BCB /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = DC01C5122B3A455E00486BCB /* Localizable.strings */; };
 		DC1330C82B478D2D002FCF52 /* GoogleUtility.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC1330C72B478D2D002FCF52 /* GoogleUtility.swift */; };
 		DC1330CA2B479A14002FCF52 /* ProfileSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC1330C92B479A13002FCF52 /* ProfileSettingsView.swift */; };
@@ -99,6 +100,8 @@
 		7EC372622ADDFEBF001876AD /* Baloo2.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Baloo2.ttf; sourceTree = "<group>"; };
 		7EC810DB2AD1881B00A5DDD0 /* ButtonDesign.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ButtonDesign.swift; sourceTree = "<group>"; };
 		7EE375752AD04FD500C9D0DA /* Planet-Pet-Pals-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "Planet-Pet-Pals-Info.plist"; sourceTree = "<group>"; };
+		DC0145202B49316D00D96A8B /* lv */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = lv; path = lv.lproj/Localizable.strings; sourceTree = "<group>"; };
+		DC0145212B493C0800D96A8B /* MainMenuViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainMenuViewModel.swift; sourceTree = "<group>"; };
 		DC01C5112B3A455E00486BCB /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		DC1330C72B478D2D002FCF52 /* GoogleUtility.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoogleUtility.swift; sourceTree = "<group>"; };
 		DC1330C92B479A13002FCF52 /* ProfileSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileSettingsView.swift; sourceTree = "<group>"; };
@@ -235,13 +238,9 @@
 		7EC3725D2ADDF24E001876AD /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				7E5923292ACE0014000B96F5 /* PPePa.swift */,
-				DCFC5DAA2B28FD9B00AA9EB3 /* RootView.swift */,
+				DC01451E2B4926BA00D96A8B /* RootViews */,
 				DC3ECCC02B2CFC4F00D142B6 /* AuthViews */,
-				7E59232B2ACE0014000B96F5 /* MainMenuView.swift */,
-				DCF671D72B24EDE00012D505 /* CreateView.swift */,
-				DC1452092B0D44F30059FE96 /* MapView.swift */,
-				DCD3B5B52B445C6B00A4743A /* StatsView.swift */,
+				DC01451F2B4926D400D96A8B /* MainViews */,
 				DC9366312B2F0BB80077D2F7 /* PanelViews */,
 				DCF616512B3207610071378E /* CollectionViews */,
 				DC9366322B2F0C650077D2F7 /* LaunchViews */,
@@ -263,6 +262,29 @@
 				DCE5CB2B2B0E4078005E5760 /* NavigationBarDesign.swift */,
 			);
 			path = Designs;
+			sourceTree = "<group>";
+		};
+		DC01451E2B4926BA00D96A8B /* RootViews */ = {
+			isa = PBXGroup;
+			children = (
+				7E5923292ACE0014000B96F5 /* PPePa.swift */,
+				DCFC5DAA2B28FD9B00AA9EB3 /* RootView.swift */,
+			);
+			path = RootViews;
+			sourceTree = "<group>";
+		};
+		DC01451F2B4926D400D96A8B /* MainViews */ = {
+			isa = PBXGroup;
+			children = (
+				7E59232B2ACE0014000B96F5 /* MainMenuView.swift */,
+				DCF671D72B24EDE00012D505 /* CreateView.swift */,
+				DC1452092B0D44F30059FE96 /* MapView.swift */,
+				DCD3B5B52B445C6B00A4743A /* StatsView.swift */,
+				DC3ECCC32B2CFCB200D142B6 /* ProfileView.swift */,
+				DC9B47532B37763200721504 /* PostView.swift */,
+				DC9FF34B2B0FD49200DFCBD7 /* PostListView.swift */,
+			);
+			path = MainViews;
 			sourceTree = "<group>";
 		};
 		DC3ECCB82B2CF6C100D142B6 /* Frameworks */ = {
@@ -290,6 +312,7 @@
 				DC3FF5782B48B91900E2EF78 /* DeletedPostsViewModel.swift */,
 				DC3FF57A2B48B97E00E2EF78 /* ProfileSettingsViewModel.swift */,
 				DC3FF57C2B48B9DB00E2EF78 /* AccountSettingsViewModel.swift */,
+				DC0145212B493C0800D96A8B /* MainMenuViewModel.swift */,
 			);
 			path = ViewModels;
 			sourceTree = "<group>";
@@ -367,9 +390,6 @@
 		DCF616512B3207610071378E /* CollectionViews */ = {
 			isa = PBXGroup;
 			children = (
-				DC3ECCC32B2CFCB200D142B6 /* ProfileView.swift */,
-				DC9B47532B37763200721504 /* PostView.swift */,
-				DC9FF34B2B0FD49200DFCBD7 /* PostListView.swift */,
 				DC49FBCE2B339FD600770741 /* PostCellView.swift */,
 				DCF581582B3E4D4000147095 /* ChartView.swift */,
 				DCFCE8592B41D2C400EAD795 /* MapPickerView.swift */,
@@ -432,6 +452,7 @@
 			knownRegions = (
 				en,
 				Base,
+				lv,
 			);
 			mainGroup = 7E59231D2ACE0014000B96F5;
 			packageReferences = (
@@ -517,6 +538,7 @@
 				DC418C482B08F2D40070D226 /* ImageDesign.swift in Sources */,
 				DC4540792B30B005008322F9 /* PostManager.swift in Sources */,
 				7E9C2F9A2AD34B860042F562 /* PanelView.swift in Sources */,
+				DC0145222B493C0800D96A8B /* MainMenuViewModel.swift in Sources */,
 				DCF6ECFE2B34F84B00BC5B11 /* PostListViewModel.swift in Sources */,
 				7E59232C2ACE0014000B96F5 /* MainMenuView.swift in Sources */,
 				DC3FF5792B48B91900E2EF78 /* DeletedPostsViewModel.swift in Sources */,
@@ -566,6 +588,7 @@
 			isa = PBXVariantGroup;
 			children = (
 				DC01C5112B3A455E00486BCB /* en */,
+				DC0145202B49316D00D96A8B /* lv */,
 			);
 			name = Localizable.strings;
 			sourceTree = "<group>";
@@ -578,6 +601,7 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
@@ -641,6 +665,7 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";

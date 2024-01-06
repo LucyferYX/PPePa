@@ -32,8 +32,9 @@ struct PostView: View {
                         DynamicImageView(isLoading: viewModel.isLoading, url: URL(string: post.image))
                             .ignoresSafeArea()
                         
-                        ZStack {
                             postTitleView(post: post)
+                        
+                        VStack(spacing: 0) {
                             
                             postDetailView(post: post)
                             
@@ -48,7 +49,7 @@ struct PostView: View {
                             Rectangle()
                                 .fill(Color("Salmon"))
                                 .frame(maxWidth: .infinity, maxHeight: .infinity)
-                        )
+                            )
                     } else {
                         ProgressView()
                     }
@@ -196,11 +197,13 @@ extension PostView {
             }
             .foregroundColor(Color("Gondola"))
             .padding(.trailing, 10)
-
-            Text("Post created: \(formattedDate)")
-                .font(.custom("Baloo2-Regular", size: 20))
-                .foregroundColor(Color("Gondola"))
-                .padding(.trailing, 10)
+            HStack {
+                Text("Post created: ")
+                Text("\(formattedDate)")
+            }
+            .font(.custom("Baloo2-Regular", size: 20))
+            .foregroundColor(Color("Gondola"))
+            .padding(.trailing, 10)
         }
         .padding()
     }

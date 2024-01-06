@@ -22,10 +22,13 @@ struct MyPostsView: View {
             Color("Walnut").ignoresSafeArea()
             if postCount > 0 {
                 VStack(spacing: 0) {
-                    Text("Your post count: \(postCount)")
-                        .font(.custom("Baloo2-SemiBold", size: 30))
-                        .foregroundColor(Color("Linen"))
-                        .padding(.top)
+                    HStack {
+                        Text("Your post count: ")
+                        Text("\(postCount)")
+                    }
+                    .font(.custom("Baloo2-SemiBold", size: 30))
+                    .foregroundColor(Color("Linen"))
+                    .padding(.top)
                     Text("Swipe left to delete")
                         .font(.custom("Baloo2-SemiBold", size: 25))
                         .foregroundColor(Color("Linen"))

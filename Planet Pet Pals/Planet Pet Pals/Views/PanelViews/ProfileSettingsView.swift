@@ -12,7 +12,6 @@ struct ProfileSettingsView: View {
     @StateObject private var viewModel = ProfileSettingsViewModel()
     
     @State private var profileImages: [String] = []
-    var postOptions: [String] = animals
     
     private func postSelected(text: String) -> Bool {
         viewModel.user?.favorites?.contains(text) == true
@@ -93,9 +92,12 @@ struct ProfileSettingsView: View {
                                         }
                                     }
                                 }) {
-                                    Text("Change to: \(imageName)")
-                                        .font(.custom("Baloo2-Regular", size: 20))
-                                        .foregroundColor(Color("Gondola"))
+                                    HStack {
+                                        Text("Change to: ")
+                                        Text("\(imageName)")
+                                    }
+                                    .font(.custom("Baloo2-Regular", size: 20))
+                                    .foregroundColor(Color("Gondola"))
                                 }
                             }
                             
@@ -131,10 +133,13 @@ struct ProfileSettingsView: View {
                             .padding(.horizontal, 10)
                             .frame(maxWidth: .infinity)
                             
-                            Text("Your current favorites: \((user.favorites ?? []).joined(separator: ", "))")
-                                .font(.custom("Baloo2-Regular", size: 20))
-                                .foregroundColor(Color("Gondola"))
-                                .padding(.top)
+                            HStack {
+                                Text("Your current favorites: ")
+                                Text("\((user.favorites ?? []).joined(separator: ", "))")
+                            }
+                            .font(.custom("Baloo2-Regular", size: 20))
+                            .foregroundColor(Color("Gondola"))
+                            .padding(.top)
                         }
                     }
                 }

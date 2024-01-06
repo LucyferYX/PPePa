@@ -25,10 +25,13 @@ struct LikesView: View {
             Color("Walnut").ignoresSafeArea()
             if postCount > 0 {
                 VStack(spacing: 0) {
-                    Text("Your liked post count: \(postCount)")
-                        .font(.custom("Baloo2-SemiBold", size: 30))
-                        .foregroundColor(Color("Linen"))
-                        .padding(.top)
+                    HStack {
+                        Text("Your liked post count: ")
+                        Text("\(postCount)")
+                    }
+                    .font(.custom("Baloo2-SemiBold", size: 30))
+                    .foregroundColor(Color("Linen"))
+                    .padding(.top)
                     Text("Swipe left to remove from likes")
                         .font(.custom("Baloo2-SemiBold", size: 25))
                         .foregroundColor(Color("Linen"))
@@ -45,7 +48,7 @@ struct LikesView: View {
                     .scrollContentBackground(.hidden)
                     // 1 second until another post is deleted
                     .alert(isPresented: $showAlert) {
-                        Alert(title: Text("Please Wait"), message: Text("Please wait a moment before deleting another post."), dismissButton: .default(Text("OK")))
+                        Alert(title: Text("Please wait"), message: Text("Please wait a moment before deleting another post."), dismissButton: .default(Text("OK")))
                     }
                     .onChange(of: likedPostsViewModel.userLikedPosts) { _ in
                         postCount = likedPostsViewModel.userLikedPosts.count

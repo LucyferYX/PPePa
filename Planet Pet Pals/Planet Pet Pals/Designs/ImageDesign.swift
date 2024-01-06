@@ -99,3 +99,12 @@ struct DynamicImageView: View {
         .frame(height: 400)
     }
 }
+
+struct MapAnnotationView: View {
+    var body: some View {
+        Image("MapPin")
+            .resizable()
+            .scaledToFit()
+            .frame(width: 50, height: 50)
+    }
+}

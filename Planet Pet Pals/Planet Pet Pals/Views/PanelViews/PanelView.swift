@@ -20,11 +20,14 @@ struct PanelContent: View {
     var body: some View {
         GeometryReader { geometry in
             VStack(alignment: .leading) {
-                Text("Hi, \(viewModel.user?.username ?? "User")!")
-                    .foregroundColor(Color("Linen"))
-                    .font(.custom("Baloo2-SemiBold", size: 30))
-                    .padding(.leading)
-                    .padding(.top, 30)
+                HStack {
+                    Text("Hi, ")
+                    Text("\(viewModel.user?.username ?? "User")")
+                }
+                .foregroundColor(Color("Linen"))
+                .font(.custom("Baloo2-SemiBold", size: 30))
+                .padding(.leading)
+                .padding(.top, 30)
                 ZStack {
                     Color("Salmon")
                         .opacity(0.25)
@@ -175,10 +178,10 @@ extension PanelContent {
             if viewModel.isAdmin {
                 SimpleButton(action: {
                     viewModel.showReportedPostsView = true
-                }, systemImage: "folder.fill.badge.questionmark", buttonText: "Reported posts", size: 25, color: Color("Linen"))
+                }, systemImage: "folder.fill.badge.questionmark", buttonText: LocalizedStringKey("Reported posts"), size: 25, color: Color("Linen"))
                 SimpleButton(action: {
                     viewModel.showDeletedUserPostsView = true
-                }, systemImage: "folder.fill.badge.person.crop", buttonText: "Deleted user posts", size: 25, color: Color("Linen"))
+                }, systemImage: "folder.fill.badge.person.crop", buttonText: LocalizedStringKey("Deleted user posts"), size: 25, color: Color("Linen"))
             }
         }
         .padding(.trailing)
@@ -194,10 +197,10 @@ extension PanelContent {
         VStack(alignment: .leading) {
             SimpleButton(action: {
                 viewModel.showMyPostsView = true
-            }, systemImage: "photo.artframe", buttonText: "My posts", size: 25, color: Color("Linen"))
+            }, systemImage: "photo.artframe", buttonText: LocalizedStringKey("My posts"), size: 25, color: Color("Linen"))
             SimpleButton(action: {
                 viewModel.showLikesView = true
-            }, systemImage: "heart", buttonText: "Liked posts", size: 25, color: Color("Linen"))
+            }, systemImage: "heart", buttonText: LocalizedStringKey("Liked posts"), size: 25, color: Color("Linen"))
         }
         .padding(.trailing)
         .sheet(isPresented: $viewModel.showMyPostsView) {
@@ -212,16 +215,16 @@ extension PanelContent {
         VStack(alignment: .leading) {
             SimpleButton(action: {
                 viewModel.showProfileSettingsView = true
-            }, systemImage: "person.crop.circle.badge.moon.fill", buttonText: "Profile settings", size: 25, color: Color("Linen"))
+            }, systemImage: "person.crop.circle.badge.moon.fill", buttonText: LocalizedStringKey("Profile settings"), size: 25, color: Color("Linen"))
             SimpleButton(action: {
                 viewModel.showAccountSettingsView = true
-            }, systemImage: "person.badge.key", buttonText: "Account settings", size: 25, color: Color("Linen"))
+            }, systemImage: "person.badge.key", buttonText: LocalizedStringKey("Account settings"), size: 25, color: Color("Linen"))
             SimpleButton(action: {
                 viewModel.showSettingsView = true
-            }, systemImage: "gearshape.2.fill", buttonText: "App settings", size: 25, color: Color("Linen"))
+            }, systemImage: "gearshape.2.fill", buttonText: LocalizedStringKey("App settings"), size: 25, color: Color("Linen"))
             SimpleButton(action: {
                 viewModel.showAboutView = true
-            }, systemImage: "info.circle", buttonText: "About", size: 25, color: Color("Linen"))
+            }, systemImage: "info.circle", buttonText: LocalizedStringKey("About"), size: 25, color: Color("Linen"))
         }
         .padding(.trailing)
         .padding(.bottom)

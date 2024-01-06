@@ -27,10 +27,3 @@ struct MainBackground3: View {
             .edgesIgnoringSafeArea(.all)
     }
 }
-
-//struct SimpleBackground: View {
-//    var body: some View {
-//        .background(Color("Walnut"))
-//        .edgesIgnoringSafeArea(.all)
-//    }
-//}

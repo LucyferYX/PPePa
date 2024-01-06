@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct MainNavigationBar: View {
-    let title: String
+    let title: LocalizedStringKey
     let leftButton: LeftNavigationButton
     let rightButton: RightNavigationButton
 
@@ -30,7 +30,7 @@ struct MainNavigationBar: View {
 }
 
 struct MainToolbar: ToolbarContent {
-    let title: String
+    let title: LocalizedStringKey
     let leftButton: LeftNavigationButton
     let rightButton: RightNavigationButton
 

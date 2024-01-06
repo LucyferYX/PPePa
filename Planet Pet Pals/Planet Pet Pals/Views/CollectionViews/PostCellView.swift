@@ -58,9 +58,12 @@ struct PostCellView: View {
                         Spacer()
                     }
                     if showLikes {
-                        Text("Likes: \(post.likes ?? 0)")
-                            .font(.custom("Baloo2-Regular", size: 15))
-                            .foregroundColor(.secondary)
+                        HStack {
+                            Text("Likes: ")
+                            Text("\(post.likes ?? 0)")
+                        }
+                        .font(.custom("Baloo2-Regular", size: 15))
+                        .foregroundColor(.secondary)
                     }
                 }
                 .frame(width: 150)

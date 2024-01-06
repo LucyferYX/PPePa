@@ -75,7 +75,7 @@ struct CreateView: View {
                         .alert(isPresented: $showMissingFieldAlert) {
                             Alert(
                                 title: Text("Missing Field"),
-                                message: Text("Please provide a value for the following field: \(missingField)"),
+                                message: Text("Please provide a value for the following field: ") + Text("\(missingField)"),
                                 dismissButton: .default(Text("OK")) {
                                     showMissingFieldAlert = false
                                 }
@@ -186,7 +186,12 @@ extension CreateView {
             ), selectedRegion: selectedRegion)
             .frame(width: 300, height: 300)
             if let coordinate = geopoint {
-                Text("Latitude: \(coordinate.latitude), Longitude: \(coordinate.longitude)")
+                HStack {
+                    Text("Latitude: ")
+                    Text("\(coordinate.latitude)")
+                    Text(", Longitude: ")
+                    Text("\(coordinate.longitude)")
+                }
             }
         }
     }

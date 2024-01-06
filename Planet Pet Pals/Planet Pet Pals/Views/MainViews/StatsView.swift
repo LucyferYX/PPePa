@@ -11,6 +11,7 @@ struct StatsView: View {
     @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
     @StateObject private var viewModel = StatsViewModel()
     @State private var showPostListView: Bool = false
+    @State private var showPostView: Bool = false
     @Binding var showStatsView: Bool
     
     @State private var flipped = false
@@ -38,6 +39,7 @@ struct StatsView: View {
                         .padding(.horizontal)
                     
                     dataTypePickerView(selectedDataType: $selectedDataType)
+                        .padding(.horizontal)
                     
                     Line()
                         .padding(.horizontal)
@@ -53,6 +55,11 @@ struct StatsView: View {
             CrashlyticsManager.shared.setValue(value: "StatsView", key: "currentView")
             flipped = false
         }
+        .fullScreenCover(isPresented: $showPostView) {
+            if let postId = viewModel.mostLikedPost?.postId {
+                PostView(showPostView: $showPostView, postId: postId)
+            }
+        }
     }
 }
 
@@ -62,7 +69,7 @@ extension StatsView {
         PostCircle() {
             AnyView(
                 VStack {
-                    Text("Tap to reveal!")
+                    Text("?")
                         .foregroundColor(Color("Snow"))
                         .font(.custom("Baloo2-SemiBold", size: 20))
                 }
@@ -76,13 +83,17 @@ extension StatsView {
             AnyView(
                 VStack {
                     if let post = viewModel.mostLikedPost, let url = URL(string: post.image) {
-                        AsyncImage(url: url) { image in
-                            image.resizable()
-                        } placeholder: {
-                            ProgressView()
+                        Button(action: {
+                            showPostView = true
+                        }) {
+                            AsyncImage(url: url) { image in
+                                image.resizable()
+                            } placeholder: {
+                                ProgressView()
+                            }
+                            .aspectRatio(contentMode: .fit)
+                            .clipShape(Circle())
                         }
-                        .aspectRatio(contentMode: .fit)
-                        .clipShape(Circle())
                     } else {
                         ProgressView()
                     }
@@ -135,7 +146,7 @@ extension StatsView {
             PostCircle() {
                 AnyView(
                     VStack {
-                        Text("Tap to reveal!")
+                        Text("?")
                             .foregroundColor(Color("Snow"))
                             .font(.custom("Baloo2-SemiBold", size: 20))
                     }
@@ -182,9 +193,21 @@ extension StatsView {
                         .font(.custom("Baloo2-SemiBold", size: 20))
                 } else {
                     if let post = viewModel.mostLikedPost {
-                        Text("\(post.title) is most liked!")
-                            .foregroundColor(Color("Walnut"))
-                            .font(.custom("Baloo2-SemiBold", size: 20))
+                        HStack {
+                            Text("Most liked post is ")
+                                .font(.custom("Baloo2-SemiBold", size: 20))
+                            Text("\(post.title)")
+                                .font(.custom("Baloo2-Bold", size: 20))
+                        }
+                        HStack {
+                            Text(" with ")
+                                .font(.custom("Baloo2-SemiBold", size: 20))
+                            Text("\(post.likes ?? 0)")
+                                .font(.custom("Baloo2-Bold", size: 20))
+                            Text(" likes!")
+                                .font(.custom("Baloo2-SemiBold", size: 20))
+                        }
+                        .foregroundColor(Color("Walnut"))
                     } else {
                         Text("Please wait...")
                             .foregroundColor(Color("Walnut"))

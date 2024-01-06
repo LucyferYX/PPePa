@@ -12,6 +12,9 @@ struct MapView: View {
     @Binding var showMapView: Bool
     @AppStorage("selectedRegion") var selectedRegion: String = "Europe"
     @State var posts: [Post] = []
+    @State private var showPostView = false
+    @State private var currentPost: Post? = nil
+
 
     var region: MKCoordinateRegion {
         let ((latitude, longitude), (latitudeDelta, longitudeDelta)) = regions[selectedRegion]!
@@ -28,7 +31,15 @@ struct MapView: View {
                 ZStack {
                     MainBackground()
                     Map(coordinateRegion: .constant(region), annotationItems: posts) { post in
-                        MapMarker(coordinate: post.location, tint: .red)
+                        MapAnnotation(coordinate: post.location) {
+                            MapAnnotationView()
+                                .onTapGesture {
+                                    currentPost = post
+                                    showPostView = true
+                                    print("currentPost: \(String(describing: currentPost))")
+                                    print("currentPost?.postId: \(String(describing: currentPost?.postId))")
+                                }
+                        }
                     }
                     .edgesIgnoringSafeArea(.all)
                 }
@@ -46,6 +57,11 @@ struct MapView: View {
         .transition(.move(edge: .bottom))
         .onAppear() {
             CrashlyticsManager.shared.setValue(value: "MapView", key: "currentView")
+        }
+        .fullScreenCover(isPresented: $showPostView) {
+            if let postId = currentPost?.postId {
+                PostView(showPostView: $showPostView, postId: postId)
+            }
         }
     }
 }

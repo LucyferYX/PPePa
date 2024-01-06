@@ -33,11 +33,11 @@ struct AuthView: View {
                 
                 VStack(alignment: .leading) {
                     VStack(alignment: .leading, spacing: -5) {
-                        Text("welcome")
+                        Text("Welcome")
                             .foregroundColor(Color("Snow"))
                             .font(.custom("Baloo2-SemiBold", size: 40))
                         
-                        Text("sign in continue")
+                        Text("Sign in continue")
                             .foregroundColor(Color("Linen"))
                             .font(.custom("Baloo2-SemiBold", size: 25))
                     }

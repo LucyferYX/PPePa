@@ -23,10 +23,13 @@ struct DeletedUserPostsView: View {
             Color("Walnut").ignoresSafeArea()
             if postCount > 0 {
                 VStack {
-                    Text("Deleted user post count: \(postCount)")
-                        .font(.custom("Baloo2-SemiBold", size: 30))
-                        .foregroundColor(Color("Linen"))
-                        .padding(.top)
+                    HStack {
+                        Text("Deleted user post count: ")
+                        Text("\(postCount)")
+                    }
+                    .font(.custom("Baloo2-SemiBold", size: 30))
+                    .foregroundColor(Color("Linen"))
+                    .padding(.top)
                     List {
                         ForEach(viewModel.deletedUsersPosts, id: \.id.self) { post in
                             PostCellViewBuilder(postId: post.postId, showLikeButton: false, showLikes: true, showContext: false)

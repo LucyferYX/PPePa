@@ -128,8 +128,11 @@ struct AboutView: View {
                                 .padding()
                             
                             //MARK: Version
-                            Text("App Version: \(getAppVersion())")
-                                .font(.custom("Baloo2-Regular", size: 20))
+                            HStack {
+                                Text("App Version: ")
+                                Text("\(getAppVersion())")
+                            }
+                            .font(.custom("Baloo2-Regular", size: 20))
                         }
                         .foregroundColor(Color("Gondola"))
                     }

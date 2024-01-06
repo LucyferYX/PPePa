@@ -8,7 +8,7 @@
 import SwiftUI
 import FirebaseFirestore
 
-@MainActor
+//@MainActor
 final class PostListViewModel: ObservableObject {
     @ObservedObject var likedPostsViewModel = LikedPostsViewModel.shared
     @Published private(set) var posts: [Post] = []
@@ -16,6 +16,14 @@ final class PostListViewModel: ObservableObject {
     @Published var selectedFilter: FilterOption? = nil
     @Published var selectedType: TypeOption? = nil
     private var lastDocument: DocumentSnapshot? = nil
+    
+    static var typeOptions = animals.map { TypeOption(rawValue: $0) }
+    
+    init() {
+        if !Self.typeOptions.contains(where: { $0.rawValue == "no type" }) {
+            Self.typeOptions.insert(TypeOption(rawValue: "no type"), at: 0)
+        }
+    }
     
     func getPosts() {
         Task {
@@ -68,14 +76,13 @@ final class PostListViewModel: ObservableObject {
         self.getPosts()
     }
     
-    enum TypeOption: String, CaseIterable {
-        case noType
-        case dog
-        case cat
-        case sloth
+    struct TypeOption: Hashable {
+        static let allCases = PostListViewModel.typeOptions
+        
+        let rawValue: String
         
         var typeValue: String? {
-            if self == .noType {
+            if self.rawValue == "no type" {
                 return nil
             }
             return self.rawValue
