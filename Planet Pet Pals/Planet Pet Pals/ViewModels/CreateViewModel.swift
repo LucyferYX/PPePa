@@ -11,7 +11,7 @@ import FirebaseFirestore
 import PhotosUI
 
 @MainActor
-class CreateViewModel: ObservableObject {
+final class CreateViewModel: ObservableObject {
     @Published private(set) var user: DatabaseUser? = nil
     @Published private(set) var image: UIImage? = nil
     

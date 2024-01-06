@@ -14,6 +14,7 @@ struct AuthText: View {
         Text(text)
             .font(.custom("Baloo2-SemiBold", size: 40))
             .foregroundColor(Color("Gondola"))
+            .disableAutocorrection(true)
             .padding(.leading, 40)
             .padding(.top, 30)
     }
@@ -58,6 +59,7 @@ struct LimitedTextField: View {
             TextField(title, text: $text, axis: .vertical)
                 .font(.custom("Baloo2-Regular", size: 20))
                 .lineLimit(...10)
+                .disableAutocorrection(true)
                 .onChange(of: text) { newValue in
                     if text.count > maxLength {
                         text = String(text.prefix(maxLength))

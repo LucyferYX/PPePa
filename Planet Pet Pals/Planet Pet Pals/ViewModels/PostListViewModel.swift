@@ -9,7 +9,7 @@ import SwiftUI
 import FirebaseFirestore
 
 @MainActor
-class PostListViewModel: ObservableObject {
+final class PostListViewModel: ObservableObject {
     @ObservedObject var likedPostsViewModel = LikedPostsViewModel.shared
     @Published private(set) var posts: [Post] = []
     @Published private(set) var userLikedPosts: [UserLikedPost] = []

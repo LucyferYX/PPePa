@@ -98,7 +98,7 @@ struct AboutView: View {
                                 
                                 Text("Terms of Service")
                                     .font(.custom("Baloo2-SemiBold", size: 25))
-                                Text("Users are expected to behave respectfully and not upload any.\nThe app developers reserve the right to suspend or terminate accounts that are found to be in violation of our community guidelines.")
+                                Text("Users are expected to behave respectfully and not upload any.\nThe app developers reserve the right to suspend or terminate accounts that are found to be offensive or promote any kind of discrimination.")
                                     .font(.custom("Baloo2-Regular", size: 20))
                             }
                             .padding(.horizontal)

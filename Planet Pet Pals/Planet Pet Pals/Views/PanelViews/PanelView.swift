@@ -181,7 +181,7 @@ extension PanelContent {
                 }, systemImage: "folder.fill.badge.person.crop", buttonText: "Deleted user posts", size: 25, color: Color("Linen"))
             }
         }
-        .padding(.bottom)
+        .padding(.trailing)
         .sheet(isPresented: $viewModel.showReportedPostsView) {
             ReportedPostView()
         }
@@ -199,7 +199,7 @@ extension PanelContent {
                 viewModel.showLikesView = true
             }, systemImage: "heart", buttonText: "Liked posts", size: 25, color: Color("Linen"))
         }
-        .padding(.bottom)
+        .padding(.trailing)
         .sheet(isPresented: $viewModel.showMyPostsView) {
             MyPostsView()
         }
@@ -223,6 +223,7 @@ extension PanelContent {
                 viewModel.showAboutView = true
             }, systemImage: "info.circle", buttonText: "About", size: 25, color: Color("Linen"))
         }
+        .padding(.trailing)
         .padding(.bottom)
         .sheet(isPresented: $viewModel.showProfileSettingsView) {
             ProfileSettingsView()

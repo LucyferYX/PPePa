@@ -64,6 +64,7 @@ struct FlexibleView<Data: Collection, Content: View>: View where Data.Element: H
                     ForEach(rowElements, id: \.self) { element in
                         content(element)
                             .fixedSize()
+                            .font(.custom("Baloo2-Regular", size: 20))
                             .readSize { size in
                                 elementsSize[element] = size
                             }

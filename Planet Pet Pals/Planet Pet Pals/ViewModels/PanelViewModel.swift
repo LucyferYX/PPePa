@@ -9,7 +9,7 @@ import Foundation
 import FirebaseAuth
 
 @MainActor
-class PanelViewModel: ObservableObject {
+final class PanelViewModel: ObservableObject {
     @Published var authProviders: [AuthProviderOption] = []
     @Published var authUser: AuthDataResultModel? = nil
     @Published private(set) var user: DatabaseUser? = nil

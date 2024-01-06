@@ -7,27 +7,6 @@
 
 import SwiftUI
 
-@MainActor
-class MyPostsViewModel: ObservableObject {
-    @Published var panelViewModel = PanelViewModel()
-    @Published var myPosts: [Post] = []
-
-    func addListenerForMyPosts() {
-        let userId = panelViewModel.authUser?.uid ?? ""
-        PostManager.shared.addListenerForMyPosts(userId: userId) { [weak self] posts in
-            self?.myPosts = posts
-        }
-    }
-
-    func removeListenerForMyPosts() {
-        PostManager.shared.removeListenerForMyPosts()
-    }
-    
-    func deletePost(postId: String) async throws {
-        try await PostManager.shared.deletePost(postId: postId)
-    }
-}
-
 struct MyPostsView: View {
     @StateObject private var viewModel = MyPostsViewModel()
     @State private var postCount: Int = 0

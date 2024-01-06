@@ -30,6 +30,13 @@
 		DC3ECCBF2B2CFABD00D142B6 /* AuthViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC3ECCBE2B2CFABD00D142B6 /* AuthViewModel.swift */; };
 		DC3ECCC42B2CFCB200D142B6 /* ProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC3ECCC32B2CFCB200D142B6 /* ProfileView.swift */; };
 		DC3ECCC62B2D0EA000D142B6 /* UserManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC3ECCC52B2D0EA000D142B6 /* UserManager.swift */; };
+		DC3FF5712B48B83600E2EF78 /* StatsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC3FF5702B48B83500E2EF78 /* StatsViewModel.swift */; };
+		DC3FF5732B48B87E00E2EF78 /* ChartViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC3FF5722B48B87E00E2EF78 /* ChartViewModel.swift */; };
+		DC3FF5752B48B8C300E2EF78 /* MyPostsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC3FF5742B48B8C300E2EF78 /* MyPostsViewModel.swift */; };
+		DC3FF5772B48B8EF00E2EF78 /* ReportedPostsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC3FF5762B48B8EF00E2EF78 /* ReportedPostsViewModel.swift */; };
+		DC3FF5792B48B91900E2EF78 /* DeletedPostsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC3FF5782B48B91900E2EF78 /* DeletedPostsViewModel.swift */; };
+		DC3FF57B2B48B97E00E2EF78 /* ProfileSettingsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC3FF57A2B48B97E00E2EF78 /* ProfileSettingsViewModel.swift */; };
+		DC3FF57D2B48B9DB00E2EF78 /* AccountSettingsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC3FF57C2B48B9DB00E2EF78 /* AccountSettingsViewModel.swift */; };
 		DC418C462B08F2570070D226 /* BackgroundDesign.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC418C452B08F2570070D226 /* BackgroundDesign.swift */; };
 		DC418C482B08F2D40070D226 /* ImageDesign.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC418C472B08F2D40070D226 /* ImageDesign.swift */; };
 		DC44007F2B1D006A001F6609 /* ShapeDesign.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC44007E2B1D006A001F6609 /* ShapeDesign.swift */; };
@@ -105,6 +112,13 @@
 		DC3ECCBE2B2CFABD00D142B6 /* AuthViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthViewModel.swift; sourceTree = "<group>"; };
 		DC3ECCC32B2CFCB200D142B6 /* ProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileView.swift; sourceTree = "<group>"; };
 		DC3ECCC52B2D0EA000D142B6 /* UserManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserManager.swift; sourceTree = "<group>"; };
+		DC3FF5702B48B83500E2EF78 /* StatsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatsViewModel.swift; sourceTree = "<group>"; };
+		DC3FF5722B48B87E00E2EF78 /* ChartViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChartViewModel.swift; sourceTree = "<group>"; };
+		DC3FF5742B48B8C300E2EF78 /* MyPostsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPostsViewModel.swift; sourceTree = "<group>"; };
+		DC3FF5762B48B8EF00E2EF78 /* ReportedPostsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportedPostsViewModel.swift; sourceTree = "<group>"; };
+		DC3FF5782B48B91900E2EF78 /* DeletedPostsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeletedPostsViewModel.swift; sourceTree = "<group>"; };
+		DC3FF57A2B48B97E00E2EF78 /* ProfileSettingsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileSettingsViewModel.swift; sourceTree = "<group>"; };
+		DC3FF57C2B48B9DB00E2EF78 /* AccountSettingsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountSettingsViewModel.swift; sourceTree = "<group>"; };
 		DC418C452B08F2570070D226 /* BackgroundDesign.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackgroundDesign.swift; sourceTree = "<group>"; };
 		DC418C472B08F2D40070D226 /* ImageDesign.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageDesign.swift; sourceTree = "<group>"; };
 		DC44007E2B1D006A001F6609 /* ShapeDesign.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShapeDesign.swift; sourceTree = "<group>"; };
@@ -269,6 +283,13 @@
 				DCF6ECFF2B34F88400BC5B11 /* LikedPostsViewModel.swift */,
 				DCF6ED012B34F95800BC5B11 /* LikesViewModel.swift */,
 				DC1330CB2B47ABB8002FCF52 /* PostViewModel.swift */,
+				DC3FF5702B48B83500E2EF78 /* StatsViewModel.swift */,
+				DC3FF5722B48B87E00E2EF78 /* ChartViewModel.swift */,
+				DC3FF5742B48B8C300E2EF78 /* MyPostsViewModel.swift */,
+				DC3FF5762B48B8EF00E2EF78 /* ReportedPostsViewModel.swift */,
+				DC3FF5782B48B91900E2EF78 /* DeletedPostsViewModel.swift */,
+				DC3FF57A2B48B97E00E2EF78 /* ProfileSettingsViewModel.swift */,
+				DC3FF57C2B48B9DB00E2EF78 /* AccountSettingsViewModel.swift */,
 			);
 			path = ViewModels;
 			sourceTree = "<group>";
@@ -474,6 +495,7 @@
 			files = (
 				DC5670B52B39EC1000807F2E /* ResetPasswordView.swift in Sources */,
 				DC9FF34C2B0FD49200DFCBD7 /* PostListView.swift in Sources */,
+				DC3FF57D2B48B9DB00E2EF78 /* AccountSettingsViewModel.swift in Sources */,
 				DCFCE85C2B41D90400EAD795 /* SectionDesign.swift in Sources */,
 				DC9366342B2F0C880077D2F7 /* LaunchView.swift in Sources */,
 				DCFC5DA92B28EBF100AA9EB3 /* AuthManager.swift in Sources */,
@@ -487,6 +509,7 @@
 				DC3ECCC62B2D0EA000D142B6 /* UserManager.swift in Sources */,
 				DC49FBCB2B3395DD00770741 /* LikesView.swift in Sources */,
 				DC1330CA2B479A14002FCF52 /* ProfileSettingsView.swift in Sources */,
+				DC3FF57B2B48B97E00E2EF78 /* ProfileSettingsViewModel.swift in Sources */,
 				DC3E676F2B45ABC2007CF2A8 /* CrashlyticsManager.swift in Sources */,
 				DC38EEBE2B3726E60000AEB5 /* StorageManager.swift in Sources */,
 				DC3E67712B45AF8A007CF2A8 /* MaintenanceManager.swift in Sources */,
@@ -496,6 +519,7 @@
 				7E9C2F9A2AD34B860042F562 /* PanelView.swift in Sources */,
 				DCF6ECFE2B34F84B00BC5B11 /* PostListViewModel.swift in Sources */,
 				7E59232C2ACE0014000B96F5 /* MainMenuView.swift in Sources */,
+				DC3FF5792B48B91900E2EF78 /* DeletedPostsViewModel.swift in Sources */,
 				7E5923382ACE155B000B96F5 /* ColorExtension.swift in Sources */,
 				DCFC5DAB2B28FD9B00AA9EB3 /* RootView.swift in Sources */,
 				DC3ECCC42B2CFCB200D142B6 /* ProfileView.swift in Sources */,
@@ -506,11 +530,14 @@
 				DCFCE85A2B41D2C400EAD795 /* MapPickerView.swift in Sources */,
 				7EC810DC2AD1881B00A5DDD0 /* ButtonDesign.swift in Sources */,
 				DC334A2A2B38D4CA00B027B8 /* UserLikedPostManager.swift in Sources */,
+				DC3FF5712B48B83600E2EF78 /* StatsViewModel.swift in Sources */,
 				DCF671D82B24EDE00012D505 /* CreateView.swift in Sources */,
 				DCFCE8582B41CFE100EAD795 /* CreateViewModel.swift in Sources */,
+				DC3FF5752B48B8C300E2EF78 /* MyPostsViewModel.swift in Sources */,
 				DC14520A2B0D44F30059FE96 /* MapView.swift in Sources */,
 				7E7B49422AD1F94D006AA8B6 /* SearchBarDesign.swift in Sources */,
 				DCF5D1A42B4398D8001CF494 /* ReportedPostsView.swift in Sources */,
+				DC3FF5772B48B8EF00E2EF78 /* ReportedPostsViewModel.swift in Sources */,
 				DCFC5DAD2B290E5E00AA9EB3 /* AuthView.swift in Sources */,
 				DCF6ED042B34F9B300BC5B11 /* ProfileViewModel.swift in Sources */,
 				DC49FBCD2B33960800770741 /* AppSettingsView.swift in Sources */,
@@ -524,6 +551,7 @@
 				DC3ECCBF2B2CFABD00D142B6 /* AuthViewModel.swift in Sources */,
 				DCF6ED002B34F88400BC5B11 /* LikedPostsViewModel.swift in Sources */,
 				DCF813522B4262BD004AD2D2 /* AccountSettingsView.swift in Sources */,
+				DC3FF5732B48B87E00E2EF78 /* ChartViewModel.swift in Sources */,
 				DC44007F2B1D006A001F6609 /* ShapeDesign.swift in Sources */,
 				DC9B47542B37763200721504 /* PostView.swift in Sources */,
 				DC63B2012B3C6DFD0084C97C /* MaintenanceView.swift in Sources */,

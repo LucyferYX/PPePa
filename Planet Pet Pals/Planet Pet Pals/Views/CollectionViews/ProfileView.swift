@@ -53,7 +53,7 @@ struct ProfileView: View {
                         Text("Is anonymous: \(isAnonymous.description.capitalized)")
                     }
                     
-                    Text("User is admin: \((user.isAdmin ?? false).description.capitalized)")
+                    Text("User is admin: \((user.isAdmin).description.capitalized)")
 
                     Text("User favorites: \((user.favorites ?? []).joined(separator: ", "))")
                     

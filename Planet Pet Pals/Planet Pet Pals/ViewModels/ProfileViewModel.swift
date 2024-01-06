@@ -9,7 +9,7 @@ import SwiftUI
 import FirebaseStorage
 
 @MainActor
-class ProfileViewModel: ObservableObject {
+final class ProfileViewModel: ObservableObject {
     @Published private(set) var user: DatabaseUser? = nil
     @Published var isLoading = false
 
