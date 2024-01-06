@@ -12,7 +12,7 @@
 "Stats" = "Statistika";
 "Tap to reveal!" = "Pieskarieties, lai atklātu!";
 "Users" = "Lietotāji";
-"Posts" = "Ziņas";
+"Posts" = "Ieraksti";
 "See all posts!" = "Skatīt visus ierakstus!";
 "Tap to reveal!" = "Pieskarieties, lai atklātu!";
 "Most liked post?" = "Visvairāk patiktais ieraksts ir?";
@@ -35,7 +35,11 @@
 " LOG IN" = "PIESAKIES";
 "Input your email address linked to your account and we will send you password reset email." = "Ievadiet savu e-pasta adresi, kas saistīta ar jūsu kontu, un mēs nosūtīsim jums paroles atiestatīšanas e-pastu.";
 "Email" = "E-pasts";
+"Password" = "Parole";
 "Reset password" = "Atiestatīt paroli";
+"Show Password" = "Radīt paroli";
+"Hide Password" = "Slēpt paroli";
+"Password must be at least 6 characters long." = "Parolei jābūt vismaz 6 rakstzīmju garai";
 "Error" = "Kļūda";
 "Post" = "Ieraksts";
 "Likes: " = "Patīk: ";
@@ -43,10 +47,11 @@
 "Select filter" = "Izvēlieties filtru";
 "Select type" = "Izvēlieties tipu";
 "Show on map" = "Rādīt kartē";
-"Post created by: " = "Ziņu izveidoja: ";
-"Post created: " = "Ziņa izveidota: ";
+"Post created by: " = "Ierakstu izveidoja: ";
+"Post created: " = "Ieraksts izveidots: ";
 "This app is under maintenance!" = "Lietotnē šobrīd notiek apkope!";
 "Please check again shortly." = "Lūdzu, pārbaudiet pēc kāda laika.";
+"Report post?" = "Ziņot par ierakstu?";
 "As a user I agree to:" = "Kā lietotājs es piekrītu:";
 "Be respectful" = "Būt cieņpilnam";
 "Follow the rules" = "Ievērot noteikumus";
@@ -70,6 +75,7 @@
 "Update password" = "Paroles atjaunināšana";
 "Send a password reset to email" = "Nosūtīt paroles atiestatīšanu uz e-pastu";
 "Link your account" = "Sasaistiet kontu";
+"Forgot password?" = "Aizmirsi paroli?";
 "or" = "vai";
 "Link e-mail account" = "Sasaistīt kontu ar E-pasta";
 "Link Google account" = "Sasaistīt kontu ar Google";
@@ -83,12 +89,12 @@
 "Latvian" = "Latviešu";
 "Deleted user post count: " = "Dzēsto lietotāju ierakstu skaits: ";
 "No posts from deleted users yet." = "Vēl nav ierakstu no dzēstajiem lietotājiem.";
-"Your liked post count: " = "Jūsu ar 'patīk' atzīmēto ziņu skaits: ";
+"Your liked post count: " = "Jūsu ar 'patīk' atzīmēto ierakstu skaits: ";
 "Swipe left to remove from likes" = "Pārvietojiet pa kreisi, lai noņemtu no patīk";
 "Please wait" = "Lūdzu, uzgaidiet";
-"Please wait a moment before deleting another post." = "Lūdzu, uzgaidiet brīdi, pirms dzēšat citu ziņu.";
+"Please wait a moment before deleting another post." = "Lūdzu, uzgaidiet brīdi, pirms dzēšat citu ierakstu.";
 
-"No liked posts yet." = "Vēl nav ierakstu, kas atzīmētas ar 'patīk'.";
+"No liked posts yet." = "Vēl nav ierakstu, kas atzīmēti ar 'patīk'.";
 "Swipe left to delete" = "Pavelciet pa kreisi, lai dzēstu";
 "Your post count: " = "Jūsu ierakstu skaits: ";
 "No created posts yet." = "Vēl nav izveidoti ieraksti";

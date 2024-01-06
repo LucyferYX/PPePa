@@ -16,11 +16,12 @@ struct AccountSettingsView: View {
     @State private var isButtonClickedOnce: Bool = true
     @State private var showDeleteAlert = false
     @State private var showPassword = false
-
-
+    
     @State private var showEmailAlert = false
     @State private var emailAlertMessage = ""
     @State private var showGoogleAlert = false
+    @State private var passwordAlertMessage = ""
+//    @State private var showPasswordAlert = false
     
     var body: some View {
         ZStack {
@@ -61,8 +62,7 @@ struct AccountSettingsView: View {
                                                     print("Password updated")
                                                 } catch {
                                                     print("Error: \(error)")
-                                                    emailAlertMessage = error.localizedDescription
-                                                    showEmailAlert = true
+                                                    passwordAlertMessage = error.localizedDescription
                                                 }
                                             }
                                         }) {
@@ -74,6 +74,11 @@ struct AccountSettingsView: View {
                                                     RoundedRectangle(cornerRadius: 10)
                                                         .fill(Color("Linen"))
                                                 )
+                                        }
+                                        .alert(isPresented: $viewModel.showPasswordAlert) {
+                                            Alert(title: Text("Error"),
+                                                  message: Text(viewModel.errorMessage ?? ""),
+                                                  dismissButton: .default(Text("OK")))
                                         }
                                     }
                                 )

@@ -84,7 +84,7 @@ struct AuthView: View {
                                         
                                         LabelButton(action: {
                                             self.showResetPasswordView = true
-                                        }, title: "forgot password", color: Color("Gondola"), fontSize: 18)
+                                        }, title: "Forgot password?", color: Color("Gondola"), fontSize: 18)
                                         .sheet(isPresented: $showResetPasswordView) {
                                             ResetPasswordView(authManager: authManager, email: $email)
                                         }
@@ -239,7 +239,7 @@ extension AuthView {
             Text("Login")
                 .font(.custom("Baloo2-SemiBold", size: 20))
                 .font(.headline)
-                .frame(width: 100, height: 50)
+                .frame(width: 125, height: 50)
                 .background(
                     RoundedRectangle(cornerRadius: 10)
                         .fill(.linearGradient(colors: [Color("Orchid"), Color("Salmon")], startPoint: .leading, endPoint: .trailing))
@@ -288,7 +288,7 @@ extension AuthView {
             Text("Sign up")
                 .font(.custom("Baloo2-SemiBold", size: 20))
                 .font(.headline)
-                .frame(width: 100, height: 50)
+                .frame(width: 125, height: 50)
                 .background(
                     RoundedRectangle(cornerRadius: 10)
                         .fill(.linearGradient(colors: [Color("Orchid"), Color("Salmon")], startPoint: .leading, endPoint: .trailing))

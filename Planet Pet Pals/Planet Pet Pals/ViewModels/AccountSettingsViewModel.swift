@@ -14,7 +14,7 @@ final class AccountSettingsViewModel: ObservableObject {
     @Published var authUser: AuthDataResultModel? = nil
     @Published var errorMessage: String? = nil
     @Published var showDeleteErrorAlert: Bool = false
-    
+    @Published var showPasswordAlert: Bool = false
     @Published var currentAlert: AlertType? = nil
     
     @Published var email: String = ""
@@ -61,7 +61,7 @@ final class AccountSettingsViewModel: ObservableObject {
     func updatePassword() async throws {
         if self.password.count < 6 {
             self.errorMessage = "Password must be at least 6 characters long."
-            self.showDeleteErrorAlert = true
+            self.showPasswordAlert = true
         } else {
             try await AuthManager.shared.updatePassword(password: self.password)
         }
