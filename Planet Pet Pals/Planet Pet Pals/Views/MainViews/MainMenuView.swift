@@ -11,16 +11,22 @@ struct MainMenuView: View {
     @StateObject private var viewModel = MainMenuViewModel()
     
     @Binding var showSignInView: Bool
-    @State private var showPanelView = false
-    @State private var showCreateView = false
-    @State private var showMapView = false
-    @State private var showStatsView = false
-    @State var showPostView = false
+    @State private var showPanelView: Bool = false
+    @State private var showCreateView: Bool = false
+    @State private var showMapView: Bool = false
+    @State private var showStatsView: Bool = false
+    
+//    @State var showPostView: Bool = false
+    @State private var showCurrentPostView: Bool = false
+    @State private var showSelectedPostView: Bool = false
     
     @FocusState private var isTextFieldFocused: Bool
     @State private var keyboardIsShown: Bool = false
     @State private var showButton: Bool = false
+    
     @State private var searchText = ""
+    @State var filteredPosts: [Post] = []
+
     
     var body: some View {
         return GeometryReader { geometry in
@@ -31,11 +37,14 @@ struct MainMenuView: View {
                     
                     VStack {
                         panelButtons
+                            .disabled(!viewModel.filteredPosts.isEmpty)
                         
                         logoImage
+                            .disabled(!viewModel.filteredPosts.isEmpty)
                         
                         postNavigation
-
+                            .disabled(!viewModel.filteredPosts.isEmpty)
+                        
                         Spacer()
                         
                         searchBar
@@ -44,10 +53,37 @@ struct MainMenuView: View {
                         
                         if showButton {
                             mainButtons
+                                .disabled(!viewModel.filteredPosts.isEmpty)
                         } else if !keyboardIsShown {
                             mainButtons
+                                .disabled(!viewModel.filteredPosts.isEmpty)
                         }
+                    
                     }
+                    
+                    if !viewModel.filteredPosts.isEmpty {
+                        ZStack {
+                            List(viewModel.filteredPosts) { post in
+                                Text(post.title)
+                                    .background(Color("Snow"))
+                                    .onTapGesture {
+                                        viewModel.selectedPost = post
+                                        showSelectedPostView = true
+                                    }
+                            }
+                            .listStyle(PlainListStyle())
+                            .background(Color.clear)
+                            .frame(maxHeight: 200)
+                            .padding(.top, 250)
+                            .padding(.bottom, 280)
+                            .padding(.horizontal, 30)
+                            .shadow(radius: 30)
+                        }
+                        .background(Color.clear.ignoresSafeArea().contentShape(Rectangle()).onTapGesture {
+                            viewModel.filteredPosts = []
+                        })
+                    }
+
                     PanelView(showSignInView: $showSignInView, width: geometry.size.width*0.8, showPanelView: self.showPanelView, closePanelView: { self.showPanelView = false })
                         .offset(x: self.showPanelView ? 0 : -geometry.size.width)
                         .transition(.move(edge: .leading))
@@ -61,9 +97,14 @@ struct MainMenuView: View {
             .onDisappear {
                 viewModel.removeKeyboardNotifications()
             }
-            .fullScreenCover(isPresented: $showPostView) {
+            .fullScreenCover(isPresented: $showCurrentPostView) {
                 if let postId = viewModel.currentPost?.postId {
-                    PostView(showPostView: $showPostView, postId: postId)
+                    PostView(showPostView: $showCurrentPostView, postId: postId)
+                }
+            }
+            .fullScreenCover(isPresented: $showSelectedPostView) {
+                if let postId = viewModel.selectedPost?.postId {
+                    PostView(showPostView: $showSelectedPostView, postId: postId)
                 }
             }
         }
@@ -100,8 +141,8 @@ extension MainMenuView {
     private var postNavigation: some View {
         HStack(spacing: 0) {
             SimpleButton(action: {
-                showPostView = true
-            }, systemImage: "chevron.up", buttonText: "", size: 30, color: Color("Snow"))
+                showCurrentPostView = true
+            }, systemImage: "chevron.left", buttonText: "", size: 30, color: Color("Snow"))
             
             HStack {
                 if viewModel.isLoading {
@@ -122,8 +163,13 @@ extension MainMenuView {
     }
     
     private var searchBar: some View {
-        MainSearchBar(text: $searchText) {
-            print("Searching for \(searchText)")
+        MainSearchBar(text: $viewModel.searchText) {
+            Task {
+                _ = await viewModel.getAllPosts()
+            }
+        }
+        .alert(isPresented: $viewModel.showAlert) {
+            Alert(title: Text("No Posts Found"), message: Text("No posts were from your search with this title."), dismissButton: .default(Text("OK")))
         }
     }
     

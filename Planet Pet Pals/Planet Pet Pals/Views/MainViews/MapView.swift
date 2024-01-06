@@ -25,44 +25,46 @@ struct MapView: View {
     }
 
     var body: some View {
-        NavigationView {
-            VStack {
-                NavigationBar
-                ZStack {
-                    MainBackground()
-                    Map(coordinateRegion: .constant(region), annotationItems: posts) { post in
-                        MapAnnotation(coordinate: post.location) {
-                            MapAnnotationView()
-                                .onTapGesture {
-                                    currentPost = post
-                                    showPostView = true
-                                    print("currentPost: \(String(describing: currentPost))")
-                                    print("currentPost?.postId: \(String(describing: currentPost?.postId))")
-                                }
+        ZStack {
+            NavigationView {
+                VStack {
+                    NavigationBar
+                    ZStack {
+                        MainBackground()
+                        Map(coordinateRegion: .constant(region), annotationItems: posts) { post in
+                            MapAnnotation(coordinate: post.location) {
+                                MapAnnotationView()
+                                    .onTapGesture {
+                                        currentPost = post
+                                        showPostView = true
+                                    }
+                            }
+                        }
+                        .edgesIgnoringSafeArea(.all)
+                    }
+                }
+                .onAppear {
+                    Task {
+                        do {
+                            posts = try await PostManager.shared.getAllPosts()
+                        } catch {
+                            print("Failed to fetch posts: \(error)")
                         }
                     }
-                    .edgesIgnoringSafeArea(.all)
                 }
             }
-            .onAppear {
-                Task {
-                    do {
-                        posts = try await PostManager.shared.getAllPosts()
-                    } catch {
-                        print("Failed to fetch posts: \(error)")
+            .transition(.move(edge: .bottom))
+            .onAppear() {
+                CrashlyticsManager.shared.setValue(value: "MapView", key: "currentView")
+            }
+            if showPostView, let postId = currentPost?.postId {
+                Text("")
+                    .fullScreenCover(isPresented: $showPostView) {
+                        PostView(showPostView: $showPostView, postId: postId)
                     }
-                }
             }
         }
-        .transition(.move(edge: .bottom))
-        .onAppear() {
-            CrashlyticsManager.shared.setValue(value: "MapView", key: "currentView")
-        }
-        .fullScreenCover(isPresented: $showPostView) {
-            if let postId = currentPost?.postId {
-                PostView(showPostView: $showPostView, postId: postId)
-            }
-        }
+
     }
 }
 
@@ -89,7 +91,7 @@ extension MapView {
                 action: {},
                 imageName: "slider.horizontal.3",
                 buttonText: "Back",
-                imageInvisible: false,
+                imageInvisible: true,
                 textInvisible: true
             )
         )

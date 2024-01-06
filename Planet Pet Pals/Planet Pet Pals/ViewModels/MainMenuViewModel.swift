@@ -2,7 +2,7 @@
 //  MainMenuViewModel.swift
 //  Planet Pet Pals
 //
-//  Created by Liene on 06/01/2024.
+//  Created by Liene on 01/01/2024.
 //
 
 import SwiftUI
@@ -11,12 +11,33 @@ import FirebaseFirestore
 @MainActor
 class MainMenuViewModel: ObservableObject {
     @Published var currentPost: Post?
+    @Published var selectedPost: Post?
     @Published var isLoading: Bool = false
     @Published var keyboardIsShown: Bool = false
     private var lastDocument: DocumentSnapshot?
+    
+    @Published var searchText = ""
+    @Published var filteredPosts: [Post] = []
+    @Published var showAlert: Bool = false
 
     init() {
         nextPost()
+    }
+    
+    func getAllPosts() async {
+        do {
+            let allPosts = try await PostManager.shared.getAllPosts()
+            DispatchQueue.main.async {
+                if self.searchText.isEmpty {
+                    self.filteredPosts = []
+                } else {
+                    self.filteredPosts = allPosts.filter { $0.title.lowercased().contains(self.searchText.lowercased()) }
+                }
+                self.showAlert = self.filteredPosts.isEmpty
+            }
+        } catch {
+            print("Failed to fetch posts: \(error)")
+        }
     }
 
     func nextPost() {

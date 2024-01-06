@@ -24,7 +24,9 @@ struct PostMapView: View {
 
     var body: some View {
         Map(coordinateRegion: $region, annotationItems: [point]) { point in
-            MapMarker(coordinate: point.coordinate, tint: .red)
+            MapAnnotation(coordinate: point.coordinate) {
+                MapAnnotationView()
+            }
         }
         .gesture(MagnificationGesture()
             .onChanged { value in

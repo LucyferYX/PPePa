@@ -119,6 +119,8 @@
 "Posts created in last 30 days!" = "Ieraksti izveidoti pēdējās 30 dienās!";
 "Users created in last 30 days!" = "Lietotāji izveidoti pēdējās 30 dienās!";
 "Search" = "Meklēt";
+"No Posts Found" = "Nav neviena ieraksta";
+"No posts were from your search with this title." = "Nav atrasts neviens ieraksts ar šādu virsrakstu";
 
 "dog" = "suns";
 "cat" = "kaķis";

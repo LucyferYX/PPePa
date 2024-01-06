@@ -297,6 +297,7 @@
 		DC3ECCBB2B2CF98200D142B6 /* ViewModels */ = {
 			isa = PBXGroup;
 			children = (
+				DC0145212B493C0800D96A8B /* MainMenuViewModel.swift */,
 				DC3ECCBE2B2CFABD00D142B6 /* AuthViewModel.swift */,
 				DC3ECCBC2B2CF9A100D142B6 /* PanelViewModel.swift */,
 				DCF6ED032B34F9B300BC5B11 /* ProfileViewModel.swift */,
@@ -312,7 +313,6 @@
 				DC3FF5782B48B91900E2EF78 /* DeletedPostsViewModel.swift */,
 				DC3FF57A2B48B97E00E2EF78 /* ProfileSettingsViewModel.swift */,
 				DC3FF57C2B48B9DB00E2EF78 /* AccountSettingsViewModel.swift */,
-				DC0145212B493C0800D96A8B /* MainMenuViewModel.swift */,
 			);
 			path = ViewModels;
 			sourceTree = "<group>";
