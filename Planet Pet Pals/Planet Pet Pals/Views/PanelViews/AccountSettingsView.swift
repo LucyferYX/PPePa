@@ -19,9 +19,7 @@ struct AccountSettingsView: View {
     
     @State private var showEmailAlert = false
     @State private var emailAlertMessage = ""
-    @State private var showGoogleAlert = false
     @State private var passwordAlertMessage = ""
-//    @State private var showPasswordAlert = false
     
     var body: some View {
         ZStack {
@@ -208,7 +206,7 @@ extension AccountSettingsView {
                     showEmailAlert.wrappedValue = true
                 } catch {
                     print("Unexpected error: \(error)")
-                    emailAlertMessage.wrappedValue = "An unexpected error occurred."
+                    emailAlertMessage.wrappedValue = "Encountered unknown issue."
                     showEmailAlert.wrappedValue = true
                 }
             }
@@ -253,10 +251,10 @@ extension AccountSettingsView {
             .background(Color("Snow"))
             .cornerRadius(10)
         }
-        .alert(isPresented: $showGoogleAlert) {
+        .alert(isPresented: $viewModel.showGoogleAlert) {
             Alert(
                 title: Text("Error"),
-                message: Text(viewModel.errorMessage ?? "Unknown error"),
+                message: Text("This Google account is already used by another account."),
                 dismissButton: .default(Text("OK")) {
                     viewModel.errorMessage = nil
                 }

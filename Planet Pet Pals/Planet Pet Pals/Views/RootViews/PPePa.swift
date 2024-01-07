@@ -8,6 +8,7 @@
 import SwiftUI
 import Firebase
 
+
 @main
 struct PPePa: App {
     @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
@@ -19,6 +20,7 @@ struct PPePa: App {
     }
 }
 
+// Configure Firebase upon launching (CONF01)
 class AppDelegate: NSObject, UIApplicationDelegate {
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]? = nil) -> Bool {
         FirebaseConfiguration.shared.setLoggerLevel(.min)

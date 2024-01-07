@@ -11,15 +11,17 @@ import FirebaseAuth
 struct ResetPasswordView: View {
     @Environment(\.presentationMode) var presentationMode
     @ObservedObject var authManager: AuthManager
-//    @Binding var showResetPassword: Bool
     @Binding var email: String
     @State private var showAlert = false
     @State private var alertMessage = "alert"
 
     var body: some View {
         ZStack {
+            // Background design
             MainBackground3()
+            
             VStack(spacing: 2) {
+                // Closing view button
                 PawButton(action: {
                     presentationMode.wrappedValue.dismiss()
                 }, color: Color("Salmon"))
@@ -27,6 +29,7 @@ struct ResetPasswordView: View {
                 
                 Spacer()
                 
+                // Text to inform user
                 Text("Input your email address linked to your account and we will send you password reset email.")
                     .font(.custom("Baloo2-Regular", size: 20))
                     .foregroundColor(Color("Gondola"))
@@ -36,6 +39,8 @@ struct ResetPasswordView: View {
                 
                 Spacer()
                 
+                // Field to input email to which recovery email will be sent,
+                // if such email exists in authentication database
                 HStack(spacing: 1) {
                     Image(systemName: "envelope")
                         .foregroundColor(Color("Salmon"))
@@ -51,8 +56,10 @@ struct ResetPasswordView: View {
                 
                 Line2()
                 
+                // Button to send recovery email
                 Button(action: {
                     Task {
+                        // Handling of multiple errors
                         do {
                             guard !email.isEmpty else {
                                 throw EmailError.emptyEmail
@@ -74,11 +81,12 @@ struct ResetPasswordView: View {
                             showAlert = true
                         } catch {
                             print("Unexpected error: \(error)")
-                            alertMessage = "An unexpected error occurred."
+                            alertMessage = "Encountered unknown issue."
                             showAlert = true
                         }
                     }
                 }) {
+                    // Button design
                     Text("Reset password")
                         .frame(width: 220, height: 60)
                         .font(.custom("Baloo2-SemiBold", size: 18))
@@ -89,6 +97,7 @@ struct ResetPasswordView: View {
                         .foregroundColor(Color("Snow"))
                 }
                 .padding()
+                // Showing alert to user if something went wrong
                 .alert(isPresented: $showAlert) {
                     Alert(title: Text("Error"), message: Text(alertMessage), dismissButton: .default(Text("OK")))
                 }
@@ -123,7 +132,7 @@ enum EmailError: LocalizedError {
 
 
 //struct ResetPasswordViewPreview: PreviewProvider {
-//    @State static var email = "laima@gmail.comAAAAAAAAAAAAAAAAAAA"
+//    @State static var email = "laima@gmail.com"
 //    static var previews: some View {
 //        ResetPasswordView(authManager: AuthManager.shared, showResetPassword: .constant(true), email: $email)
 //    }

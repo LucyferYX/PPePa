@@ -77,8 +77,9 @@
 "Link your account" = "Sasaistiet kontu";
 "Forgot password?" = "Aizmirsi paroli?";
 "or" = "vai";
-"Link e-mail account" = "Sasaistīt kontu ar E-pasta";
-"Link Google account" = "Sasaistīt kontu ar Google";
+"Link e-mail account" = "Sasaistīt ar e-pastu";
+"Link Google account" = "Sasaistīt ar Google";
+"This Google account is already used by another account." = "Šis Google konts jau ir sasaistīts ar citu kontu.";
 "Sign out" = "Izrakstīties";
 "Delete account" = "Dzēst kontu";
 "Would you like to delete account? This action cannot be undone." = "Vai vēlaties dzēst kontu? Šo darbību nevar atsaukt.";
@@ -125,8 +126,21 @@
 "Posts created in last 30 days!" = "Ieraksti izveidoti pēdējās 30 dienās!";
 "Users created in last 30 days!" = "Lietotāji izveidoti pēdējās 30 dienās!";
 "Search" = "Meklēt";
-"No Posts Found" = "Nav neviena ieraksta";
+"No posts pound" = "Nav atrasts neviens ieraksts";
 "No posts were from your search with this title." = "Nav atrasts neviens ieraksts ar šādu virsrakstu";
+"App encountered an error" = "Lietotne sastapās ar kļūdu";
+"Please restart the app. If error persits, please contact our team!" = "Lūdzu restartējiet lietotni. Ja kļūda atkārtojas, lūdzu, sazinieties ar mūsu komandu!";
+"Email or password do not match." = "E-pasts vai parole nesakrīt.";
+"Please enter an email." = "Lūdzu, ievadiet e-pastu.";
+"Please enter a password." = "Lūdzu, ievadiet paroli.";
+"Please input a valid email." = "Lūdzu, ievadiet derīgu e-pastu.";
+"No such account found." = "Šāds konts nav atrasts.";
+"Password must be at least 6 characters long." = "Parolei jābūt vismaz 6 simbolu garai.";
+"An account with this email already exists." = "Konts ar šo e-pasta adresi jau pastāv.";
+"Encountered unknown issue." = "Radās nezināma problēma.";
+"Your email: " = "Tavs e-pasts";
+"Copy URL" = "Kopēt saiti";
+
 
 "dog" = "suns";
 "cat" = "kaķis";

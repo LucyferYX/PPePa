@@ -16,7 +16,6 @@ struct MainMenuView: View {
     @State private var showMapView: Bool = false
     @State private var showStatsView: Bool = false
     
-//    @State var showPostView: Bool = false
     @State private var showCurrentPostView: Bool = false
     @State private var showSelectedPostView: Bool = false
     
@@ -36,21 +35,30 @@ struct MainMenuView: View {
                         .ignoresSafeArea()
                     
                     VStack {
+                        // If search functionality shows a list of found posts,
+                        // interaction with other elements is disabled temporarily
+                        
+                        // Button for opening the panel
                         panelButtons
                             .disabled(!viewModel.filteredPosts.isEmpty)
                         
+                        // Shows app logo
                         logoImage
                             .disabled(!viewModel.filteredPosts.isEmpty)
                         
+                        // Shows post images and lets user move them forward as well as open post view for the one shown
                         postNavigation
                             .disabled(!viewModel.filteredPosts.isEmpty)
                         
                         Spacer()
                         
+                        // Search bar
                         searchBar
                         
                         Spacer()
                         
+                        // Create, map and stats view buttons
+                        // Buttons are hidden if keyboard is shown to prevent elements from being pushed outside the view
                         if showButton {
                             mainButtons
                                 .disabled(!viewModel.filteredPosts.isEmpty)
@@ -61,6 +69,7 @@ struct MainMenuView: View {
                     
                     }
                     
+                    // Show user searched posts that match the input for their title field
                     if !viewModel.filteredPosts.isEmpty {
                         ZStack {
                             List(viewModel.filteredPosts) { post in
@@ -83,7 +92,8 @@ struct MainMenuView: View {
                             viewModel.filteredPosts = []
                         })
                     }
-
+                    
+                    // Show panel view in a side menu style
                     PanelView(showSignInView: $showSignInView, width: geometry.size.width*0.8, showPanelView: self.showPanelView, closePanelView: { self.showPanelView = false })
                         .offset(x: self.showPanelView ? 0 : -geometry.size.width)
                         .transition(.move(edge: .leading))
@@ -97,11 +107,13 @@ struct MainMenuView: View {
             .onDisappear {
                 viewModel.removeKeyboardNotifications()
             }
+            // Open post view from post navigation function
             .fullScreenCover(isPresented: $showCurrentPostView) {
                 if let postId = viewModel.currentPost?.postId {
                     PostView(showPostView: $showCurrentPostView, postId: postId)
                 }
             }
+            // Open post view from tapping searched post cell
             .fullScreenCover(isPresented: $showSelectedPostView) {
                 if let postId = viewModel.selectedPost?.postId {
                     PostView(showPostView: $showSelectedPostView, postId: postId)
@@ -169,7 +181,7 @@ extension MainMenuView {
             }
         }
         .alert(isPresented: $viewModel.showAlert) {
-            Alert(title: Text("No Posts Found"), message: Text("No posts were from your search with this title."), dismissButton: .default(Text("OK")))
+            Alert(title: Text("No posts found"), message: Text("No posts were from your search with this title."), dismissButton: .default(Text("OK")))
         }
     }
     

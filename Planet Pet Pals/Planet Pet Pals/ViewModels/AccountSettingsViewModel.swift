@@ -16,6 +16,7 @@ final class AccountSettingsViewModel: ObservableObject {
     @Published var showDeleteErrorAlert: Bool = false
     @Published var showPasswordAlert: Bool = false
     @Published var currentAlert: AlertType? = nil
+    @Published var showGoogleAlert = false
     
     @Published var email: String = ""
     @Published var password: String = ""
@@ -77,11 +78,14 @@ final class AccountSettingsViewModel: ObservableObject {
         } catch let error as NSError where error.code == AuthErrorCode.accountExistsWithDifferentCredential.rawValue {
             print(error.localizedDescription)
             self.errorMessage = error.localizedDescription
+            self.showGoogleAlert = true
         } catch {
             print("An error occurred: \(error.localizedDescription)")
             self.errorMessage = "An error occurred: \(error.localizedDescription)"
+            self.showGoogleAlert = true
         }
     }
+
     
     func linkEmailAccount() async throws {
         guard !email.isEmpty else {

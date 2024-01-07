@@ -10,8 +10,6 @@ import SwiftUI
 struct LikesView: View {
     @StateObject private var viewModel = LikesViewModel()
     @StateObject var likedPostsViewModel = LikedPostsViewModel.shared
-    
-    @State private var showAlert = false
     @State private var postCount: Int = 0
     
     init() {
@@ -46,10 +44,6 @@ struct LikesView: View {
                     }
                     .background(Color("Walnut"))
                     .scrollContentBackground(.hidden)
-                    // 1 second until another post is deleted
-                    .alert(isPresented: $showAlert) {
-                        Alert(title: Text("Please wait"), message: Text("Please wait a moment before deleting another post."), dismissButton: .default(Text("OK")))
-                    }
                     .onChange(of: likedPostsViewModel.userLikedPosts) { _ in
                         postCount = likedPostsViewModel.userLikedPosts.count
                     }

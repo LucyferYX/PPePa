@@ -12,11 +12,7 @@ struct PanelContent: View {
     @StateObject private var viewModel = PanelViewModel()
     @Binding var showSignInView: Bool
     @State private var showProfileView = false
-    
-    @State private var showDeleteAlert = false
-    @State private var showEmailAlert = false
-    @State private var emailAlertMessage = ""
-    
+
     var body: some View {
         GeometryReader { geometry in
             VStack(alignment: .leading) {

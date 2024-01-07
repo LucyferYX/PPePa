@@ -29,8 +29,10 @@ struct AuthView: View {
     var body: some View {
         ScrollView {
             ZStack {
+                // Background design
                 AuthBackground(color1: Color("Orchid"), color2: Color("Salmon"))
                 
+                // Welcoming user text
                 VStack(alignment: .leading) {
                     VStack(alignment: .leading, spacing: -5) {
                         Text("Welcome")
@@ -57,11 +59,13 @@ struct AuthView: View {
                                             Spacer()
                                         }
                                         
+                                        // Email input field
                                         SignTextField(placeholder: "Email", text: $viewModel.email)
                                         
                                         Line3()
                                             .padding(.bottom)
                                         
+                                        // Password input field
                                         if showPassword {
                                             SignTextField(placeholder: "Password", text: $viewModel.password)
                                         } else {
@@ -70,8 +74,10 @@ struct AuthView: View {
                                         
                                         Line3()
                                         
+                                        // Show or hide password input
                                         ShowPasswordButton()
                                         
+                                        // Button to login
                                         LoginButton()
                                         
                                         Rectangle()
@@ -79,9 +85,11 @@ struct AuthView: View {
                                             .frame(height: 2)
                                             .padding(.top)
                                         
+                                        // Button to sign in with Google
                                         GoogleButton()
                                             .padding(.vertical)
                                         
+                                        // Button to open reset password view
                                         LabelButton(action: {
                                             self.showResetPasswordView = true
                                         }, title: "Forgot password?", color: Color("Gondola"), fontSize: 18)
@@ -103,11 +111,13 @@ struct AuthView: View {
                                             Spacer()
                                         }
                                         
+                                        // Email input field
                                         SignTextField(placeholder: "Email", text: $viewModel.email)
                                         
                                         Line3()
                                             .padding(.bottom)
                                         
+                                        // Password input field
                                         if showPassword {
                                             SignTextField(placeholder: "Password", text: $viewModel.password)
                                         } else {
@@ -116,8 +126,10 @@ struct AuthView: View {
                                         
                                         Line3()
                                         
+                                        // Show or hide password
                                         ShowPasswordButton()
                                         
+                                        // Button to sign up
                                         SignUpButton()
                                         
                                         Rectangle()
@@ -125,43 +137,14 @@ struct AuthView: View {
                                             .frame(height: 2)
                                             .padding(.vertical)
                                         
+                                        // Button to sign in with Google
                                         GoogleButton()
                                         
-                                        Button(action: {
-                                            Task {
-                                                do {
-                                                    try await viewModel.signInAnonymous()
-                                                    showSignInView = false
-                                                } catch {
-                                                    print(error)
-                                                }
-                                            }
-                                        }, label: {
-                                            VStack(spacing: 0) {
-                                                Text("Continue as guest?")
-                                                    .font(.custom("Baloo2-SemiBold", size: 18))
-                                                    .font(.headline)
-                                                    .foregroundColor(Color("Gondola"))
-                                                Text("Account can be binded later")
-                                                    .font(.custom("Baloo2-Regular", size: 15))
-                                                    .lineSpacing(0)
-                                                    .opacity(0.6)
-                                            }
-                                            .padding(.leading)
-                                            .padding(.trailing)
-                                            .background(
-                                                RoundedRectangle(cornerRadius: 10)
-                                                    .fill(.linearGradient(colors: [Color("Salmon")], startPoint: .leading, endPoint: .trailing))
-                                                    .opacity(0.3)
-                                            )
-                                            .fixedSize(horizontal: false, vertical: true)
-                                            .padding(.leading)
-                                            .padding(.trailing)
-                                        })
-                                        .padding(.bottom, 30)
-                                        .padding(.top, 20)
+                                        // Button to sign up anymously
+                                        guestButton(viewModel: viewModel, showSignInView: $showSignInView)
+
                                     }
-                                        .scaleEffect(x: -1, y: 1)
+                                    .scaleEffect(x: -1, y: 1)
                                 )
                             }
                             .opacity(flipped ? 1 : 0)
@@ -190,6 +173,42 @@ struct AuthView: View {
 
 // MARK: Extension
 extension AuthView {
+    func guestButton(viewModel: AuthViewModel, showSignInView: Binding<Bool>) -> some View {
+        Button(action: {
+            Task {
+                do {
+                    try await viewModel.signInAnonymous()
+                    showSignInView.wrappedValue = false
+                } catch {
+                    print(error)
+                }
+            }
+        }, label: {
+            VStack(spacing: 0) {
+                Text("Continue as guest?")
+                    .font(.custom("Baloo2-SemiBold", size: 18))
+                    .font(.headline)
+                    .foregroundColor(Color("Gondola"))
+                Text("Account can be binded later")
+                    .font(.custom("Baloo2-Regular", size: 15))
+                    .lineSpacing(0)
+                    .opacity(0.6)
+            }
+            .padding(.leading)
+            .padding(.trailing)
+            .background(
+                RoundedRectangle(cornerRadius: 10)
+                    .fill(.linearGradient(colors: [Color("Salmon")], startPoint: .leading, endPoint: .trailing))
+                    .opacity(0.3)
+            )
+            .fixedSize(horizontal: false, vertical: true)
+            .padding(.leading)
+            .padding(.trailing)
+        })
+        .padding(.bottom, 30)
+        .padding(.top, 20)
+    }
+    
     func GoogleButton() -> some View {
         GoogleSignInButton(viewModel: GoogleSignInButtonViewModel(scheme: .light, style: .wide, state: .normal)) {
             Task {
@@ -209,15 +228,19 @@ extension AuthView {
         Button(action: {
             Task {
                 do {
+                    // Error for not filling email field (ERR04)
                     guard !viewModel.email.isEmpty else {
                         throw LoginError.emptyEmail
                     }
+                    // Error for not filling password field (ERR05)
                     guard !viewModel.password.isEmpty else {
                         throw LoginError.emptyPassword
                     }
+                    // Error for not filling email field with valid email (ERR06)
                     guard viewModel.email.contains("@") else {
                         throw LoginError.invalidEmail
                     }
+                    // Error if no account with such email exists in authentication database (ERR07)
                     let methods = try await Auth.auth().fetchSignInMethods(forEmail: viewModel.email)
                     guard !(methods.isEmpty) else {
                         throw LoginError.emailNotFound
@@ -225,13 +248,25 @@ extension AuthView {
                     try await viewModel.signIn()
                     print("Logged in succesfully.")
                     showSignInView = false
+                // Appropriate alerts are shown to user
                 } catch let error as LoginError {
                     print("Failed to log in: \(error)")
                     alertMessage = error.localizedDescription
                     showAlert = true
+                    // Error if no accounts match the email and password in authentication database,
+                    // handled internally by Firebase (ERR03)
+                } catch let nsError as NSError {
+                    print("Failed to log in due to Firebase error: \(nsError)")
+                    if nsError.code == AuthErrorCode.wrongPassword.rawValue {
+                        alertMessage = "Email or password do not match."
+                    } else {
+                        alertMessage = nsError.localizedDescription
+                    }
+                    showAlert = true
                 } catch {
-                    print("Unexpected error: \(error)")
-                    alertMessage = "Email or password do not match."
+                    // Error caused by unknown issue (ERR02)
+                    print("Failed to log in: \(error)")
+                    alertMessage = "Encountered unknown issue."
                     showAlert = true
                 }
             }
@@ -246,6 +281,7 @@ extension AuthView {
                 )
                 .foregroundColor(Color("Gondola"))
         }
+        // Alert shown for error in process of logging in
         .alert(isPresented: $showAlert) {
             Alert(title: Text("Error logging in"), message: Text(alertMessage), dismissButton: .default(Text("OK")))
         }
@@ -255,18 +291,23 @@ extension AuthView {
         Button(action: {
             Task {
                 do {
+                    // Error for not filling email field (ERR04)
                     guard !viewModel.email.isEmpty else {
                         throw SignUpError.emptyEmail
                     }
+                    // Error for not filling password field (ERR05)
                     guard !viewModel.password.isEmpty else {
                         throw SignUpError.emptyPassword
                     }
+                    // Error for not filling email field with valid email (ERR06)
                     guard viewModel.email.contains("@") else {
                         throw SignUpError.invalidEmail
                     }
+                    // Error for not password field having less than 6 symbols (ERR08)
                     guard viewModel.password.count >= 6 else {
                         throw SignUpError.passwordTooShort
                     }
+                    // Error if account with such email already exists in authentication database (ERR09)
                     let methods = try await Auth.auth().fetchSignInMethods(forEmail: viewModel.email)
                     guard methods.isEmpty else {
                         throw SignUpError.emailAlreadyExists
@@ -274,11 +315,13 @@ extension AuthView {
                     try await viewModel.signUp()
                     print("Signed up succesfully.")
                     showSignInView = false
+                // Appropriate alerts are shown to user
                 } catch let error as SignUpError {
                     print("Failed to sign up: \(error)")
                     alertMessage = error.localizedDescription
                     showAlert = true
                 } catch {
+                    // Error caused by unknown issue (ERR02)
                     print("Unexpected error: \(error)")
                     alertMessage = "Encountered unknown issue."
                     showAlert = true
@@ -295,6 +338,7 @@ extension AuthView {
                 )
                 .foregroundColor(Color("Gondola"))
         }
+        // Alert shown for error in process of signing up
         .alert(isPresented: $showAlert) {
             Alert(title: Text("Error signing up"), message: Text(alertMessage), dismissButton: .default(Text("OK")))
         }
@@ -335,6 +379,7 @@ extension AuthView {
 
 
 // MARK: Enum
+// Errors for login in order: (ERR04) (ERR05) (ERR06) (ERR07) (ERR03)
 enum LoginError: LocalizedError {
     case emptyEmail
     case emptyPassword
@@ -358,6 +403,7 @@ enum LoginError: LocalizedError {
     }
 }
 
+// Errors for signing up in order: (ERR04) (ERR05) (ERR06) (ERR08) (ERR09)
 enum SignUpError: LocalizedError {
     case emptyEmail
     case emptyPassword
