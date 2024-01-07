@@ -12,7 +12,7 @@ import PhotosUI
 
 @MainActor
 final class CreateViewModel: ObservableObject {
-    @Published private(set) var user: DatabaseUser? = nil
+    @Published private(set) var user: DBUserModel? = nil
     @Published private(set) var image: UIImage? = nil
     
     @Published var isUploading = false

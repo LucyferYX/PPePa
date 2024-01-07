@@ -11,8 +11,8 @@ import FirebaseAuth
 @MainActor
 final class PanelViewModel: ObservableObject {
     @Published var authProviders: [AuthProviderOption] = []
-    @Published var authUser: AuthDataResultModel? = nil
-    @Published private(set) var user: DatabaseUser? = nil
+    @Published var authUser: AuthUserModel? = nil
+    @Published private(set) var user: DBUserModel? = nil
     @Published var isAdmin = false
     
     @Published var showReportedPostsView = false

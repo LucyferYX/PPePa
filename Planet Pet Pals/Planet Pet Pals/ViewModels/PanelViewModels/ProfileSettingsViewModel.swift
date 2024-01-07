@@ -10,8 +10,8 @@ import FirebaseStorage
 
 @MainActor
 final class ProfileSettingsViewModel: ObservableObject {
-    @Published var authUser: AuthDataResultModel? = nil
-    @Published private(set) var user: DatabaseUser? = nil
+    @Published var authUser: AuthUserModel? = nil
+    @Published private(set) var user: DBUserModel? = nil
     
     @Published var username: String = ""
     

@@ -11,7 +11,7 @@ import GoogleSignInSwift
 
 @MainActor
 final class AuthViewModel: ObservableObject {
-    @Published var authUser: AuthDataResultModel? = nil
+    @Published var authUser: AuthUserModel? = nil
     @Published var email: String = ""
     @Published var password: String = ""
     
@@ -23,7 +23,7 @@ final class AuthViewModel: ObservableObject {
         }
         
         let authDataResult = try await AuthManager.shared.createUser(email: email, password: password)
-        let user = DatabaseUser(auth: authDataResult)
+        let user = DBUserModel(auth: authDataResult)
         try await UserManager.shared.createNewUser(user: user)
     }
     
@@ -42,14 +42,14 @@ final class AuthViewModel: ObservableObject {
         let helper = SignInGoogleHelper()
         let tokens = try await helper.signIn()
         let authDataResult = try await AuthManager.shared.signInWithGoogle(tokens: tokens)
-        let user = DatabaseUser(auth: authDataResult)
+        let user = DBUserModel(auth: authDataResult)
         try await UserManager.shared.createNewUser(user: user)
     }
     
     // Function for signing up anonymously
     func signInAnonymous() async throws {
         let authDataResult = try await AuthManager.shared.signInAnonymous()
-        let user = DatabaseUser(auth: authDataResult)
+        let user = DBUserModel(auth: authDataResult)
         try await UserManager.shared.createNewUser(user: user)
     }
 }

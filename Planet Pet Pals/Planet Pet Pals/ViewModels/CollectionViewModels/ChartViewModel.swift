@@ -11,7 +11,7 @@ protocol DateCreatable: Codable {
     var dateCreated: Date { get }
 }
 
-extension DatabaseUser: DateCreatable {}
+extension DBUserModel: DateCreatable {}
 extension Post: DateCreatable {}
 
 enum DataType {

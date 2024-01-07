@@ -10,7 +10,7 @@ import FirebaseStorage
 
 @MainActor
 final class ProfileViewModel: ObservableObject {
-    @Published private(set) var user: DatabaseUser? = nil
+    @Published private(set) var user: DBUserModel? = nil
     @Published var isLoading = false
 
     func loadCurrentUser() async throws {

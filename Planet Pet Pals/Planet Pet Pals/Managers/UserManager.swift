@@ -9,84 +9,6 @@ import SwiftUI
 import FirebaseFirestore
 import FirebaseFirestoreSwift
 
-struct DatabaseUser: Codable {
-    let userId: String
-    let isAdmin: Bool
-    var username: String?
-    let isAnonymous: Bool?
-    let email: String?
-    let photoUrl: String?
-    let dateCreated: Date
-    let favorites: [String]?
-    
-    init(auth: AuthDataResultModel) {
-        self.userId = auth.uid
-        self.isAdmin = false
-        self.username = "User"
-        self.isAnonymous = auth.isAnonymous
-        self.email = auth.email
-        self.photoUrl = auth.photoUrl
-        self.dateCreated = Date()
-        self.favorites = nil
-    }
-    
-    init(
-        userId: String,
-        isAdmin: Bool,
-        username: String? = "User",
-        isAnonymous: Bool? = nil,
-        email: String? = nil,
-        photoUrl: String? = nil,
-        dateCreated: Date,
-        favorites: [String]? = nil
-    ) {
-        self.userId = userId
-        self.isAdmin = isAdmin
-        self.username = username
-        self.isAnonymous = isAnonymous
-        self.email = email
-        self.photoUrl = photoUrl
-        self.dateCreated = dateCreated
-        self.favorites = favorites
-    }
-    
-    enum CodingKeys: String, CodingKey {
-        case userId = "user_id"
-        case isAdmin = "is_admin"
-        case username = "username"
-        case isAnonymous = "is_anonymous"
-        case email = "email"
-        case photoUrl = "photo_url"
-        case dateCreated = "date_created"
-        case favorites = "favorites"
-    }
-
-    init(from decoder: Decoder) throws {
-        let container = try decoder.container(keyedBy: CodingKeys.self)
-        userId = try container.decode(String.self, forKey: .userId)
-        isAdmin = try container.decode(Bool.self, forKey: .isAdmin)
-        username = try container.decodeIfPresent(String.self, forKey: .username)
-        isAnonymous = try container.decodeIfPresent(Bool.self, forKey: .isAnonymous)
-        email = try container.decodeIfPresent(String.self, forKey: .email)
-        photoUrl = try container.decodeIfPresent(String.self, forKey: .photoUrl)
-        dateCreated = try container.decode(Date.self, forKey: .dateCreated)
-        favorites = try container.decodeIfPresent([String].self, forKey: .favorites)
-    }
-
-    func encode(to encoder: Encoder) throws {
-        var container = encoder.container(keyedBy: CodingKeys.self)
-        try container.encode(self.userId, forKey: .userId)
-        try container.encode(self.isAdmin, forKey: .isAdmin)
-        try container.encode(self.username, forKey: .username)
-        try container.encode(self.isAnonymous, forKey: .isAnonymous)
-        try container.encode(self.email, forKey: .email)
-        try container.encode(self.photoUrl, forKey: .photoUrl)
-        try container.encode(self.dateCreated, forKey: .dateCreated)
-        try container.encode(self.favorites, forKey: .favorites)
-    }
-}
-
-
 final class UserManager {
     static let shared = UserManager()
     private init() {}
@@ -97,12 +19,12 @@ final class UserManager {
         usersCollection.document(userId)
     }
     
-    func getUser(userId: String) async throws -> DatabaseUser {
-        try await usersDocument(userId: userId).getDocument(as: DatabaseUser.self)
+    func getUser(userId: String) async throws -> DBUserModel {
+        try await usersDocument(userId: userId).getDocument(as: DBUserModel.self)
     }
     
-    func getAllUsers() async throws -> [DatabaseUser] {
-        try await usersCollection.getDocuments(as: DatabaseUser.self)
+    func getAllUsers() async throws -> [DBUserModel] {
+        try await usersCollection.getDocuments(as: DBUserModel.self)
     }
     
     private func userLikesCollection(userId: String) -> CollectionReference {
@@ -113,7 +35,7 @@ final class UserManager {
         userLikesCollection(userId: userId).document(likedPostId)
     }
     
-    func createNewUser(user: DatabaseUser) async throws {
+    func createNewUser(user: DBUserModel) async throws {
         try usersDocument(userId: user.userId).setData(from: user, merge: false)
     }
     
@@ -123,28 +45,28 @@ final class UserManager {
     
     func updateUserPremiumStatus(userId: String, isAdmin: Bool) async throws {
         let data: [String: Any] = [
-            DatabaseUser.CodingKeys.isAdmin.rawValue : isAdmin
+            DBUserModel.CodingKeys.isAdmin.rawValue : isAdmin
         ]
         try await usersDocument(userId: userId).updateData(data)
     }
     
     func addUserFavorites(userId: String, favorite: String) async throws {
         let data: [String: Any] = [
-            DatabaseUser.CodingKeys.favorites.rawValue : FieldValue.arrayUnion([favorite])
+            DBUserModel.CodingKeys.favorites.rawValue : FieldValue.arrayUnion([favorite])
         ]
         try await usersDocument(userId: userId).updateData(data)
     }
     
     func removeUserFavorites(userId: String, favorite: String) async throws {
         let data: [String: Any] = [
-            DatabaseUser.CodingKeys.favorites.rawValue : FieldValue.arrayRemove([favorite])
+            DBUserModel.CodingKeys.favorites.rawValue : FieldValue.arrayRemove([favorite])
         ]
         try await usersDocument(userId: userId).updateData(data)
     }
     
     func updateUserPhotoUrl(userId: String, photoUrl: String) async throws {
         let data: [String: Any] = [
-            DatabaseUser.CodingKeys.photoUrl.rawValue : photoUrl
+            DBUserModel.CodingKeys.photoUrl.rawValue : photoUrl
         ]
         try await usersDocument(userId: userId).updateData(data)
     }
@@ -173,15 +95,15 @@ final class UserManager {
     
     func updateUserAnonymousStatusAndEmail(userId: String, isAnonymous: Bool, email: String?) async throws {
         let data: [String: Any] = [
-            DatabaseUser.CodingKeys.isAnonymous.rawValue : isAnonymous,
-            DatabaseUser.CodingKeys.email.rawValue : email ?? NSNull()
+            DBUserModel.CodingKeys.isAnonymous.rawValue : isAnonymous,
+            DBUserModel.CodingKeys.email.rawValue : email ?? NSNull()
         ]
         try await usersDocument(userId: userId).updateData(data)
     }
     
     func updateUsername(userId: String, newUsername: String) async throws {
         let userDocument = usersDocument(userId: userId)
-        try await userDocument.updateData([DatabaseUser.CodingKeys.username.rawValue: newUsername])
+        try await userDocument.updateData([DBUserModel.CodingKeys.username.rawValue: newUsername])
     }
     
     // MARK: Listener for likes
@@ -206,13 +128,13 @@ final class UserManager {
     // MARK: Listener for profile
     private var userProfileListener: ListenerRegistration? = nil
 
-    func addListenerForUserProfile(userId: String, completion: @escaping (_ user: DatabaseUser) -> Void) {
+    func addListenerForUserProfile(userId: String, completion: @escaping (_ user: DBUserModel) -> Void) {
         self.userProfileListener = usersDocument(userId: userId).addSnapshotListener { documentSnapshot, error in
             guard let document = documentSnapshot else {
                 print("Error fetching user: \(error!)")
                 return
             }
-            guard let user = try? document.data(as: DatabaseUser.self) else {
+            guard let user = try? document.data(as: DBUserModel.self) else {
                 print("Error decoding user")
                 return
             }

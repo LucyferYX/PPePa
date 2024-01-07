@@ -11,7 +11,7 @@ import FirebaseAuth
 @MainActor
 final class AccountSettingsViewModel: ObservableObject {
     @Published var authProviders: [AuthProviderOption] = []
-    @Published var authUser: AuthDataResultModel? = nil
+    @Published var authUser: AuthUserModel? = nil
     @Published var errorMessage: String? = nil
     @Published var showDeleteErrorAlert: Bool = false
     @Published var showPasswordAlert: Bool = false

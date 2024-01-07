@@ -8,20 +8,6 @@
 import SwiftUI
 import FirebaseAuth
 
-struct AuthDataResultModel {
-    let uid: String
-    let email: String?
-    let photoUrl: String?
-    let isAnonymous: Bool
-    
-    init(user: User) {
-        self.uid = user.uid
-        self.email = user.email
-        self.photoUrl = user.photoURL?.absoluteString
-        self.isAnonymous = user.isAnonymous
-    }
-}
-
 enum AuthProviderOption: String {
     case email = "password"
     case google = "google.com"
@@ -31,11 +17,11 @@ class AuthManager: ObservableObject {
     static let shared = AuthManager()
     init() {}
     
-    func getAuthenticatedUser() throws -> AuthDataResultModel {
+    func getAuthenticatedUser() throws -> AuthUserModel {
         guard let user = Auth.auth().currentUser else {
             throw URLError(.badServerResponse)
         }
-        return AuthDataResultModel(user: user)
+        return AuthUserModel(user: user)
     }
     
     func getProviders() throws -> [AuthProviderOption] {
@@ -68,15 +54,15 @@ class AuthManager: ObservableObject {
 // MARK: Sign in email
 extension AuthManager {
     @discardableResult
-    func createUser(email: String, password: String) async throws -> AuthDataResultModel {
+    func createUser(email: String, password: String) async throws -> AuthUserModel {
         let authDataResult = try await Auth.auth().createUser(withEmail: email, password: password)
-        return AuthDataResultModel(user: authDataResult.user)
+        return AuthUserModel(user: authDataResult.user)
     }
     
     @discardableResult
-    func signInUser(email: String, password: String) async throws -> AuthDataResultModel {
+    func signInUser(email: String, password: String) async throws -> AuthUserModel {
         let authDataResult = try await Auth.auth().signIn(withEmail: email, password: password)
-        return AuthDataResultModel(user: authDataResult.user)
+        return AuthUserModel(user: authDataResult.user)
     }
     
     func resetPassword(email: String) async throws {
@@ -101,42 +87,42 @@ extension AuthManager {
 // MARK: Sign in SSO
 extension AuthManager {
     @discardableResult
-    func signInWithGoogle(tokens: GoogleSignInResultModel) async throws -> AuthDataResultModel {
+    func signInWithGoogle(tokens: GoogleSignInResultModel) async throws -> AuthUserModel {
         let credential = GoogleAuthProvider.credential(withIDToken: tokens.idToken, accessToken: tokens.accessToken)
         return try await signIn(credential: credential)
     }
     
-    func signIn(credential: AuthCredential) async throws -> AuthDataResultModel {
+    func signIn(credential: AuthCredential) async throws -> AuthUserModel {
         let authDataResult = try await Auth.auth().signIn(with: credential)
-        return AuthDataResultModel(user: authDataResult.user)
+        return AuthUserModel(user: authDataResult.user)
     }
 }
 
 // MARK: Sign in anonymously
 extension AuthManager {
     @discardableResult
-    func signInAnonymous() async throws -> AuthDataResultModel {
+    func signInAnonymous() async throws -> AuthUserModel {
         let authDataResult = try await Auth.auth().signInAnonymously()
-        return AuthDataResultModel(user: authDataResult.user)
+        return AuthUserModel(user: authDataResult.user)
     }
     
-    func linkEmail(email: String, password: String) async throws -> AuthDataResultModel {
+    func linkEmail(email: String, password: String) async throws -> AuthUserModel {
         let credential = EmailAuthProvider.credential(withEmail: email, password: password)
         return try await linkCredential(credential: credential)
     }
     
-    func linkGoogle(tokens: GoogleSignInResultModel) async throws -> AuthDataResultModel {
+    func linkGoogle(tokens: GoogleSignInResultModel) async throws -> AuthUserModel {
         let credential = GoogleAuthProvider.credential(withIDToken: tokens.idToken, accessToken: tokens.accessToken)
         return try await linkCredential(credential: credential)
     }
     
-    private func linkCredential(credential: AuthCredential) async throws -> AuthDataResultModel {
+    private func linkCredential(credential: AuthCredential) async throws -> AuthUserModel {
         guard let user = Auth.auth().currentUser else {
             throw URLError(.badURL)
         }
         do {
             let authDataResult = try await user.link(with: credential)
-            return AuthDataResultModel(user: authDataResult.user)
+            return AuthUserModel(user: authDataResult.user)
         } catch let error as NSError where error.code == AuthErrorCode.accountExistsWithDifferentCredential.rawValue {
             print("An account already exists with the same email address but different sign-in credentials.")
             throw NSError(domain: "AuthManager", code: AuthErrorCode.accountExistsWithDifferentCredential.rawValue, userInfo: [NSLocalizedDescriptionKey: "An account already exists with the same email address but different sign-in credentials."])

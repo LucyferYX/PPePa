@@ -11,7 +11,7 @@ import FirebaseFirestore
 @MainActor
 final class PostViewModel: ObservableObject {
     @Published private(set) var post: Post? = nil
-    @Published private(set) var user: DatabaseUser? = nil
+    @Published private(set) var user: DBUserModel? = nil
     private var postListener: ListenerRegistration?
     @Published var isLoading = false
 

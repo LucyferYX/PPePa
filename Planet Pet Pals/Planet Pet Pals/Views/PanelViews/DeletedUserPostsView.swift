@@ -74,5 +74,4 @@ struct DeletedUserPostsView: View {
             }
         }
     }
-
 }
