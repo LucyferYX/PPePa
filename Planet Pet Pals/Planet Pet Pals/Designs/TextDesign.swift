@@ -66,10 +66,14 @@ struct LimitedTextField: View {
                     }
                 }
             if text.count >= maxLength {
-                Text("Character limit of \(maxLength) has been reached!")
-                    .font(.custom("Baloo2-Regular", size: 15))
-                    .foregroundColor(.red)
-                    .font(.caption)
+                HStack {
+                    Text("Character limit of ")
+                    Text("\(maxLength)")
+                    Text(" has been reached!")
+                }
+                .font(.custom("Baloo2-Regular", size: 15))
+                .foregroundColor(.red)
+                .font(.caption)
             }
         }
     }

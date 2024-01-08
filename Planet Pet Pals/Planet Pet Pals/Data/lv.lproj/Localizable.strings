@@ -30,11 +30,13 @@
 "Error signing up" = "Kļūda reģistrējoties";
 "Don't have an account? " = "Nav konta? ";
 "Most liked post is " = "Vispopulārākais ieraksts ir ";
+"Character limit of " = "Simbolu skaits ";
+" has been reached!" = " ir sasniegts!";
 
 " SIGN UP" = "PIERAKSTIES";
 "Already have an account? " = "Jau ir konts?";
-" LOG IN" = "PIESAKIES";
-"Input your email address linked to your account and we will send you password reset email." = "Ievadiet savu e-pasta adresi, kas saistīta ar jūsu kontu, un mēs nosūtīsim jums paroles atiestatīšanas e-pastu.";
+" LOG IN" = " PIESAKIES";
+"Input your email address linked to your account and we will send you password reset email." = "Ievadiet savu e-pasta adresi, kas saistīta ar jūsu kontu, fun mēs nosūtīsim jums paroles atiestatīšanas e-pastu.";
 "Email" = "E-pasts";
 "Password" = "Parole";
 "Reset password" = "Atiestatīt paroli";
@@ -97,10 +99,10 @@
 "Please wait" = "Lūdzu, uzgaidiet";
 "Please wait a moment before deleting another post." = "Lūdzu, uzgaidiet brīdi, pirms dzēšat citu ierakstu.";
 
-"No liked posts yet." = "Vēl nav atzīmētu ierakstu!";
+"No liked posts yet." = "Vēl nav ar 'patīk' atzīmētu ierakstu!";
 "Swipe left to delete" = "Pavelciet pa kreisi, lai dzēstu";
 "Your post count: " = "Jūsu ierakstu skaits: ";
-"No created posts yet." = "Vēl nav izveidoti ieraksti";
+"No created posts yet." = "Vēl nav izveidoti ieraksti!";
 "Reported posts" = "Ieraksti, par kuriem ziņots";
 "Deleted user posts" = "Dzēsto lietotāju ieraksti";
 "My posts" = "Mani ieraksti";

@@ -57,6 +57,7 @@ struct LikesView: View {
                 Text("No liked posts yet.")
                     .font(.custom("Baloo2-SemiBold", size: 30))
                     .foregroundColor(Color("Linen"))
+                    .multilineTextAlignment(.center)
                     .padding(.top)
             }
         }
