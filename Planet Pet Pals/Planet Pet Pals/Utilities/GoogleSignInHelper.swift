@@ -9,17 +9,10 @@ import SwiftUI
 import GoogleSignIn
 import GoogleSignInSwift
 
-struct GoogleSignInResultModel {
-    let idToken: String
-    let accessToken: String
-    let name: String?
-    let email: String?
-}
-
 struct SignInGoogleHelper {
     @MainActor
-    func signIn() async throws -> GoogleSignInResultModel {
-        guard let topVC = Utilities.shared.topViewController() else {
+    func signIn() async throws -> GoogleSignInModel {
+        guard let topVC = TopViewController.shared.topViewController() else {
             throw URLError(.cannotFindHost)
         }
         
@@ -32,7 +25,7 @@ struct SignInGoogleHelper {
         let name = gidSignInResult.user.profile?.name
         let email = gidSignInResult.user.profile?.email
         
-        let tokens = GoogleSignInResultModel(idToken: idToken, accessToken: accessToken, name: name, email: email)
+        let tokens = GoogleSignInModel(idToken: idToken, accessToken: accessToken, name: name, email: email)
         return tokens
     }
 }

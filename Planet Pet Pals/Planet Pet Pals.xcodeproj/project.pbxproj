@@ -18,7 +18,7 @@
 		7EC810DC2AD1881B00A5DDD0 /* ButtonDesign.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EC810DB2AD1881B00A5DDD0 /* ButtonDesign.swift */; };
 		DC0145222B493C0800D96A8B /* MainMenuViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC0145212B493C0800D96A8B /* MainMenuViewModel.swift */; };
 		DC01C5102B3A455D00486BCB /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = DC01C5122B3A455E00486BCB /* Localizable.strings */; };
-		DC1330C82B478D2D002FCF52 /* GoogleUtility.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC1330C72B478D2D002FCF52 /* GoogleUtility.swift */; };
+		DC1330C82B478D2D002FCF52 /* GoogleSignInHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC1330C72B478D2D002FCF52 /* GoogleSignInHelper.swift */; };
 		DC1330CA2B479A14002FCF52 /* ProfileSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC1330C92B479A13002FCF52 /* ProfileSettingsView.swift */; };
 		DC1330CC2B47ABB8002FCF52 /* PostViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC1330CB2B47ABB8002FCF52 /* PostViewModel.swift */; };
 		DC14520A2B0D44F30059FE96 /* MapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC1452092B0D44F30059FE96 /* MapView.swift */; };
@@ -51,10 +51,12 @@
 		DC6860CB2B4AFF6500F8B20A /* DBUserModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC6860CA2B4AFF6500F8B20A /* DBUserModel.swift */; };
 		DC6860CE2B4B002500F8B20A /* AuthUserModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC6860CD2B4B002500F8B20A /* AuthUserModel.swift */; };
 		DC6860D02B4B025D00F8B20A /* PostModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC6860CF2B4B025D00F8B20A /* PostModel.swift */; };
+		DC6860D22B4B05AD00F8B20A /* GoogleSignInModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC6860D12B4B05AD00F8B20A /* GoogleSignInModel.swift */; };
+		DC6860D42B4B08FF00F8B20A /* TopViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC6860D32B4B08FF00F8B20A /* TopViewController.swift */; };
 		DC9158EC2B2A44890098A968 /* GoogleSignIn in Frameworks */ = {isa = PBXBuildFile; productRef = DC9158EB2B2A44890098A968 /* GoogleSignIn */; };
 		DC9158EE2B2A44890098A968 /* GoogleSignInSwift in Frameworks */ = {isa = PBXBuildFile; productRef = DC9158ED2B2A44890098A968 /* GoogleSignInSwift */; };
 		DC9158F02B2A45BF0098A968 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = DC9158EF2B2A45BF0098A968 /* GoogleService-Info.plist */; };
-		DC9158F32B2A4DFC0098A968 /* Utilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC9158F22B2A4DFC0098A968 /* Utilities.swift */; };
+		DC9158F32B2A4DFC0098A968 /* FlexibleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC9158F22B2A4DFC0098A968 /* FlexibleView.swift */; };
 		DC9366342B2F0C880077D2F7 /* LaunchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC9366332B2F0C880077D2F7 /* LaunchView.swift */; };
 		DC97E3552B14D4BF00014018 /* RegionData.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC97E3542B14D4BF00014018 /* RegionData.swift */; };
 		DC9B47542B37763200721504 /* PostView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC9B47532B37763200721504 /* PostView.swift */; };
@@ -107,7 +109,7 @@
 		DC0145202B49316D00D96A8B /* lv */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = lv; path = lv.lproj/Localizable.strings; sourceTree = "<group>"; };
 		DC0145212B493C0800D96A8B /* MainMenuViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainMenuViewModel.swift; sourceTree = "<group>"; };
 		DC01C5112B3A455E00486BCB /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
-		DC1330C72B478D2D002FCF52 /* GoogleUtility.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoogleUtility.swift; sourceTree = "<group>"; };
+		DC1330C72B478D2D002FCF52 /* GoogleSignInHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoogleSignInHelper.swift; sourceTree = "<group>"; };
 		DC1330C92B479A13002FCF52 /* ProfileSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileSettingsView.swift; sourceTree = "<group>"; };
 		DC1330CB2B47ABB8002FCF52 /* PostViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostViewModel.swift; sourceTree = "<group>"; };
 		DC1452092B0D44F30059FE96 /* MapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapView.swift; sourceTree = "<group>"; };
@@ -138,8 +140,10 @@
 		DC6860CA2B4AFF6500F8B20A /* DBUserModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DBUserModel.swift; sourceTree = "<group>"; };
 		DC6860CD2B4B002500F8B20A /* AuthUserModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthUserModel.swift; sourceTree = "<group>"; };
 		DC6860CF2B4B025D00F8B20A /* PostModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostModel.swift; sourceTree = "<group>"; };
+		DC6860D12B4B05AD00F8B20A /* GoogleSignInModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoogleSignInModel.swift; sourceTree = "<group>"; };
+		DC6860D32B4B08FF00F8B20A /* TopViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TopViewController.swift; sourceTree = "<group>"; };
 		DC9158EF2B2A45BF0098A968 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../../../Downloads/GoogleService-Info.plist"; sourceTree = "<group>"; };
-		DC9158F22B2A4DFC0098A968 /* Utilities.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Utilities.swift; sourceTree = "<group>"; };
+		DC9158F22B2A4DFC0098A968 /* FlexibleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlexibleView.swift; sourceTree = "<group>"; };
 		DC9366332B2F0C880077D2F7 /* LaunchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LaunchView.swift; sourceTree = "<group>"; };
 		DC97E3542B14D4BF00014018 /* RegionData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegionData.swift; sourceTree = "<group>"; };
 		DC9B47532B37763200721504 /* PostView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostView.swift; sourceTree = "<group>"; };
@@ -215,12 +219,12 @@
 			isa = PBXGroup;
 			children = (
 				7EC3725D2ADDF24E001876AD /* Views */,
-				7EC810DA2AD187E100A5DDD0 /* Designs */,
 				DC3ECCBB2B2CF98200D142B6 /* ViewModels */,
 				DC4540772B30AF88008322F9 /* Managers */,
 				DC6860CC2B4AFF7B00F8B20A /* Models */,
+				7EC810DA2AD187E100A5DDD0 /* Designs */,
 				DC9FB3D72B1539CA0035C0A7 /* Data */,
-				DC418C492B08F2EA0070D226 /* Extensions */,
+				DC418C492B08F2EA0070D226 /* Utilities */,
 				7EC3725C2ADDF227001876AD /* Fonts */,
 				7E59232D2ACE0019000B96F5 /* Assets.xcassets */,
 				7E59232F2ACE0019000B96F5 /* Preview Content */,
@@ -324,14 +328,15 @@
 			path = AuthViews;
 			sourceTree = "<group>";
 		};
-		DC418C492B08F2EA0070D226 /* Extensions */ = {
+		DC418C492B08F2EA0070D226 /* Utilities */ = {
 			isa = PBXGroup;
 			children = (
-				DC9158F22B2A4DFC0098A968 /* Utilities.swift */,
+				DC9158F22B2A4DFC0098A968 /* FlexibleView.swift */,
 				7E5923372ACE155B000B96F5 /* ColorExtension.swift */,
-				DC1330C72B478D2D002FCF52 /* GoogleUtility.swift */,
+				DC1330C72B478D2D002FCF52 /* GoogleSignInHelper.swift */,
+				DC6860D32B4B08FF00F8B20A /* TopViewController.swift */,
 			);
-			path = Extensions;
+			path = Utilities;
 			sourceTree = "<group>";
 		};
 		DC4540772B30AF88008322F9 /* Managers */ = {
@@ -406,6 +411,7 @@
 				DC6860CA2B4AFF6500F8B20A /* DBUserModel.swift */,
 				DC6860CF2B4B025D00F8B20A /* PostModel.swift */,
 				DC334A292B38D4CA00B027B8 /* UserLikedPostModel.swift */,
+				DC6860D12B4B05AD00F8B20A /* GoogleSignInModel.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -576,6 +582,7 @@
 			files = (
 				DC5670B52B39EC1000807F2E /* ResetPasswordView.swift in Sources */,
 				DC9FF34C2B0FD49200DFCBD7 /* PostListView.swift in Sources */,
+				DC6860D22B4B05AD00F8B20A /* GoogleSignInModel.swift in Sources */,
 				DC3FF57D2B48B9DB00E2EF78 /* AccountSettingsViewModel.swift in Sources */,
 				DCFCE85C2B41D90400EAD795 /* SectionDesign.swift in Sources */,
 				DC9366342B2F0C880077D2F7 /* LaunchView.swift in Sources */,
@@ -586,7 +593,7 @@
 				DC1330CC2B47ABB8002FCF52 /* PostViewModel.swift in Sources */,
 				DCD9E16C2B476C540045D20A /* MyPostsView.swift in Sources */,
 				DC418C462B08F2570070D226 /* BackgroundDesign.swift in Sources */,
-				DC9158F32B2A4DFC0098A968 /* Utilities.swift in Sources */,
+				DC9158F32B2A4DFC0098A968 /* FlexibleView.swift in Sources */,
 				DC3ECCC62B2D0EA000D142B6 /* UserManager.swift in Sources */,
 				DC49FBCB2B3395DD00770741 /* LikesView.swift in Sources */,
 				DCF575DB2B49C73D005AFCC8 /* RootViewModel.swift in Sources */,
@@ -607,6 +614,7 @@
 				7E5923382ACE155B000B96F5 /* ColorExtension.swift in Sources */,
 				DCFC5DAB2B28FD9B00AA9EB3 /* RootView.swift in Sources */,
 				DC3ECCC42B2CFCB200D142B6 /* ProfileView.swift in Sources */,
+				DC6860D42B4B08FF00F8B20A /* TopViewController.swift in Sources */,
 				DC6860D02B4B025D00F8B20A /* PostModel.swift in Sources */,
 				DCD3B5B62B445C6B00A4743A /* StatsView.swift in Sources */,
 				7E59232A2ACE0014000B96F5 /* PPePa.swift in Sources */,
@@ -631,7 +639,7 @@
 				DCEDF5A12B3A5255000AACAB /* TextDesign.swift in Sources */,
 				DCE5CB2C2B0E4078005E5760 /* NavigationBarDesign.swift in Sources */,
 				DCE6084A2B1E6143007C926A /* AboutView.swift in Sources */,
-				DC1330C82B478D2D002FCF52 /* GoogleUtility.swift in Sources */,
+				DC1330C82B478D2D002FCF52 /* GoogleSignInHelper.swift in Sources */,
 				DCF581592B3E4D4000147095 /* ChartView.swift in Sources */,
 				DC49FBCF2B339FD600770741 /* PostCellView.swift in Sources */,
 				DC3ECCBF2B2CFABD00D142B6 /* AuthViewModel.swift in Sources */,

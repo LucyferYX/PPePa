@@ -12,10 +12,13 @@ import Firebase
 @main
 struct PPePa: App {
     @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
+    // Lietotnes valoda
+    @AppStorage("selectedLanguage") var selectedLanguage: String = "en"
 
     var body: some Scene {
         WindowGroup {
             RootView()
+                .environment(\.locale, .init(identifier: selectedLanguage))
         }
     }
 }

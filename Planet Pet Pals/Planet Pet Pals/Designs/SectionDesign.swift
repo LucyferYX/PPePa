@@ -17,7 +17,7 @@ struct FormSection<Content: View>: View {
     }
 
     var body: some View {
-        Section(header: Text(headerText)
+        Section(header: Text(LocalizedStringKey(headerText))
             .font(.custom("Baloo2-SemiBold", size: 20))
             .foregroundColor(Color("Walnut"))
             .textCase(nil)

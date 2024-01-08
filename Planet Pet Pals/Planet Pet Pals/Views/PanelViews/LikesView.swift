@@ -25,20 +25,25 @@ struct LikesView: View {
                 VStack(spacing: 0) {
                     HStack {
                         Text("Your liked post count: ")
+                            .padding(.trailing)
                         Text("\(postCount)")
                     }
-                    .font(.custom("Baloo2-SemiBold", size: 30))
+                    .font(.custom("Baloo2-SemiBold", size: 25))
                     .foregroundColor(Color("Linen"))
-                    .padding(.top)
-                    Text("Swipe left to remove from likes")
-                        .font(.custom("Baloo2-SemiBold", size: 25))
+                    .padding(.vertical)
+                    .lineSpacing(0)
+                    .multilineTextAlignment(.center)
+                    Text("Swipe left to remove")
+                        .font(.custom("Baloo2-SemiBold", size: 20))
                         .foregroundColor(Color("Linen"))
                         .foregroundColor(.secondary)
+                        .lineSpacing(0)
+                        .multilineTextAlignment(.center)
                     List {
                         ForEach(likedPostsViewModel.userLikedPosts, id: \.id.self) { post in
                             PostCellViewBuilder(postId: post.postId, showLikeButton: false, showLikes: true, showContext: true)
                                 .listRowBackground(Color("Walnut"))
-                                .listRowInsets(EdgeInsets(top: 0, leading: 5, bottom: 5, trailing: 0))
+                                .listRowInsets(EdgeInsets(top: 0, leading: 5, bottom: 0, trailing: 5))
                         }
                         .onDelete(perform: delete)
                     }

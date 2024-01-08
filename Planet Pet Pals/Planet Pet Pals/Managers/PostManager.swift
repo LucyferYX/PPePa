@@ -25,6 +25,11 @@ class PostManager {
         try await getAllPostsQuery().getDocuments(as: Post.self)
     }
     
+    func getAllUserPosts(userId: String) async throws -> [Post] {
+        let query = postsCollection.whereField(Post.CodingKeys.userId.rawValue, isEqualTo: userId)
+        return try await query.getDocuments(as: Post.self)
+    }
+    
     func getAllPostsBy1(startAfter: DocumentSnapshot? = nil) async throws -> ([Post], DocumentSnapshot?) {
         var query = postsCollection.order(by: Post.CodingKeys.dateCreated.rawValue, descending: true).limit(to: 1)
         if let lastSnapshot = startAfter {

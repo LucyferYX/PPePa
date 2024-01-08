@@ -25,6 +25,7 @@ struct AccountSettingsView: View {
         ZStack {
             MainBackground()
             VStack(spacing: 0) {
+                // Button to close the view
                 VStack {
                     PawButton(action: {
                         presentationMode.wrappedValue.dismiss()
@@ -33,11 +34,12 @@ struct AccountSettingsView: View {
                 }
                 ScrollView() {
                     VStack(spacing: 0) {
-                        
+                        // If user has email, they are shown this section
                         if viewModel.authProviders.contains(.email) {
                             RoundedSquare(color: Color("Seashell"), width: 300, height: 300) {
                                 AnyView(
                                     VStack {
+                                        // Functionality to update user's password
                                         Text("Update password")
                                             .foregroundColor(Color("Gondola"))
                                             .font(.custom("Baloo2-SemiBold", size: 25))
@@ -50,9 +52,11 @@ struct AccountSettingsView: View {
                                         }
                                         
                                         Line3()
-
+                                        
+                                        // To show or hide password input
                                         ShowPasswordButton()
                                         
+                                        // Button to update password
                                         Button(action: {
                                             Task {
                                                 do {
@@ -317,12 +321,12 @@ extension AccountSettingsView {
                             }
                         }
                     },
-                    secondaryButton: .cancel()
+                    secondaryButton: .cancel(Text(LocalizedStringKey("Cancel")))
                 )
             case .deleteError:
                 return Alert(
                     title: Text("Error"),
-                    message: Text(viewModel.errorMessage ?? "Unknown error"),
+                    message: Text(viewModel.errorMessage ?? "Deleting account requires recent login."),
                     dismissButton: .default(Text("OK")) {
                         viewModel.errorMessage = nil
                     }

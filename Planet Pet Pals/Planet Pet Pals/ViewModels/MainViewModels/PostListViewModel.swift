@@ -20,8 +20,9 @@ final class PostListViewModel: ObservableObject {
     static var typeOptions = animals.map { TypeOption(rawValue: $0) }
     
     init() {
-        if !Self.typeOptions.contains(where: { $0.rawValue == "no type" }) {
-            Self.typeOptions.insert(TypeOption(rawValue: "no type"), at: 0)
+        let noType = NSLocalizedString("no type", comment: "")
+        if !Self.typeOptions.contains(where: { $0.rawValue == noType }) {
+            Self.typeOptions.insert(TypeOption(rawValue: noType), at: 0)
         }
     }
     
@@ -67,6 +68,14 @@ final class PostListViewModel: ObservableObject {
             case .likesAscending: return false
             }
         }
+        
+        var displayName: String {
+            switch self {
+            case .noFilter: return NSLocalizedString("No filter", comment: "")
+            case .likesDescending: return NSLocalizedString("Most liked", comment: "")
+            case .likesAscending: return NSLocalizedString("Least liked", comment: "")
+            }
+        }
     }
     
     func filterSelected(option: FilterOption) async throws {
@@ -82,7 +91,8 @@ final class PostListViewModel: ObservableObject {
         let rawValue: String
         
         var typeValue: String? {
-            if self.rawValue == "no type" {
+            let noType = NSLocalizedString("no type", comment: "")
+            if self.rawValue == noType {
                 return nil
             }
             return self.rawValue

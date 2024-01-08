@@ -24,15 +24,20 @@ struct MyPostsView: View {
                 VStack(spacing: 0) {
                     HStack {
                         Text("Your post count: ")
+                            .padding(.trailing)
                         Text("\(postCount)")
                     }
-                    .font(.custom("Baloo2-SemiBold", size: 30))
+                    .font(.custom("Baloo2-SemiBold", size: 25))
                     .foregroundColor(Color("Linen"))
                     .padding(.top)
+                    .lineSpacing(0)
+                    .multilineTextAlignment(.center)
                     Text("Swipe left to delete")
-                        .font(.custom("Baloo2-SemiBold", size: 25))
+                        .font(.custom("Baloo2-SemiBold", size: 20))
                         .foregroundColor(Color("Linen"))
                         .foregroundColor(.secondary)
+                        .lineSpacing(0)
+                        .multilineTextAlignment(.center)
                     List {
                         ForEach(viewModel.myPosts, id: \.id.self) { post in
                             PostCellViewBuilder(postId: post.postId, showLikeButton: false, showLikes: true, showContext: false)
@@ -53,6 +58,8 @@ struct MyPostsView: View {
         .onAppear {
             CrashlyticsManager.shared.setValue(value: "MyPostsView", key: "currentView")
             viewModel.addListenerForMyPosts()
+            viewModel.getPosts()
+            postCount = viewModel.myPosts.count
             print("My posts listener is turned on")
         }
         .onReceive(viewModel.$myPosts) { posts in

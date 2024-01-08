@@ -194,16 +194,14 @@ extension AuthView {
                     .lineSpacing(0)
                     .opacity(0.6)
             }
-            .padding(.leading)
-            .padding(.trailing)
+            .padding(.horizontal)
             .background(
                 RoundedRectangle(cornerRadius: 10)
                     .fill(.linearGradient(colors: [Color("Salmon")], startPoint: .leading, endPoint: .trailing))
                     .opacity(0.3)
             )
             .fixedSize(horizontal: false, vertical: true)
-            .padding(.leading)
-            .padding(.trailing)
+            .padding(.horizontal)
         })
         .padding(.bottom, 30)
         .padding(.top, 20)
@@ -258,7 +256,7 @@ extension AuthView {
                 } catch let nsError as NSError {
                     print("Failed to log in due to Firebase error: \(nsError)")
                     if nsError.code == AuthErrorCode.wrongPassword.rawValue {
-                        alertMessage = "Email or password do not match."
+                        alertMessage = NSLocalizedString("Email or password do not match.", comment: "")
                     } else {
                         alertMessage = nsError.localizedDescription
                     }
@@ -379,7 +377,7 @@ extension AuthView {
 
 
 // MARK: Enum
-// Errors for login in order: (ERR04) (ERR05) (ERR06) (ERR07) (ERR03)
+// Errors for login
 enum LoginError: LocalizedError {
     case emptyEmail
     case emptyPassword
@@ -390,20 +388,20 @@ enum LoginError: LocalizedError {
     var errorDescription: String? {
         switch self {
         case .emptyEmail:
-            return "Please enter an email."
+            return NSLocalizedString("Please enter an email.", comment: "")
         case .emptyPassword:
-            return "Please enter a password."
+            return NSLocalizedString("Please enter a password.", comment: "")
         case .invalidEmail:
-            return "Please input a valid email."
+            return NSLocalizedString("Please input a valid email.", comment: "")
         case .emailNotFound:
-            return "No such account found."
+            return NSLocalizedString("No such account found.", comment: "")
         case .wrongPassword:
-            return "Email or password do not match."
+            return NSLocalizedString("Email or password do not match.", comment: "")
         }
     }
 }
 
-// Errors for signing up in order: (ERR04) (ERR05) (ERR06) (ERR08) (ERR09)
+// Errors for signing up
 enum SignUpError: LocalizedError {
     case emptyEmail
     case emptyPassword
@@ -414,15 +412,15 @@ enum SignUpError: LocalizedError {
     var errorDescription: String? {
         switch self {
         case .emptyEmail:
-            return "Please enter an email."
+            return NSLocalizedString("Please enter an email.", comment: "")
         case .emptyPassword:
-            return "Please enter a password."
+            return NSLocalizedString("Please enter a password.", comment: "")
         case .invalidEmail:
-            return "Please input a valid email."
+            return NSLocalizedString("Please input a valid email.", comment: "")
         case .passwordTooShort:
-            return "Password must be at least 6 characters long."
+            return NSLocalizedString("Password must be at least 6 characters long.", comment: "")
         case .emailAlreadyExists:
-            return "An account with this email already exists."
+            return NSLocalizedString("An account with this email already exists.", comment: "")
         }
     }
 }

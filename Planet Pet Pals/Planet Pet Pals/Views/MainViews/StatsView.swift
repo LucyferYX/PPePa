@@ -193,19 +193,21 @@ extension StatsView {
                         .font(.custom("Baloo2-SemiBold", size: 20))
                 } else {
                     if let post = viewModel.mostLikedPost {
-                        HStack {
-                            Text("Most liked post is ")
-                                .font(.custom("Baloo2-SemiBold", size: 20))
-                            Text("\(post.title)")
-                                .font(.custom("Baloo2-Bold", size: 20))
-                        }
-                        HStack {
-                            Text(" with ")
-                                .font(.custom("Baloo2-SemiBold", size: 20))
-                            Text("\(post.likes ?? 0)")
-                                .font(.custom("Baloo2-Bold", size: 20))
-                            Text(" likes!")
-                                .font(.custom("Baloo2-SemiBold", size: 20))
+                        VStack {
+                            HStack {
+                                Text("Most liked post is ")
+                                    .font(.custom("Baloo2-SemiBold", size: 20))
+                                Text("'\(post.title)'")
+                                    .font(.custom("Baloo2-Bold", size: 20))
+                            }
+                            HStack {
+                                Text(" with ")
+                                    .font(.custom("Baloo2-SemiBold", size: 20))
+                                Text("\(post.likes ?? 0)")
+                                    .font(.custom("Baloo2-Bold", size: 20))
+                                Text(" likes!")
+                                    .font(.custom("Baloo2-SemiBold", size: 20))
+                            }
                         }
                         .foregroundColor(Color("Walnut"))
                     } else {

@@ -87,7 +87,7 @@ extension AuthManager {
 // MARK: Sign in SSO
 extension AuthManager {
     @discardableResult
-    func signInWithGoogle(tokens: GoogleSignInResultModel) async throws -> AuthUserModel {
+    func signInWithGoogle(tokens: GoogleSignInModel) async throws -> AuthUserModel {
         let credential = GoogleAuthProvider.credential(withIDToken: tokens.idToken, accessToken: tokens.accessToken)
         return try await signIn(credential: credential)
     }
@@ -111,7 +111,7 @@ extension AuthManager {
         return try await linkCredential(credential: credential)
     }
     
-    func linkGoogle(tokens: GoogleSignInResultModel) async throws -> AuthUserModel {
+    func linkGoogle(tokens: GoogleSignInModel) async throws -> AuthUserModel {
         let credential = GoogleAuthProvider.credential(withIDToken: tokens.idToken, accessToken: tokens.accessToken)
         return try await linkCredential(credential: credential)
     }

@@ -23,7 +23,7 @@ struct ReportedPostView: View {
             Color("Walnut").ignoresSafeArea()
             if postCount > 0 {
                 VStack {
-                    HStack {
+                    VStack {
                         Text("Reported post count: ")
                         Text("\(postCount)")
                     }
@@ -37,7 +37,8 @@ struct ReportedPostView: View {
                     List {
                         ForEach(viewModel.reportedPosts, id: \.id.self) { post in
                             PostCellViewBuilder(postId: post.postId, showLikeButton: false, showLikes: true, showContext: false)
-                                .listRowBackground(Color("Linen"))
+                                .listRowBackground(Color("Walnut"))
+                                .listRowInsets(EdgeInsets(top: 0, leading: 5, bottom: 0, trailing: 5))
                                 .contextMenu{
                                     Button(action: {
                                         Task {
@@ -51,12 +52,16 @@ struct ReportedPostView: View {
                         }
                         .onDelete(perform: delete)
                     }
+                    .background(Color("Walnut"))
+                    .scrollContentBackground(.hidden)
                 }
             } else {
                 Text("No reported posts yet.")
                     .font(.custom("Baloo2-SemiBold", size: 30))
                     .foregroundColor(Color("Linen"))
                     .padding(.top)
+                    .padding(.horizontal)
+                    .multilineTextAlignment(.center)
             }
         }
         .onAppear {

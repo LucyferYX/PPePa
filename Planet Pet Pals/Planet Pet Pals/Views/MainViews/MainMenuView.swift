@@ -46,6 +46,8 @@ struct MainMenuView: View {
                         logoImage
                             .disabled(!viewModel.filteredPosts.isEmpty)
                         
+                        Spacer()
+                        
                         // Shows post images and lets user move them forward as well as open post view for the one shown
                         postNavigation
                             .disabled(!viewModel.filteredPosts.isEmpty)

@@ -6,7 +6,7 @@
 "Unsupported image format" = "Neatbalstīts attēla formāts";
 "The app supports .JPEG, .PNG, .GIF image formats. Please select a different image." = "Lietotne atbalsta .JPEG, .PNG, .GIF attēlu formātus. Lūdzu, izvēlieties citu attēlu.";
 "Latitude: " = "Platums: ";
-"Longitude: " = "Garums: ";
+", Longitude: " = "Garums: ";
 "Create" = "Jauns";
 "Map" = "Karte";
 "Stats" = "Statistika";
@@ -15,7 +15,7 @@
 "Posts" = "Ieraksti";
 "See all posts!" = "Skatīt visus ierakstus!";
 "Tap to reveal!" = "Pieskarieties, lai atklātu!";
-"Most liked post?" = "Visvairāk patiktais ieraksts ir?";
+"Most liked post?" = "Vispopulārākais ieraksts ir?";
 "Most likes post is " = "Visvairāk patiktais ieraksts ir ";
 " with " = " ar ";
 " likes!" = " patīk zīmītēm!";
@@ -29,6 +29,7 @@
 "Sign up" = "Reģistrēties";
 "Error signing up" = "Kļūda reģistrējoties";
 "Don't have an account? " = "Nav konta? ";
+"Most liked post is " = "Vispopulārākais ieraksts ir ";
 
 " SIGN UP" = "PIERAKSTIES";
 "Already have an account? " = "Jau ir konts?";
@@ -50,7 +51,8 @@
 "Post created by: " = "Ierakstu izveidoja: ";
 "Post created: " = "Ieraksts izveidots: ";
 "This app is under maintenance!" = "Lietotnē šobrīd notiek apkope!";
-"Please check again shortly." = "Lūdzu, pārbaudiet pēc kāda laika.";
+"Please check again shortly." = "Lūdzu, pārbaudiet lietotni pēc kāda laika!";
+"Thank you for your understanding." = "Paldies par sapratni.";
 "Report post?" = "Ziņot par ierakstu?";
 "As a user I agree to:" = "Kā lietotājs es piekrītu:";
 "Be respectful" = "Būt cieņpilnam";
@@ -91,11 +93,11 @@
 "Deleted user post count: " = "Dzēsto lietotāju ierakstu skaits: ";
 "No posts from deleted users yet." = "Vēl nav ierakstu no dzēstajiem lietotājiem.";
 "Your liked post count: " = "Jūsu ar 'patīk' atzīmēto ierakstu skaits: ";
-"Swipe left to remove from likes" = "Pārvietojiet pa kreisi, lai noņemtu no patīk";
+"Swipe left to remove" = "Pārvietojiet pa kreisi, lai noņemtu";
 "Please wait" = "Lūdzu, uzgaidiet";
 "Please wait a moment before deleting another post." = "Lūdzu, uzgaidiet brīdi, pirms dzēšat citu ierakstu.";
 
-"No liked posts yet." = "Vēl nav ierakstu, kas atzīmēti ar 'patīk'.";
+"No liked posts yet." = "Vēl nav atzīmētu ierakstu!";
 "Swipe left to delete" = "Pavelciet pa kreisi, lai dzēstu";
 "Your post count: " = "Jūsu ierakstu skaits: ";
 "No created posts yet." = "Vēl nav izveidoti ieraksti";
@@ -138,10 +140,35 @@
 "Password must be at least 6 characters long." = "Parolei jābūt vismaz 6 simbolu garai.";
 "An account with this email already exists." = "Konts ar šo e-pasta adresi jau pastāv.";
 "Encountered unknown issue." = "Radās nezināma problēma.";
-"Your email: " = "Tavs e-pasts";
+"Email: " = "E-pasts";
 "Copy URL" = "Kopēt saiti";
-
-
+"Deleting account requires recent login." = "Konta dzēšanai nepieciešama nesen veikta pierakstīšanās.";
+"greeting" = "lietotāj";
+"User" = "Lietotājs";
+"Uploaded!" = "Augšupielādēts!";
+"Image is being uploaded, please do not close the device." = "Attēls tiek augšupielādēts, lūdzu, neaizveriet ierīci.";
+"Title" = "Virsraksts";
+"Image" = "Attēls";
+"Description" = "Apraksts";
+"Location" = "Atrašanās vieta";
+"Type" = "Tips";
+"Information" = "Informācija";
+"Delete" = "Dzēst";
+"Cancel" = "Atcelt";
+"Confirm account deletion" = "Apstiprinu konta dzēšanu";
+"Dark mode" = "Tumšais režīms";
+"Light mode" = "Gaišais režīms";
+"true" = "jā";
+"false" = "nē";
+"Is admin: " = "Ir administrators: ";
+"Is anonymous: " = "Ir anonīms";
+"Username: " = "Lietotājvārds";
+"no type" = "nav tipa";
+"No filter" = "Nav filtru";
+"Most liked" = "Vismazāk patīk";
+"Least liked" = "Visvairāk patīk";
+"Remove report?" = "Noņemt ziņojumu?";
+ 
 "dog" = "suns";
 "cat" = "kaķis";
 "hare" = "zaķis";
@@ -152,6 +179,16 @@
 "ant" = "skudra";
 "ladybug" = "mārīte";
 "snake" = "čūska";
+"elephant" = "zilonis";
+"lion" = "lauva";
+"tiger" = "tīģeris";
+"bear" = "lācis";
+"monkey" = "pērtiķis";
+"horse" = "zirgs";
+"cow" = "govs";
+"pig" = "cūka";
+"chicken" = "vista";
+"duck" = "pīle";
 "other" = "cits";
 
 "Latvia" = "Latvija";

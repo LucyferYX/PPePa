@@ -23,7 +23,7 @@ struct DeletedUserPostsView: View {
             Color("Walnut").ignoresSafeArea()
             if postCount > 0 {
                 VStack {
-                    HStack {
+                    VStack {
                         Text("Deleted user post count: ")
                         Text("\(postCount)")
                     }
@@ -33,7 +33,8 @@ struct DeletedUserPostsView: View {
                     List {
                         ForEach(viewModel.deletedUsersPosts, id: \.id.self) { post in
                             PostCellViewBuilder(postId: post.postId, showLikeButton: false, showLikes: true, showContext: false)
-                                .listRowBackground(Color("Linen"))
+                                .listRowBackground(Color("Walnut"))
+                                .listRowInsets(EdgeInsets(top: 0, leading: 5, bottom: 0, trailing: 5))
                         }
                         .onDelete(perform: delete)
                     }
@@ -45,6 +46,8 @@ struct DeletedUserPostsView: View {
                     .font(.custom("Baloo2-SemiBold", size: 30))
                     .foregroundColor(Color("Linen"))
                     .padding(.top)
+                    .padding(.horizontal)
+                    .multilineTextAlignment(.center)
             }
         }
         .onAppear {

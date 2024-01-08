@@ -108,11 +108,19 @@ struct CreateView: View {
                             .scaleEffect(2)
                             .progressViewStyle(CircularProgressViewStyle(tint: Color("Snow")))
                     }
-                    Text(viewModel.uploadCompleted ? "Uploaded!" : "Image is being uploaded, please do not close the device.")
-                        .font(.custom("Baloo2-SemiBold", size: 30))
-                        .foregroundColor(Color("Snow"))
-                        .multilineTextAlignment(.center)
-                        .padding()
+                    if viewModel.uploadCompleted {
+                        Text("Uploaded!")
+                            .font(.custom("Baloo2-SemiBold", size: 30))
+                            .foregroundColor(Color("Snow"))
+                            .multilineTextAlignment(.center)
+                            .padding()
+                    } else {
+                        Text("Image is being uploaded, please do not close the device.")
+                            .font(.custom("Baloo2-SemiBold", size: 30))
+                            .foregroundColor(Color("Snow"))
+                            .multilineTextAlignment(.center)
+                            .padding()
+                    }
                 }
             }
         })
@@ -192,6 +200,7 @@ extension CreateView {
                     Text(", Longitude: ")
                     Text("\(coordinate.longitude)")
                 }
+                .font(.custom("Baloo2-Regular", size: 18))
             }
         }
     }

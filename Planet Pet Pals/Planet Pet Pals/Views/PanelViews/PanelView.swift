@@ -18,7 +18,11 @@ struct PanelContent: View {
             VStack(alignment: .leading) {
                 HStack {
                     Text("Hi, ")
-                    Text("\(viewModel.user?.username ?? "User")")
+                    if let username = viewModel.user?.username {
+                        Text(username)
+                    } else {
+                        Text("greeting")
+                    }
                 }
                 .foregroundColor(Color("Linen"))
                 .font(.custom("Baloo2-SemiBold", size: 30))
@@ -175,9 +179,13 @@ extension PanelContent {
                 SimpleButton(action: {
                     viewModel.showReportedPostsView = true
                 }, systemImage: "folder.fill.badge.questionmark", buttonText: LocalizedStringKey("Reported posts"), size: 25, color: Color("Linen"))
+                .multilineTextAlignment(.leading)
+                .lineSpacing(0)
                 SimpleButton(action: {
                     viewModel.showDeletedUserPostsView = true
                 }, systemImage: "folder.fill.badge.person.crop", buttonText: LocalizedStringKey("Deleted user posts"), size: 25, color: Color("Linen"))
+                .multilineTextAlignment(.leading)
+                .lineSpacing(0)
             }
         }
         .padding(.trailing)

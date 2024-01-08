@@ -45,11 +45,11 @@ struct PostCellView: View {
                 .padding(5)
                 
                 VStack(alignment: .leading, spacing: 4) {
-                    if showLikes {
-                        Text("Post")
-                            .font(.custom("Baloo2-Regular", size: 15))
-                            .opacity(0)
-                    }
+//                    if showLikes {
+//                        Text("Post")
+//                            .font(.custom("Baloo2-Regular", size: 15))
+//                            .opacity(0)
+//                    }
                     HStack {
                         Text(post.title)
                             .font(.headline)
@@ -68,6 +68,7 @@ struct PostCellView: View {
                 }
                 .frame(width: 150)
                 .foregroundColor(.secondary)
+                .padding(.vertical)
                 
                 //Spacer does not respond to tap gestures
                 VStack {

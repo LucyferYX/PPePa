@@ -26,4 +26,12 @@ final class MyPostsViewModel: ObservableObject {
     func deletePost(postId: String) async throws {
         try await PostManager.shared.deletePost(postId: postId)
     }
+    
+    func getPosts() {
+        Task {
+            let authDataResult = try AuthManager.shared.getAuthenticatedUser()
+            let posts = try await PostManager.shared.getAllUserPosts(userId: authDataResult.uid)
+            self.myPosts = posts
+        }
+    }
 }

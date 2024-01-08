@@ -80,7 +80,7 @@ extension PostListView {
                     }
                 } label: {
                     if viewModel.selectedFilter != nil {
-                        Text("\(viewModel.selectedFilter!.rawValue)")
+                        Text("\(viewModel.selectedFilter!.displayName)")
                             .font(.custom("Baloo2-SemiBold", size: 20))
                             .frame(width: 200)
                         

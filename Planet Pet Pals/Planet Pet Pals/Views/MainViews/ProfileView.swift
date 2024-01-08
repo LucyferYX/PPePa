@@ -55,7 +55,7 @@ struct ProfileView: View {
                         .foregroundColor(Color("Gondola"))
                         
                         HStack {
-                            Text("Your email: ")
+                            Text("Email: ")
                                 .font(.custom("Baloo2-Regular", size: 20))
                             Text("\(user.email ?? "no email")")
                                 .font(.custom("Baloo2-SemiBold", size: 20))
@@ -76,6 +76,20 @@ struct ProfileView: View {
                         .foregroundColor(Color("Gondola"))
                         
                         HStack {
+                            Text("Is admin: ")
+                                .font(.custom("Baloo2-Regular", size: 20))
+                            if user.isAnonymous == false {
+                                Text("false")
+                                    .font(.custom("Baloo2-SemiBold", size: 20))
+                            } else {
+                                Text("true")
+                                    .font(.custom("Baloo2-SemiBold", size: 20))
+                            }
+                        }
+                        .foregroundColor(Color("Gondola"))
+                        
+                        
+                        VStack(alignment: .leading) {
                             Text("Your current favorites: ")
                                 .font(.custom("Baloo2-Regular", size: 20))
                             Text("\((user.favorites ?? []).joined(separator: ", "))")

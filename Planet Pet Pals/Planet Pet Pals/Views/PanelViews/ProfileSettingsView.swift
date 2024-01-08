@@ -133,13 +133,13 @@ struct ProfileSettingsView: View {
                             .padding(.horizontal, 10)
                             .frame(maxWidth: .infinity)
                             
-                            HStack {
-                                Text("Your current favorites: ")
-                                Text("\((user.favorites ?? []).joined(separator: ", "))")
-                            }
-                            .font(.custom("Baloo2-Regular", size: 20))
-                            .foregroundColor(Color("Gondola"))
-                            .padding(.top)
+                            Text("Your current favorites: ")
+                                .padding(.top)
+                                .foregroundColor(Color("Gondola"))
+                                .font(.custom("Baloo2-Regular", size: 20))
+                            Text("\((user.favorites ?? []).joined(separator: ", "))")
+                                .font(.custom("Baloo2-SemiBold", size: 20))
+                                .foregroundColor(Color("Gondola"))
                         }
                     }
                 }

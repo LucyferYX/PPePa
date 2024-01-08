@@ -21,6 +21,7 @@ struct AppSettingsView: View {
             ZStack {
                 MainBackground()
                 VStack(spacing: 0) {
+                    // Button to close the view
                     VStack {
                         PawButton(action: {
                             presentationMode.wrappedValue.dismiss()
@@ -30,25 +31,26 @@ struct AppSettingsView: View {
                     
                     ScrollView() {
                         VStack(spacing: 0) {
+                            // Changes light and dark mode
                             themeToggle
                             
                             Line()
                                 .padding(.horizontal)
                             
+                            // Changes region thats displayed by default on map view
                             regionPicker
 
                             Line()
                                 .padding(.horizontal)
                             
+                            // Changes app language
                             languagePicker
-                            
-                            Line()
-                            
-                            Button("Press to fatal crash!") {
-                                fatalError("This was fatal crash")
-                            }
-                            .accentColor(.red)
-                            .padding()
+                                                        
+//                            Button("Press to fatal crash!") {
+//                                fatalError("This was fatal crash")
+//                            }
+//                            .accentColor(.red)
+//                            .padding()
                         }
                     }
                 }
