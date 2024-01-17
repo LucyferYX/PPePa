@@ -12,6 +12,7 @@ struct ReportedPostView: View {
     @State private var postCount: Int = 0
     @State private var post: Post? = nil
     
+    // Allows view to have entire background in selected color
     init() {
        UITableView.appearance().separatorStyle = .none
         UITableViewCell.appearance().backgroundColor = .red
@@ -31,9 +32,12 @@ struct ReportedPostView: View {
                     .foregroundColor(Color("Linen"))
                     .padding(.top)
                     Text("Swipe left to delete. Hold to remove report")
-                        .font(.custom("Baloo2-SemiBold", size: 25))
+                        .font(.custom("Baloo2-SemiBold", size: 20))
                         .foregroundColor(Color("Linen"))
                         .foregroundColor(.secondary)
+                        .multilineTextAlignment(.center)
+                    
+                    // List of posts
                     List {
                         ForEach(viewModel.reportedPosts, id: \.id.self) { post in
                             PostCellViewBuilder(postId: post.postId, showLikeButton: false, showLikes: true, showContext: false)
@@ -78,6 +82,7 @@ struct ReportedPostView: View {
         }
     }
     
+    // Deletes post
     func delete(at offsets: IndexSet) {
         for index in offsets {
             let postId = viewModel.reportedPosts[index].postId

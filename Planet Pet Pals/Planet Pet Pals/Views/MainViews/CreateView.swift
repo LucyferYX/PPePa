@@ -14,8 +14,8 @@ struct CreateView: View {
     
     @State private var title = ""
     @State private var description = ""
-    @State private var type = "cat"
-    
+    @State private var type = NSLocalizedString("dog", comment: "")
+
     @State private var image: UIImage? = nil
     @State private var selectedItem: PhotosPickerItem?
     @State private var geopoint: CLLocationCoordinate2D? = nil
@@ -34,11 +34,14 @@ struct CreateView: View {
                 VStack {
                     NavigationBar
                     Form {
+                        // Title, description, type
                         informationSection
+                        // Image
                         imageSection
+                        // Location
                         locationSection
                         
-                        // MARK: Upload
+                        // Upload button
                         Button(action: {
                             Task {
                                 if selectedItem == nil {
@@ -97,6 +100,7 @@ struct CreateView: View {
                 await viewModel.loadImage(item: item)
             }
         }
+        // Handles the view when post is uploading
         .overlay(Group {
             if viewModel.isUploading {
                 Color.black.opacity(0.75)
@@ -133,6 +137,7 @@ struct CreateView: View {
         }
     }
 }
+
 
 // MARK: Preview
 //struct Preview: PreviewProvider {
@@ -200,7 +205,7 @@ extension CreateView {
                     Text(", Longitude: ")
                     Text("\(coordinate.longitude)")
                 }
-                .font(.custom("Baloo2-Regular", size: 18))
+                .font(.custom("Baloo2-Regular", size: 16))
             }
         }
     }

@@ -12,6 +12,7 @@ struct DeletedUserPostsView: View {
     @State private var postCount: Int = 0
     @State private var post: Post? = nil
     
+    // Allows view to have entire background in selected color
     init() {
         UITableView.appearance().separatorStyle = .none
         UITableViewCell.appearance().backgroundColor = .red
@@ -30,6 +31,8 @@ struct DeletedUserPostsView: View {
                     .font(.custom("Baloo2-SemiBold", size: 30))
                     .foregroundColor(Color("Linen"))
                     .padding(.top)
+                    
+                    // List of posts
                     List {
                         ForEach(viewModel.deletedUsersPosts, id: \.id.self) { post in
                             PostCellViewBuilder(postId: post.postId, showLikeButton: false, showLikes: true, showContext: false)
@@ -64,6 +67,7 @@ struct DeletedUserPostsView: View {
         }
     }
     
+    // Deletes post
     func delete(at offsets: IndexSet) {
         for index in offsets {
             let postId = viewModel.deletedUsersPosts[index].postId

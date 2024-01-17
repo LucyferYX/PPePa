@@ -11,9 +11,10 @@ import CoreLocation
 struct PostView: View {
     @StateObject private var viewModel = PostViewModel()
     @Binding var showPostView: Bool
-    let postId: String
     @State private var showMap = false
+    let postId: String
     
+    // Formatting the date from timestamp
     var formattedDate: String {
         guard let post = viewModel.post else { return "" }
         let formatter = DateFormatter()
@@ -29,11 +30,13 @@ struct PostView: View {
                 NavigationBar()
                 ScrollView {
                     if let post = viewModel.post {
+                        // Post image with dynamic effects
                         DynamicImageView(isLoading: viewModel.isLoading, url: URL(string: post.image))
                             .ignoresSafeArea()
                         
                             postTitleView(post: post)
                         
+                        // The rest of post information
                         VStack(spacing: 0) {
                             
                             postDetailView(post: post)
@@ -78,6 +81,7 @@ struct PostView: View {
 }
 
 
+// MARK: Preview
 //struct PostPreviews: PreviewProvider {
 //    static var previews: some View {
 //        let post = Post(
@@ -98,7 +102,7 @@ struct PostView: View {
 //}
 
 
-
+// MARK: Extension
 extension PostView {
     func postTitleView(post: Post) -> some View {
         ZStack {
@@ -170,7 +174,9 @@ extension PostView {
     func mapView(showMap: Binding<Bool>, post: Post) -> some View {
         VStack {
             Button(action: {
-                showMap.wrappedValue.toggle()
+                DispatchQueue.main.async {
+                    showMap.wrappedValue.toggle()
+                }
             }) {
                 HStack {
                     Text("Show on map")
@@ -192,8 +198,13 @@ extension PostView {
             HStack(spacing: 0) {
                 Text("Post created by: ")
                     .font(.custom("Baloo2-Regular", size: 20))
-                Text("\(viewModel.user != nil ? (viewModel.user?.username ?? "Unknown name") : "Deleted user")")
-                    .font(.custom("Baloo2-SemiBold", size: 20))
+                if let user = viewModel.user {
+                    Text(user.username ?? "Unknown name")
+                        .font(.custom("Baloo2-SemiBold", size: 20))
+                } else {
+                    Text("Deleted user")
+                        .font(.custom("Baloo2-SemiBold", size: 20))
+                }
             }
             .foregroundColor(Color("Gondola"))
             .padding(.trailing, 10)

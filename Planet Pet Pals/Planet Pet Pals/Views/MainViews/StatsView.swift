@@ -23,6 +23,7 @@ struct StatsView: View {
             VStack {
                 NavigationBar
                 ScrollView {
+                    // Most liked post is hidden
                     ZStack {
                         circle1
                         circle2
@@ -33,17 +34,20 @@ struct StatsView: View {
                     )
                     .padding()
                     
+                    // Flips over the most liked post
                     FlipTextButton()
                     
                     Line()
                         .padding(.horizontal)
                     
+                    // Shows either user or post graph
                     dataTypePickerView(selectedDataType: $selectedDataType)
                         .padding(.horizontal)
                     
                     Line()
                         .padding(.horizontal)
                     
+                    // See all posts button
                     postButtonView(showPostListView: $showPostListView)
                 }
             }
@@ -64,6 +68,7 @@ struct StatsView: View {
 }
 
 
+// MARK: Extension
 extension StatsView {
     private var circle1: some View {
         PostCircle() {
@@ -194,7 +199,7 @@ extension StatsView {
                 } else {
                     if let post = viewModel.mostLikedPost {
                         VStack {
-                            HStack {
+                            VStack {
                                 Text("Most liked post is ")
                                     .font(.custom("Baloo2-SemiBold", size: 20))
                                 Text("'\(post.title)'")

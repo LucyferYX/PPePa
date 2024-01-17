@@ -8,7 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		7E59232A2ACE0014000B96F5 /* PPePa.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E5923292ACE0014000B96F5 /* PPePa.swift */; };
-		7E59232C2ACE0014000B96F5 /* MainMenuView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E59232B2ACE0014000B96F5 /* MainMenuView.swift */; };
+		7E59232C2ACE0014000B96F5 /* MainMenuView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E59232B2ACE0014000B96F5 /* MainMenuView.swift */; settings = {COMPILER_FLAGS = "-w"; }; };
 		7E59232E2ACE0019000B96F5 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 7E59232D2ACE0019000B96F5 /* Assets.xcassets */; };
 		7E5923312ACE0019000B96F5 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 7E5923302ACE0019000B96F5 /* Preview Assets.xcassets */; };
 		7E5923382ACE155B000B96F5 /* ColorExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E5923372ACE155B000B96F5 /* ColorExtension.swift */; };
@@ -423,6 +423,7 @@
 				DCD9E16B2B476C530045D20A /* MyPostsView.swift */,
 				DC49FBCA2B3395DC00770741 /* LikesView.swift */,
 				DCF5D1A32B4398D8001CF494 /* ReportedPostsView.swift */,
+				DCD9E1672B4720E40045D20A /* PostMapView.swift */,
 				DCD9E1692B4759BD0045D20A /* DeletedUserPostsView.swift */,
 				DC1330C92B479A13002FCF52 /* ProfileSettingsView.swift */,
 				DCF813512B4262BD004AD2D2 /* AccountSettingsView.swift */,
@@ -459,7 +460,6 @@
 				DC49FBCE2B339FD600770741 /* PostCellView.swift */,
 				DCF581582B3E4D4000147095 /* ChartView.swift */,
 				DCFCE8592B41D2C400EAD795 /* MapPickerView.swift */,
-				DCD9E1672B4720E40045D20A /* PostMapView.swift */,
 			);
 			path = CollectionViews;
 			sourceTree = "<group>";
@@ -553,6 +553,7 @@
 /* Begin PBXShellScriptBuildPhase section */
 		DC5BDF272B3E19F4005F6B06 /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
+			alwaysOutOfDate = 1;
 			buildActionMask = 2147483647;
 			files = (
 			);
@@ -795,6 +796,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = NO;
+				ASSETCATALOG_WARNINGS = NO;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
@@ -803,6 +805,7 @@
 				ENABLE_PREVIEWS = YES;
 				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GENERATE_INFOPLIST_FILE = YES;
+				IBSC_WARNINGS = NO;
 				INFOPLIST_FILE = "Planet-Pet-Pals-Info.plist";
 				INFOPLIST_KEY_CFBundleDisplayName = PPePa;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
@@ -819,6 +822,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "com.liene.planet-pet-pals";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_SUPPRESS_WARNINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -830,6 +834,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = NO;
+				ASSETCATALOG_WARNINGS = NO;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"Planet Pet Pals/Preview Content\"";
@@ -837,6 +842,7 @@
 				ENABLE_PREVIEWS = YES;
 				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GENERATE_INFOPLIST_FILE = YES;
+				IBSC_WARNINGS = NO;
 				INFOPLIST_FILE = "Planet-Pet-Pals-Info.plist";
 				INFOPLIST_KEY_CFBundleDisplayName = PPePa;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
@@ -853,6 +859,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "com.liene.planet-pet-pals";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_SUPPRESS_WARNINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};

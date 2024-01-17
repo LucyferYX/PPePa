@@ -45,11 +45,6 @@ struct PostCellView: View {
                 .padding(5)
                 
                 VStack(alignment: .leading, spacing: 4) {
-//                    if showLikes {
-//                        Text("Post")
-//                            .font(.custom("Baloo2-Regular", size: 15))
-//                            .opacity(0)
-//                    }
                     HStack {
                         Text(post.title)
                             .font(.headline)

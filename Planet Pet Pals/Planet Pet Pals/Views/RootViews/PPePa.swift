@@ -12,7 +12,7 @@ import Firebase
 @main
 struct PPePa: App {
     @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
-    // Lietotnes valoda
+    // Default language set to english
     @AppStorage("selectedLanguage") var selectedLanguage: String = "en"
 
     var body: some Scene {

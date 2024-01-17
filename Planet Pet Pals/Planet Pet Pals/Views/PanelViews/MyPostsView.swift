@@ -11,6 +11,7 @@ struct MyPostsView: View {
     @StateObject private var viewModel = MyPostsViewModel()
     @State private var postCount: Int = 0
     
+    // Allows view to have entire background in selected color
     init() {
         UITableView.appearance().separatorStyle = .none
         UITableViewCell.appearance().backgroundColor = .red
@@ -38,6 +39,8 @@ struct MyPostsView: View {
                         .foregroundColor(.secondary)
                         .lineSpacing(0)
                         .multilineTextAlignment(.center)
+                    
+                    // List of posts
                     List {
                         ForEach(viewModel.myPosts, id: \.id.self) { post in
                             PostCellViewBuilder(postId: post.postId, showLikeButton: false, showLikes: true, showContext: false)
@@ -71,6 +74,7 @@ struct MyPostsView: View {
         }
     }
     
+    // Deletes post
     func delete(at offsets: IndexSet) {
         for index in offsets {
             let postId = viewModel.myPosts[index].postId

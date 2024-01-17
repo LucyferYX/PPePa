@@ -15,7 +15,7 @@ struct MapView: View {
     @State private var showPostView = false
     @State private var currentPost: Post? = nil
 
-
+    // Shows selected region by user on the map
     var region: MKCoordinateRegion {
         let ((latitude, longitude), (latitudeDelta, longitudeDelta)) = regions[selectedRegion]!
         return MKCoordinateRegion(
@@ -31,6 +31,7 @@ struct MapView: View {
                     NavigationBar
                     ZStack {
                         MainBackground()
+                        // The map view
                         Map(coordinateRegion: .constant(region), annotationItems: posts) { post in
                             MapAnnotation(coordinate: post.location) {
                                 MapAnnotationView()
@@ -43,6 +44,7 @@ struct MapView: View {
                         .edgesIgnoringSafeArea(.all)
                     }
                 }
+                // Gets all the posts to show on map
                 .onAppear {
                     Task {
                         do {
@@ -57,6 +59,7 @@ struct MapView: View {
             .onAppear() {
                 CrashlyticsManager.shared.setValue(value: "MapView", key: "currentView")
             }
+            // Tapping post will open post view
             if showPostView, let postId = currentPost?.postId {
                 Text("")
                     .fullScreenCover(isPresented: $showPostView) {

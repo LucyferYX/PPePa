@@ -13,7 +13,8 @@ struct MapPickerView: UIViewRepresentable {
     var selectedRegion: String
     
     var region: MKCoordinateRegion {
-        let ((latitude, longitude), (latitudeDelta, longitudeDelta)) = regions[selectedRegion]!
+        let regionData = regions[selectedRegion] ?? regions[NSLocalizedString("Europe", comment: "")]
+        let ((latitude, longitude), (latitudeDelta, longitudeDelta)) = regionData!
         return MKCoordinateRegion(
             center: CLLocationCoordinate2D(latitude: latitude, longitude: longitude),
             span: MKCoordinateSpan(latitudeDelta: latitudeDelta, longitudeDelta: longitudeDelta)
@@ -26,13 +27,11 @@ struct MapPickerView: UIViewRepresentable {
         let gestureRecognizer = UITapGestureRecognizer(target: context.coordinator, action: #selector(Coordinator.handleTap(_:)))
         mapView.addGestureRecognizer(gestureRecognizer)
         
-        mapView.setRegion(region, animated: true)
-        
         return mapView
     }
 
     func updateUIView(_ uiView: MKMapView, context: Context) {
-        uiView.setCenter(centerCoordinate, animated: true)
+        uiView.setRegion(region, animated: true)
     }
 
     func makeCoordinator() -> Coordinator {

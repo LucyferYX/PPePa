@@ -175,28 +175,15 @@ struct AccountSettingsView: View {
 }
 
 
-struct ProfileSettingsPreviews: PreviewProvider {
-    static var previews: some View {
-        AccountSettingsView(showSignInView: .constant(false))
-    }
-}
+// MARK: Preview
+//struct ProfileSettingsPreviews: PreviewProvider {
+//    static var previews: some View {
+//        AccountSettingsView(showSignInView: .constant(false))
+//    }
+//}
 
 
-enum AlertType: Identifiable {
-    case deleteAccount, deleteError
-
-    var id: Int {
-        switch self {
-        case .deleteAccount:
-            return 1
-        case .deleteError:
-            return 2
-        }
-    }
-}
-
-
-
+// MARK: Extension
 extension AccountSettingsView {
     func LinkEmailButton(showEmailAlert: Binding<Bool>, emailAlertMessage: Binding<String>) -> some View {
         Button(action: {
@@ -336,6 +323,9 @@ extension AccountSettingsView {
     }
 }
 
+
+// MARK: Enum
+// Errors for email and password fields
 enum LinkEmailError: LocalizedError {
     case emptyEmail
     case emptyPassword
@@ -346,15 +336,29 @@ enum LinkEmailError: LocalizedError {
     var errorDescription: String? {
         switch self {
         case .emptyEmail:
-            return "Please enter an email."
+            return NSLocalizedString("Please enter an email.", comment: "")
         case .emptyPassword:
-            return "Please enter a password."
+            return NSLocalizedString("Please enter a password.", comment: "")
         case .invalidEmail:
-            return "Please input a valid email."
+            return NSLocalizedString("Please input a valid email.", comment: "")
         case .emailAlreadyExists:
-            return "An account with this email already exists."
+            return NSLocalizedString("An account with this email already exists.", comment: "")
         case .passwordTooShort:
-            return "Password must be at least 6 characters long."
+            return NSLocalizedString("Password must be at least 6 characters long.", comment: "")
+        }
+    }
+}
+
+// Errors for account deletion
+enum AlertType: Identifiable {
+    case deleteAccount, deleteError
+
+    var id: Int {
+        switch self {
+        case .deleteAccount:
+            return 1
+        case .deleteError:
+            return 2
         }
     }
 }

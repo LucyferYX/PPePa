@@ -45,12 +45,6 @@ struct AppSettingsView: View {
                             
                             // Changes app language
                             languagePicker
-                                                        
-//                            Button("Press to fatal crash!") {
-//                                fatalError("This was fatal crash")
-//                            }
-//                            .accentColor(.red)
-//                            .padding()
                         }
                     }
                 }

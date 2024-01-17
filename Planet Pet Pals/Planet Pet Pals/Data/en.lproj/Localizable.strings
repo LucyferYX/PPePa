@@ -30,8 +30,6 @@
 "Error signing up" = "Error signing up";
 "Don't have an account? " = "Don't have an account? ";
 
-
-
 " SIGN UP" = " SIGN UP";
 "Already have an account? " = "Already have an account? ";
 " LOG IN" = " LOG IN";
@@ -118,3 +116,41 @@
 "No reported posts yet." = "No reported posts yet.";
 "Back" = "Back";
 "greeting" = "user";
+"No filter" = "no filter";
+"Most liked" = "most liked";
+"Least liked" = "least likedre";
+
+"dog" = "dog";
+"cat" = "cat";
+"hare" = "hare";
+"tortoise" = "tortoise";
+"lizard" = "lizard";
+"fish" = "fish";
+"bird" = "bird";
+"ant" = "ant";
+"ladybug" = "ladybug";
+"snake" = "snake";
+"elephant" = "elephant";
+"lion" = "lion";
+"tiger" = "tiger";
+"bear" = "bear";
+"monkey" = "monkey";
+"horse" = "horse";
+"cow" = "cow";
+"pig" = "pig";
+"chicken" = "chicken";
+"duck" = "duck";
+"other" = "other";
+
+"Latvia" = "Latvia";
+"Europe" = "Europe";
+"North America" = "North America";
+"Central America" = "Central America";
+"South America" = "South America";
+"Africa" = "Africa";
+"Middle East" = "Middle East";
+"Central Asia" = "Central Asia";
+"South Asia" = "South Asia";
+"East and Southeast Asia" = "East and Southeast Asia";
+"Australia and Oceania" = "Australia and Oceania";
+"Antarctica" = "Antarctica";

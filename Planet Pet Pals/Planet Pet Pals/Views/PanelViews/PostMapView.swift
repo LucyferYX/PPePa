@@ -13,25 +13,27 @@ struct IdentifiablePoint: Identifiable {
     let coordinate: CLLocationCoordinate2D
 }
 
+// View will show the post's location with marker
 struct PostMapView: View {
-    @State private var region: MKCoordinateRegion
+    @GestureState private var magnification: CGFloat = 1.0
     private var point: IdentifiablePoint
 
     init(geopoint: CLLocationCoordinate2D) {
-        _region = State(initialValue: MKCoordinateRegion(center: geopoint, span: MKCoordinateSpan(latitudeDelta: 0.5, longitudeDelta: 0.5)))
         point = IdentifiablePoint(coordinate: geopoint)
     }
 
     var body: some View {
-        Map(coordinateRegion: $region, annotationItems: [point]) { point in
+        let delta = 0.5 / magnification
+        let region = MKCoordinateRegion(center: point.coordinate, span: MKCoordinateSpan(latitudeDelta: delta, longitudeDelta: delta))
+
+        Map(coordinateRegion: .constant(region), annotationItems: [point]) { point in
             MapAnnotation(coordinate: point.coordinate) {
                 MapAnnotationView()
             }
         }
         .gesture(MagnificationGesture()
-            .onChanged { value in
-                let delta = 0.5 / value.magnitude
-                region.span = MKCoordinateSpan(latitudeDelta: delta, longitudeDelta: delta)
+            .updating($magnification) { currentState, gestureState, _ in
+                gestureState = currentState
             }
         )
         .onAppear {

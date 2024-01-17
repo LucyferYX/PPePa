@@ -16,23 +16,15 @@ struct PanelContent: View {
     var body: some View {
         GeometryReader { geometry in
             VStack(alignment: .leading) {
-                HStack {
-                    Text("Hi, ")
-                    if let username = viewModel.user?.username {
-                        Text(username)
-                    } else {
-                        Text("greeting")
-                    }
-                }
-                .foregroundColor(Color("Linen"))
-                .font(.custom("Baloo2-SemiBold", size: 30))
-                .padding(.leading)
-                .padding(.top, 30)
+                // Greeting user
+                self.greetingView(viewModel: viewModel)
+                
                 ZStack {
                     Color("Salmon")
                         .opacity(0.25)
                         .cornerRadius(10)
                     VStack {
+                        // User's profile card
                         HStack {
                             profileImage(for: viewModel)
                             
@@ -81,14 +73,17 @@ struct PanelContent: View {
                 
                 Spacer()
                 
+                // Contains reported posts and deleted user posts
                 adminPanelButtons(viewModel: viewModel, showSignInView: $showSignInView)
                 
                 Line()
                 
+                // Contains my posts and liked posts
                 userPanelButtons(viewModel: viewModel, showSignInView: $showSignInView)
                 
                 Line()
                 
+                // Contains profile settings, account settings, app settings, about
                 settingsPanelButtons(viewModel: viewModel, showSignInView: $showSignInView)
             }
             .frame(height: geometry.size.height)
@@ -108,6 +103,7 @@ struct PanelContent: View {
 }
 
 
+// MARK: Panel view
 struct PanelView: View {
     @StateObject private var viewModel = PanelViewModel()
     @Binding var showSignInView: Bool
@@ -116,6 +112,7 @@ struct PanelView: View {
     let showPanelView: Bool
     let closePanelView: () -> Void
     
+    // Contains panel view content
     var body: some View {
         ZStack {
             HStack {
@@ -126,12 +123,13 @@ struct PanelView: View {
                 Spacer()
             }
             .background(Color("Walnut").opacity(showPanelView ? 0.5 : 0.0))
-            // Closing view with tap or sliding from right side
+            // Closing view with tap on right side
             .onTapGesture {
                 withAnimation(.easeIn.delay(0.1)) {
                     self.closePanelView()
                 }
             }
+            // Closing view with sliding from right side
             .gesture(DragGesture().onEnded { value in
                 if value.translation.width < -self.width / 2 {
                     withAnimation {
@@ -150,7 +148,24 @@ struct PanelView: View {
     }
 }
 
+
+// MARK: Extension
 extension PanelContent {
+    func greetingView(viewModel: PanelViewModel) -> some View {
+        HStack {
+            Text("Hi, ")
+            if let username = viewModel.user?.username {
+                Text(username)
+            } else {
+                Text("greeting")
+            }
+        }
+        .foregroundColor(Color("Linen"))
+        .font(.custom("Baloo2-SemiBold", size: 30))
+        .padding(.leading)
+        .padding(.top, 30)
+    }
+    
     func profileImage(for viewModel: PanelViewModel) -> some View {
         Group {
             if let photoUrl = viewModel.user?.photoUrl, let url = URL(string: photoUrl) {

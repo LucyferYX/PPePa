@@ -31,6 +31,7 @@ struct ProfileSettingsView: View {
                     VStack(spacing: 0) {
                         if let user = viewModel.user {
                             
+                            // Changing user's username
                             VStack {
                                 Text("Change username")
                                     .font(.custom("Baloo2-SemiBold", size: 25))
@@ -57,6 +58,7 @@ struct ProfileSettingsView: View {
                             Line()
                                 .padding()
                             
+                            // Changing user's profile picture
                             Text("Change profile picture")
                                 .font(.custom("Baloo2-SemiBold", size: 25))
                                 .foregroundColor(Color("Gondola"))
@@ -104,6 +106,7 @@ struct ProfileSettingsView: View {
                             Line()
                                 .padding()
                             
+                            // Changing user's favorites
                             Text("Change favorites")
                                 .font(.custom("Baloo2-SemiBold", size: 25))
                                 .foregroundColor(Color("Gondola"))

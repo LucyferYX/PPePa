@@ -12,13 +12,6 @@ struct ProfileView: View {
     @Binding var showProfileView: Bool
     @State private var profileImages: [String] = []
     
-    let columns = Array(repeating: GridItem(.flexible(), spacing: 10), count: 3)
-    var postOptions: [String] = animals
-    
-    private func postSelected(text: String) -> Bool {
-        viewModel.user?.favorites?.contains(text) == true
-    }
-
     var body: some View {
         ZStack {
             MainBackground()
@@ -26,82 +19,20 @@ struct ProfileView: View {
                 NavigationBar()
                 
                 List {
-                    if let user = viewModel.user {
-                        
-                        if let photoUrl = user.photoUrl, let url = URL(string: photoUrl) {
-                            AsyncImage(url: url) { image in
-                                image
-                                    .resizable()
-                                    .aspectRatio(contentMode: .fit)
-                                    .frame(width: 100, height: 100)
-                            } placeholder: {
-                                ProgressView()
-                            }
-                            .contextMenu {
-                                Button(action: {
-                                    UIPasteboard.general.string = photoUrl
-                                }) {
-                                    Label("Copy URL", systemImage: "doc.on.doc")
-                                }
-                            }
-                        }
-                        
-                        HStack {
-                            Text("Username: ")
-                                .font(.custom("Baloo2-Regular", size: 20))
-                            Text("\(user.username ?? "User")")
-                                .font(.custom("Baloo2-SemiBold", size: 20))
-                        }
-                        .foregroundColor(Color("Gondola"))
-                        
-                        HStack {
-                            Text("Email: ")
-                                .font(.custom("Baloo2-Regular", size: 20))
-                            Text("\(user.email ?? "no email")")
-                                .font(.custom("Baloo2-SemiBold", size: 20))
-                        }
-                        .foregroundColor(Color("Gondola"))
-                        
-                        HStack {
-                            Text("Is anonymous: ")
-                                .font(.custom("Baloo2-Regular", size: 20))
-                            if user.isAnonymous != nil {
-                                Text("false")
-                                    .font(.custom("Baloo2-SemiBold", size: 20))
-                            } else {
-                                Text("true")
-                                    .font(.custom("Baloo2-SemiBold", size: 20))
-                            }
-                        }
-                        .foregroundColor(Color("Gondola"))
-                        
-                        HStack {
-                            Text("Is admin: ")
-                                .font(.custom("Baloo2-Regular", size: 20))
-                            if user.isAnonymous == false {
-                                Text("false")
-                                    .font(.custom("Baloo2-SemiBold", size: 20))
-                            } else {
-                                Text("true")
-                                    .font(.custom("Baloo2-SemiBold", size: 20))
-                            }
-                        }
-                        .foregroundColor(Color("Gondola"))
-                        
-                        
-                        VStack(alignment: .leading) {
-                            Text("Your current favorites: ")
-                                .font(.custom("Baloo2-Regular", size: 20))
-                            Text("\((user.favorites ?? []).joined(separator: ", "))")
-                                .font(.custom("Baloo2-SemiBold", size: 20))
-                        }
-                        .foregroundColor(Color("Gondola"))
+                    if viewModel.user != nil {
+                        // Profile information
+                        userInfoView(title: "Username", value: viewModel.user?.username ?? "User")
+                        userInfoView(title: "Email", value: viewModel.user?.email ?? "no email")
+                        userInfoView(title: "Is anonymous", value: viewModel.user?.isAnonymous != nil ? "false" : "true")
+                        userInfoView(title: "Is admin", value: viewModel.user?.isAnonymous == false ? "false" : "true")
+                        userFavoritesView(favorites: viewModel.user?.favorites ?? [])
                         
                     }
                 }
                 .listRowBackground(Color("Linen"))
                 .background(Color.clear)
                 .scrollContentBackground(.hidden)
+                // Loading user from firestore
                 .task {
                     do {
                         try await viewModel.loadCurrentUser()
@@ -109,6 +40,7 @@ struct ProfileView: View {
                         print("Failed to load user: \(error)")
                     }
                 }
+                // Loading image from storage
                 .task {
                     do {
                         try await viewModel.loadCurrentUser()
@@ -126,14 +58,54 @@ struct ProfileView: View {
 }
 
 
-struct ProfilePreview: PreviewProvider {
-    static var previews: some View {
-        ProfileView(showProfileView: .constant(true))
-    }
-}
+// MARK: Preview
+//struct ProfilePreview: PreviewProvider {
+//    static var previews: some View {
+//        ProfileView(showProfileView: .constant(true))
+//    }
+//}
 
 
+// MARK: Extension
 extension ProfileView {
+    func userProfileImage(url: URL) -> some View {
+        AsyncImage(url: url) { image in
+            image
+                .resizable()
+                .aspectRatio(contentMode: .fit)
+                .frame(width: 100, height: 100)
+        } placeholder: {
+            ProgressView()
+        }
+        .contextMenu {
+            Button(action: {
+                UIPasteboard.general.string = url.absoluteString
+            }) {
+                Label("Copy URL", systemImage: "doc.on.doc")
+            }
+        }
+    }
+    
+    func userInfoView(title: String, value: String) -> some View {
+        HStack {
+            Text("\(title): ")
+                .font(.custom("Baloo2-Regular", size: 20))
+            Text(value)
+                .font(.custom("Baloo2-SemiBold", size: 20))
+        }
+        .foregroundColor(Color("Gondola"))
+    }
+    
+    func userFavoritesView(favorites: [String]) -> some View {
+        VStack(alignment: .leading) {
+            Text("Your current favorites: ")
+                .font(.custom("Baloo2-Regular", size: 20))
+            Text(favorites.joined(separator: ", "))
+                .font(.custom("Baloo2-SemiBold", size: 20))
+        }
+        .foregroundColor(Color("Gondola"))
+    }
+    
     func NavigationBar() -> some View {
         MainNavigationBar(
             title: "Profile",

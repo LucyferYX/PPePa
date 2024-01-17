@@ -12,6 +12,7 @@ struct LikesView: View {
     @StateObject var likedPostsViewModel = LikedPostsViewModel.shared
     @State private var postCount: Int = 0
     
+    // Allows view to have entire background in selected color
     init() {
        UITableView.appearance().separatorStyle = .none
         UITableViewCell.appearance().backgroundColor = .red
@@ -39,6 +40,8 @@ struct LikesView: View {
                         .foregroundColor(.secondary)
                         .lineSpacing(0)
                         .multilineTextAlignment(.center)
+                    
+                    // List of posts
                     List {
                         ForEach(likedPostsViewModel.userLikedPosts, id: \.id.self) { post in
                             PostCellViewBuilder(postId: post.postId, showLikeButton: false, showLikes: true, showContext: true)
@@ -77,6 +80,7 @@ struct LikesView: View {
         }
     }
     
+    // Deletes post
     func delete(at offsets: IndexSet) {
         for index in offsets {
             let postId = likedPostsViewModel.userLikedPosts[index].id

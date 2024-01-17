@@ -18,20 +18,22 @@ struct PostListView: View {
         ZStack {
             MainBackground()
             VStack {
-                
                 NavigationBar
                 
+                // Filter menu
                 showMenu()
                 
                 NavigationView {
                     ZStack {
                         MainBackground()
+                        // List contains all fetched posts
                         List {
                             if !viewModel.posts.isEmpty {
                                 ForEach(viewModel.posts) { post in
                                     PostCellViewBuilder(postId: post.postId, showLikeButton: true, showLikes: false, showContext: true)
                                         .listRowBackground(Color("Linen"))
                                         .listRowInsets(EdgeInsets(top: 5, leading: 5, bottom: 5, trailing: 5))
+                                    // At the end of list more posts are fetched
                                     if post == viewModel.posts.last {
                                         ProgressView()
                                             .onAppear {
@@ -65,6 +67,7 @@ struct PostListView: View {
 }
 
 
+// MARK: Extension
 extension PostListView {
     @ViewBuilder
     func showMenu() -> some View {
@@ -72,7 +75,7 @@ extension PostListView {
             HStack(spacing: 0) {
                 Menu {
                     ForEach(PostListViewModel.FilterOption.allCases, id: \.self) { filterOption in
-                        Button(filterOption.rawValue) {
+                        Button(filterOption.displayName) {
                             Task {
                                 try? await viewModel.filterSelected(option: filterOption)
                             }

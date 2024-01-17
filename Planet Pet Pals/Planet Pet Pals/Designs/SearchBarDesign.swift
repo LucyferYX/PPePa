@@ -22,6 +22,7 @@ struct MainSearchBar: View {
                 .frame(height: 60)
                 .background(Color("Snow"))
                 .cornerRadius(30)
+                .autocorrectionDisabled()
                 .overlay(
                     Button(action: {
                         onCommit()

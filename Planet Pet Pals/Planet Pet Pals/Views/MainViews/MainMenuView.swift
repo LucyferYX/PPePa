@@ -126,14 +126,15 @@ struct MainMenuView: View {
 }
 
 
-struct MainMenuView_Previews: PreviewProvider {
-    static var previews: some View {
-        MainMenuView(showSignInView: .constant(false))
-    }
-}
+// MARK: Preview
+//struct MainMenuView_Previews: PreviewProvider {
+//    static var previews: some View {
+//        MainMenuView(showSignInView: .constant(false))
+//    }
+//}
 
 
-
+// MARK: Extension
 extension MainMenuView {
     private var panelButtons: some View {
         HStack {
